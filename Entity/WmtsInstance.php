@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * WMTSService class
+ * WmtsInstance class
  *
  * @author Paul Schmidt <paul.schmidt@wheregroup.com>
  *
@@ -27,19 +27,19 @@ class WmtsInstance {
     /**
      * @ORM\Column(type="string", nullable="true")
      */
-    private $layersetid = true;
+    protected $layersetid = true;
     /**
      * @ORM\Column(type="string", nullable="true")
      */
-    private $layerid = true;
+    protected $layerid = true;
     /**
      * @ORM\Column(type="boolean")
      */
-    private $visible = true;
+    protected $visible = true;
     /**
      * @ORM\Column(type="boolean")
      */
-    private $proxy = false;
+    protected $proxy = false;
     /**
     * @ORM\Column(type="integer", nullable="true")
     */
