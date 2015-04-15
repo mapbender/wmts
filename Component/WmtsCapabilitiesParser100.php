@@ -48,7 +48,8 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         $wmts->setVersion($this->getValue("./@version", $root));
         $this->parseServiceIdentification($wmts, $this->getValue("./ows:ServiceIdentification", $root));
         $this->parseServiceProvider($wmts, $this->getValue("./ows:ServiceProvider", $root));
-
+        $this->parseCapabilityRequest($wmts, $this->getValue("./ows:OperationsMetadata", $root));
+        $a++;
 //        $capabilities = $this->xpath->query("./wmts:Capability/*", $root);
 //        foreach ($capabilities as $capabilityEl) {
 //            if ($capabilityEl->localName === "Request") {
@@ -147,13 +148,14 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
     {
         $operations = $this->xpath->query("./*", $contextElm);
         foreach ($operations as $operation) {
-            if ($operation->localName === "GetCapabilities") {
+            $name = $this->getValue("./@name", $operation);
+            if ($name === "GetCapabilities") {
                 $getCapabilities = $this->parseOperationRequestInformation($operation);
                 $wmts->setGetCapabilities($getCapabilities);
-            } elseif ($operation->localName === "GetMap") {
+            } elseif ($name === "GetTile") {
                 $getMap = $this->parseOperationRequestInformation($operation);
                 $wmts->setGetMap($getMap);
-            } elseif ($operation->localName === "GetFeatureInfo") {
+            } elseif ($name === "GetFeatureInfo") {
                 $getFeatureInfo = $this->parseOperationRequestInformation($operation);
                 $wmts->setGetFeatureInfo($getFeatureInfo);
             }
@@ -168,6 +170,49 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
      */
     private function parseOperationRequestInformation(\DOMElement $contextElm)
     {
+//        <ows:Operation name="GetCapabilities">
+//            <ows:DCP>
+//                <ows:HTTP>
+//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS/1.0.0/WMTSCapabilities.xml">
+//                        <ows:Constraint name="GetEncoding">
+//                            <ows:AllowedValues>
+//                                <ows:Value>RESTful</ows:Value>
+//                            </ows:AllowedValues>
+//                        </ows:Constraint>
+//                    </ows:Get>
+//<!-- add KVP binding in 10.1 beta2 -->
+//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS?">
+//                        <ows:Constraint name="GetEncoding">
+//                            <ows:AllowedValues>
+//                                <ows:Value>KVP</ows:Value>
+//                            </ows:AllowedValues>
+//                        </ows:Constraint>
+//                    </ows:Get>
+//                </ows:HTTP>
+//            </ows:DCP>
+//        </ows:Operation>
+//        <ows:Operation name="GetTile">
+//            <ows:DCP>
+//                <ows:HTTP>
+//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS/tile/1.0.0/">
+//                        <ows:Constraint name="GetEncoding">
+//                            <ows:AllowedValues>
+//                                <ows:Value>RESTful</ows:Value>
+//                            </ows:AllowedValues>
+//                        </ows:Constraint>
+//                    </ows:Get>
+//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS?">
+//                        <ows:Constraint name="GetEncoding">
+//                            <ows:AllowedValues>
+//                                <ows:Value>KVP</ows:Value>
+//                            </ows:AllowedValues>
+//                        </ows:Constraint>
+//                    </ows:Get>
+//                </ows:HTTP>
+//            </ows:DCP>
+//        </ows:Operation>
+
+
         $requestImformation = new RequestInformation();
         $tempList = $this->xpath->query("./wmts:Format", $contextElm);
         if ($tempList !== null) {
@@ -176,7 +221,7 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
             }
         }
         $requestImformation->setHttpGet(
-            $this->getValue("./wmts:DCPType/wmts:HTTP/wmts:Get/wmts:OnlineResource/@xlink:href", $contextElm)
+            $this->getValue("./ows:DCP/ows:HTTP/ows:Get/wmts:OnlineResource/@xlink:href", $contextElm)
         );
         $requestImformation->setHttpPost(
             $this->getValue("./wmts:DCPType/wmts:HTTP/wmts:Post/wmts:OnlineResource/@xlink:href", $contextElm)
