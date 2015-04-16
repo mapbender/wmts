@@ -34,8 +34,9 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
      */
     public function save()
     {
-        if ($this->entity->getRootlayer()) {
-            self::createHandler($this->container, $this->entity->getRootlayer())->save();
+        $this->container->get('doctrine')->getManager()->persist($this->entity);
+        foreach ($this->entity->getLayers() as $layer) {
+            self::createHandler($this->container, $layer)->save();
         }
         $this->container->get('doctrine')->getManager()->persist($this->entity);
     }
@@ -45,24 +46,24 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
      */
     public function createInstance(Layerset $layerset = NULL, $persist = true)
     {
-        $instance        = new WmtsInstance();
-        $instance->setSource($this->entity);
-        $instance->setLayerset($layerset);
-        $instanceHandler = self::createHandler($this->container, $instance);
-        $instanceHandler->create();
-        if ($instanceHandler->getEntity()->getLayerset()) {
-            $num = 0;
-            foreach ($instanceHandler->getEntity()->getLayerset()->getInstances() as $instanceAtLayerset) {
-                $instHandler = self::createHandler($this->container, $instanceAtLayerset);
-                $instHandler->getEntity()->setWeight($num);
-                $instHandler->generateConfiguration();
-                if ($persist) {
-                    $this->container->get('doctrine')->getManager()->persist($instHandler->getEntity());
-                }
-                $num++;
-            }
-        }
-        return $instanceHandler->getEntity();
+//        $instance        = new WmtsInstance();
+//        $instance->setSource($this->entity);
+//        $instance->setLayerset($layerset);
+//        $instanceHandler = self::createHandler($this->container, $instance);
+//        $instanceHandler->create();
+//        if ($instanceHandler->getEntity()->getLayerset()) {
+//            $num = 0;
+//            foreach ($instanceHandler->getEntity()->getLayerset()->getInstances() as $instanceAtLayerset) {
+//                $instHandler = self::createHandler($this->container, $instanceAtLayerset);
+//                $instHandler->getEntity()->setWeight($num);
+//                $instHandler->generateConfiguration();
+//                if ($persist) {
+//                    $this->container->get('doctrine')->getManager()->persist($instHandler->getEntity());
+//                }
+//                $num++;
+//            }
+//        }
+//        return $instanceHandler->getEntity();
     }
 
     /**
@@ -70,9 +71,9 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
      */
     public function remove()
     {
-//        if ($this->entity->getRootlayer()) {
-//            self::createHandler($this->container, $this->entity->getRootlayer())->remove();
-//        }
+        foreach ($this->entity->getLayers() as $layer) {
+            self::createHandler($this->container, $layer)->remove();
+        }
         $this->container->get('doctrine')->getManager()->remove($this->entity);
     }
 
@@ -125,9 +126,9 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
 
     private function updateInstances()
     {
-        foreach ($this->getInstances() as $instance) {
-            self::createHandler($this->container, $instance)->update();
-        }
+//        foreach ($this->getInstances() as $instance) {
+//            self::createHandler($this->container, $instance)->update();
+//        }
     }
 
     /**

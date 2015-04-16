@@ -17,7 +17,7 @@ use Mapbender\WmtsBundle\Entity\Style;
 
 /**
  * Description of WmtsLayerSource
- * @author Pau Schmidt
+ * @author Paul Schmidt
  * @ORM\Entity
  * @ORM\Table(name="mb_wmts_wmtslayersource")
  */
@@ -95,7 +95,7 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      */
     public function __construct()
     {
-        $this->layer = new ArrayCollection();
+//        $this->layer = new ArrayCollection();
         $this->keywords = new ArrayCollection();
         $this->infoformats = array();
         $this->formats = array();

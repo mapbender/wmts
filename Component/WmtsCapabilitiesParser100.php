@@ -322,14 +322,13 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
             }
             $wmtslayer->addStyle($style);
         }
-//                unset($stylesEl);
 
-        $formatsEl = $this->xpath->query("./wmts:Format", $contextElm);
-        foreach ($formatsEl as $formatEl) {
+        $formatsEls = $this->xpath->query("./wmts:Format", $contextElm);
+        foreach ($formatsEls as $formatEl) {
             $wmtslayer->addFormat($this->getValue("./text()", $formatEl));
         }
-        $formatsEl = $this->xpath->query("./wmts:InfoFormat", $contextElm);
-        foreach ($formatsEl as $formatEl) {
+        $formatsFiEls = $this->xpath->query("./wmts:InfoFormat", $contextElm);
+        foreach ($formatsFiEls as $formatEl) {
             $wmtslayer->addInfoformat($this->getValue("./text()", $formatEl));
         }
 

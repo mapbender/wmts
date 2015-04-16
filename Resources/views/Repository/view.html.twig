@@ -136,10 +136,15 @@
     {% endif %}#}
   </div>
   <div id="containerLayers" class="container serviceContainer serviceLayersContainer">
-    {#{% if wmts.version == '1.1.1' %}
+    {#% if wmts.version == '1.1.1' %}
         <div class="messageBox hint">{{ 'mb.wmts.wmtsloader.repo.view.message.cautionscalehint'|trans }}</div>
-    {% endif %}
-      {% include "MapbenderWmtsBundle:Repository:layer.html.twig"  with {'layer': wmts.rootlayer, 'itemLevel': 1 }%}#}
+    {% endif %#}
+    <ul class="itemLevel1 list">
+    {% for layer in wmts.layers %}
+      {% include "MapbenderWmtsBundle:Repository:layer.html.twig"  with {'layer': layer, 'itemLevel': 1 }%}
+    {% endfor %}
+    </ul>
+
   </div>
 </div>
 <div class="clearContainer"></div>

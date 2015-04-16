@@ -174,7 +174,9 @@ class RepositoryController extends Controller
 //            $rootlayer = $wmtssource->getLayers()->get(0);
 //            $this->getDoctrine()->getManager()->persist($rootlayer);
 //            $this->saveLayer($this->getDoctrine()->getManager(), $rootlayer);
-            $this->getDoctrine()->getManager()->persist($wmtssource);
+
+            EntityHandler::createHandler($this->container, $wmtssource)->save();
+//            $this->getDoctrine()->getManager()->persist($wmtssource);
             $this->getDoctrine()->getManager()->flush();
 
             // ACL

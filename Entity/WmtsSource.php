@@ -3,11 +3,8 @@
 namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Mapbender\CoreBundle\Component\Utils;
 use Mapbender\CoreBundle\Entity\Contact;
-use Mapbender\CoreBundle\Entity\Keyword;
 use Mapbender\CoreBundle\Entity\Source;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -278,10 +275,10 @@ class WmtsSource extends Source
     /**
      * Set layers
      *
-     * @param array $layers
+     * @param ArrayCollection $layers
      * @return WmtsSource
      */
-    public function setLayers($layers)
+    public function setLayers(ArrayCollection $layers)
     {
         $this->layers = $layers;
         return $this;
@@ -290,7 +287,7 @@ class WmtsSource extends Source
     /**
      * Get layers
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getLayers()
     {
