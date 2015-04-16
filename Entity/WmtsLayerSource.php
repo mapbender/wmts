@@ -15,7 +15,7 @@ use Mapbender\CoreBundle\Entity\Source;
  * Description of WmtsLayerSource
  * @author Pau Schmidt
  * @ORM\Entity
- * @ORM\Table(name="mb_wms_wmslayersource")
+ * @ORM\Table(name="mb_wmts_wmtslayersource")
  */
 class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 {
@@ -44,7 +44,7 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 
     /**
      * @ORM\ManyToOne(targetEntity="WmtsSource",inversedBy="layers")
-     * @ORM\JoinColumn(name="wmssource", referencedColumnName="id")
+     * @ORM\JoinColumn(name="wmtssource", referencedColumnName="id")
      */
     protected $source; # change this variable name together with "get" "set" functions (s. SourceItem too)
 
@@ -178,9 +178,9 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     /**
      * @inheritdoc
      */
-    public function setSource(Source $wmssource)
+    public function setSource(Source $wmtssource)
     {
-        $this->source = $wmssource;
+        $this->source = $wmtssource;
         return $this;
     }
 
