@@ -273,45 +273,42 @@ class WmtsSource extends Source
     {
         return $this->serviceType;
     }
-//
-//    /**
-//     * Get root layer
-//     * @return WMTSLayer
-//     */
-//    public function getRootLayer()
-//    {
-//        return $this->getLayer()->get(0);
-//    }
-//
-//    /**
-//     * returns all Layers of the WMTS as comma-seperated string so that they can be used in a WMTS Request's LAYER parameter
-//     */
-//    public function getAllLayerNames($grouplayers = null)
-//    {
-//        $grouplayers = $grouplayers == null ? $this->getLayer() : $grouplayers;
-//        $names = "";
-//        foreach ($grouplayers as $layer) {
-//            $name = $layer->getName();
-//            if ($name != "") {
-//                $names .= $name;
-//            }
-//            $names .= "," . $this->getAllLayerNames($layer->getLayer());
-//        }
-//        return trim($names, ",");
-//    }
-//
-//    /**
-//     * returns all Layers of the WMTS as comma-seperated string so that they can be used in a WMTS Request's LAYER parameter
-//     */
-//    public function getAllLayer($grouplayers = null, &$layers = array())
-//    {
-//        $grouplayers = $grouplayers == null ? $this->getLayer() : $grouplayers;
-//        foreach ($grouplayers as $layer) {
-//            $layers[] = $layer;
-//            $this->getAllLayer($layer->getLayer(), $layers);
-//        }
-//        return $layers;
-//    }
+
+
+    /**
+     * Set layers
+     *
+     * @param array $layers
+     * @return WmtsSource
+     */
+    public function setLayers($layers)
+    {
+        $this->layers = $layers;
+        return $this;
+    }
+
+    /**
+     * Get layers
+     *
+     * @return array
+     */
+    public function getLayers()
+    {
+        return $this->layers;
+    }
+
+    /**
+     * Add layer
+     *
+     * @param WmtsLayerSource $layer
+     * @return WmtsSource
+     */
+    public function addLayer(WmtsLayerSource $layer)
+    {
+        $this->layers->add($layer);
+        return $this;
+    }
+
 
     /**
      * Set serviceProviderSite

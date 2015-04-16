@@ -10,6 +10,7 @@ namespace Mapbender\WmtsBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Mapbender\CoreBundle\Component\SourceItem;
+use Mapbender\CoreBundle\Component\BoundingBox;
 use Mapbender\CoreBundle\Entity\Source;
 
 /**
@@ -49,10 +50,10 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      */
     protected $source; # change this variable name together with "get" "set" functions (s. SourceItem too)
 
-//    /**
-//     * @ORM\Column(type="object", nullable=true)
-//     */
-//    public $latlonBounds;
+    /**
+     * @ORM\Column(type="object", nullable=true)
+     */
+    public $latlonBounds;
 //
 //    /**
 //     * @ORM\Column(type="array", nullable=true)
@@ -72,6 +73,11 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      * @ORM\Column(type="array", nullable=true)
      */
     public $formats;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    public $infoformats;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -195,7 +201,95 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 
 
 
+    /**
+     * Set latlonBounds
+     *
+     * @param BoundingBox $latlonBounds
+     * @return WmsLayerSource
+     */
+    public function setLatlonBounds(BoundingBox $latlonBounds = NULL)
+    {
+        $this->latlonBounds = $latlonBounds;
+        return $this;
+    }
 
+    /**
+     * Get latlonBounds
+     *
+     * @return BoundingBox
+     */
+    public function getLatlonBounds()
+    {
+        return $this->latlonBounds;
+    }
+
+    /**
+     * Set formats
+     *
+     * @param array $formats
+     * @return WmtsSource
+     */
+    public function setFormats($formats)
+    {
+        $this->formats = $formats;
+        return $this;
+    }
+
+    /**
+     * Add format
+     *
+     * @param array $format
+     * @return WmtsSource
+     */
+    public function addFormat($format)
+    {
+        $this->formats[] = $format;
+        return $this;
+    }
+
+    /**
+     * Get formats
+     *
+     * @return array
+     */
+    public function getFormats()
+    {
+        return $this->formats;
+    }
+
+    /**
+     * Set infoformats
+     *
+     * @param array $infoformats
+     * @return WmtsSource
+     */
+    public function setinfoformats($infoformats)
+    {
+        $this->infoformats = $infoformats;
+        return $this;
+    }
+
+    /**
+     * Add infoformat
+     *
+     * @param string $infoformat
+     * @return WmtsSource
+     */
+    public function addInfoformat($infoformat)
+    {
+        $this->infoformats[] = $infoformat;
+        return $this;
+    }
+
+    /**
+     * Get infoformats
+     *
+     * @return array
+     */
+    public function getInfoformats()
+    {
+        return $this->infoformats;
+    }
 
     /**
      * Set resourceUrl
