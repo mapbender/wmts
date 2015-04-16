@@ -9,9 +9,11 @@ namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
 use Mapbender\CoreBundle\Component\SourceItem;
 use Mapbender\CoreBundle\Component\BoundingBox;
 use Mapbender\CoreBundle\Entity\Source;
+use Mapbender\WmtsBundle\Entity\Style;
 
 /**
  * Description of WmtsLayerSource
@@ -65,8 +67,11 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 //    public $crsBounds;
 //
 //    public $metadataUrl;
-//
-//    public $styles;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    public $styles;
 
 
     /**
@@ -92,12 +97,14 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     {
         $this->layer = new ArrayCollection();
         $this->keywords = new ArrayCollection();
+        $this->infoformats = array();
+        $this->formats = array();
 //        $this->boundingBoxes = array();
 //        $this->metadataUrl = array();
 //        $this->dimension = array();
 //        $this->dataUrl = array();
 //        $this->featureListUrl = array();
-//        $this->styles = array();
+        $this->styles = array();
 //        $this->srs = array();
 //        $this->identifier = array();
         $this->resourceUrl = array();
@@ -222,6 +229,39 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     {
         return $this->latlonBounds;
     }
+
+    /**
+     * Set styles
+     * @param array $styles
+     * @return WmtsSource
+     */
+    public function setStyles($styles)
+    {
+        $this->styles = $styles;
+        return $this;
+    }
+
+    /**
+     * Add style
+     * @param Style $style
+     * @return WmtsSource
+     */
+    public function addStyle($style)
+    {
+        $this->styles[] = $style;
+        return $this;
+    }
+
+    /**
+     * Get styles
+     *
+     * @return Style[]
+     */
+    public function getStyles()
+    {
+        return $this->styles;
+    }
+
 
     /**
      * Set formats

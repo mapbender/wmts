@@ -1,0 +1,140 @@
+<?php
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+namespace Mapbender\WmtsBundle\Entity;
+
+/**
+ * Description of Style
+ *
+ * @author Paul Schmidt
+ */
+class Style
+{
+    /**
+     * is default style
+     * @var boolean
+     */
+    public $isdefault;
+
+    /**
+     * A style title
+     * @var string
+     */
+    public $title;
+
+    /**
+     * A style descrioption
+     * @var string
+     */
+    public $abstract;
+
+    /**
+     *
+     * @var string
+     */
+    public $identifier;
+
+    /**
+     *
+     * @var type
+     */
+    public $legendurl;
+
+    /**
+     * Get isdefault.
+     * @return boolean
+     */
+    public function getIsdefault()
+    {
+        return $this->isdefault;
+    }
+
+    /**
+     * Set isdefault.
+     * @return boolean
+     */
+    public function setIsdefault($isdefault)
+    {
+        $this->isdefault = $isdefault ? true : false;
+        return $this;
+    }
+
+    /**
+     * Get title
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set title
+     * @param string $title
+     * @return \Mapbender\WmtsBundle\Entity\Style
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get abstrack
+     * @return text
+     */
+    public function getAbstract()
+    {
+        return $this->abstract;
+    }
+
+    /**
+     * Set abstrack
+     * @param string $abstract
+     * @return \Mapbender\WmtsBundle\Entity\Style
+     */
+    public function setAbstract($abstract)
+    {
+        $this->abstract = $abstract;
+        return $this;
+    }
+
+    /**
+     * Get identfier.
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Set identifier
+     * @param string $identifier
+     * @return \Mapbender\WmtsBundle\Entity\Style
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+        return $this;
+    }
+
+
+    public function getLegendurl()
+    {
+        return $this->legendurl;
+    }
+
+    public function setLegendurl($legendurl)
+    {
+        $this->legendurl = $legendurl;
+        return $this;
+    }
+
+
+
+}

@@ -127,7 +127,7 @@ class WmtsSource extends Source
     /**
      * @var ArrayCollections A list of WMTS layers
      * @ORM\OneToMany(targetEntity="WmtsLayerSource",mappedBy="source", cascade={"persist","remove"})
-     * @ORM\OrderBy({"priority" = "asc","id" = "asc"})
+     * @ORM\OrderBy({"id" = "asc"})
      */
     protected $layers;
 
