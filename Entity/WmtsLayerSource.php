@@ -8,6 +8,7 @@
 namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Mapbender\CoreBundle\Component\SourceItem;
 use Mapbender\CoreBundle\Entity\Source;
 
@@ -33,12 +34,12 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     protected $title = "";
 
     /**
-     * @ORM\Column(name="name", type="string", nullable="true")
+     * @ORM\Column(name="name", type="string", nullable=true)
      */
     protected $identifier = "";
 
     /**
-     * @ORM\Column(type="text",nullable="true")
+     * @ORM\Column(type="text",nullable=true)
      */
     protected $abstract = "";
 
@@ -68,12 +69,12 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 
 
     /**
-     * @ORM\Column(type="array", nullable="true")
+     * @ORM\Column(type="array", nullable=true)
      */
     public $formats;
 
     /**
-     * @ORM\Column(type="array", nullable="true")
+     * @ORM\Column(type="array", nullable=true)
      */
     protected $resourceUrl;
 
