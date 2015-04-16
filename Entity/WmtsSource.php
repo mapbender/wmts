@@ -19,6 +19,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class WmtsSource extends Source
 {
+    /**
+     * TODO: describe and change access modifier of variables
+     */
+    public $tilematrixset;
+    public $getCapabilites;
 
     /**
      * @var string An origin WMTS URL
@@ -160,8 +165,7 @@ class WmtsSource extends Source
      * Set originUrl
      *
      * @param string $originUrl
-     * @return WmTsSource
-     */
+     * @return $this     */
     public function setOriginUrl($originUrl)
     {
         $this->originUrl = $originUrl;
@@ -170,7 +174,7 @@ class WmtsSource extends Source
 
     /**
      * Get originUrl
-     * @return strin
+     * @return string
      */
     public function getOriginUrl()
     {
@@ -198,7 +202,9 @@ class WmtsSource extends Source
 
     /**
      * Set alias
+     *
      * @param string $alias
+     * @return Source|void
      */
     public function setAlias($alias)
     {
@@ -425,7 +431,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get theme
+     * Get theme.
      * @return array
      */
     public function getTheme()
@@ -434,8 +440,8 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get theme as ArrayCollection of Theme
-     * @return ArrayCollection
+     * Get theme as ArrayCollection of Theme.
+     * @return ArrayCollection[Theme]
      */
     public function getThemeAsObjects()
     {
@@ -448,7 +454,8 @@ class WmtsSource extends Source
 
     /**
      * Set theme
-     * @param array of Theme or Theme->getAsArray $themes
+     *
+     * @param array|Theme|mixed $themes
      */
     public function setTheme($themes)
     {
@@ -470,7 +477,7 @@ class WmtsSource extends Source
     /**
      * Add $theme to theme
      * 
-     * @param Theme or array $theme 
+     * @param Theme|array $theme
      */
     public function addTheme($theme)
     {
@@ -482,7 +489,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get tilematrixset
+     * Get tile matrix set
      * 
      * @return array 
      */
@@ -492,7 +499,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get tilematrixset
+     * Get tile matrix set as object list
      * 
      * @return array 
      */
@@ -506,8 +513,9 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get tilematrixset
-     * @param string or array $name 
+     * Get tile matrix set by the name.
+     *
+     * @param string|array $name name of set
      * @return array 
      */
     public function getTileMatrixSetByName($name)
@@ -530,7 +538,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Set tilematrixset
+     * Set tile matrix set.
      *
      * @param array $tilematrixset 
      */
@@ -554,8 +562,9 @@ class WmtsSource extends Source
     }
 
     /**
-     * Add tilematrixset
-     * @param TilematrixSet or array $tilematrixset 
+     * Add tile matrix set.
+     *
+     * @param TileMatrixSet|array $tilematrixset
      */
     public function addTtilematrixset($tilematrixset)
     {
@@ -567,7 +576,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get username
+     * Get username.
      * 
      * @return string
      */
@@ -577,7 +586,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Set username
+     * Set username.
      * 
      * @param string $username 
      */
@@ -587,7 +596,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get password
+     * Get password.
      * 
      * @return string
      */
@@ -597,7 +606,7 @@ class WmtsSource extends Source
     }
 
     /**
-     * Set password
+     * Set password.
      * 
      * @param string $password 
      */

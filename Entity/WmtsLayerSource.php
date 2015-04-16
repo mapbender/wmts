@@ -8,8 +8,6 @@
 namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Mapbender\CoreBundle\Component\ContainingKeyword;
 use Mapbender\CoreBundle\Component\SourceItem;
 use Mapbender\CoreBundle\Entity\Source;
 
@@ -17,9 +15,9 @@ use Mapbender\CoreBundle\Entity\Source;
  * Description of WmtsLayerSource
  * @author Pau Schmidt
  * @ORM\Entity
- * @ORM\Table(name="mb_wmts_wmtslayersource")
+ * @ORM\Table(name="mb_wms_wmslayersource")
  */
-class WmtsLayerSource extends SourceItem# implements ContainingKeyword
+class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 {
     /**
      * @var integer $id
@@ -35,18 +33,18 @@ class WmtsLayerSource extends SourceItem# implements ContainingKeyword
     protected $title = "";
 
     /**
-     * @ORM\Column(name="name", type="string", nullable=true)
+     * @ORM\Column(name="name", type="string", nullable="true")
      */
-    protected $identifier;
+    protected $identifier = "";
 
     /**
-     * @ORM\Column(type="text",nullable=true)
+     * @ORM\Column(type="text",nullable="true")
      */
     protected $abstract = "";
 
     /**
      * @ORM\ManyToOne(targetEntity="WmtsSource",inversedBy="layers")
-     * @ORM\JoinColumn(name="wmtssource", referencedColumnName="id")
+     * @ORM\JoinColumn(name="wmssource", referencedColumnName="id")
      */
     protected $source; # change this variable name together with "get" "set" functions (s. SourceItem too)
 
@@ -70,17 +68,19 @@ class WmtsLayerSource extends SourceItem# implements ContainingKeyword
 
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="array", nullable="true")
      */
     public $formats;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="array", nullable="true")
      */
     protected $resourceUrl;
 
 
-
+    /**
+     * TODO: describe initial method
+     */
     public function __construct()
     {
         $this->layer = new ArrayCollection();
@@ -107,6 +107,8 @@ class WmtsLayerSource extends SourceItem# implements ContainingKeyword
 
     /**
      * Set id
+     *
+     * @param $id
      */
     public function setId($id)
     {
@@ -176,9 +178,9 @@ class WmtsLayerSource extends SourceItem# implements ContainingKeyword
     /**
      * @inheritdoc
      */
-    public function setSource(Source $wmtssource)
+    public function setSource(Source $wmssource)
     {
-        $this->source = $wmtssource;
+        $this->source = $wmssource;
         return $this;
     }
 
@@ -207,8 +209,9 @@ class WmtsLayerSource extends SourceItem# implements ContainingKeyword
 
     /**
      * Add resourceUrl
-     * @return string resourceUrl
-     * @return \Mapbender\WmtsBundle\Entity\WmtsLayerSource
+     *
+     * @param string $resourceUrl
+     * @return $this resourceUrl
      */
     public function addResourceUrl($resourceUrl)
     {
