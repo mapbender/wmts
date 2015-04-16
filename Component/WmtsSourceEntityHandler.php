@@ -85,7 +85,7 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
         if (!$transaction) {
             $this->container->get('doctrine')->getManager()->getConnection()->beginTransaction();
         }
-//        $updater = new WmsUpdater($this->entity);
+//        $updater = new WmtsUpdater($this->entity);
 //        /* Update source attributes */
 //        $mapper  = $updater->getMapper();
 //        foreach ($mapper as $propertyName => $properties) {

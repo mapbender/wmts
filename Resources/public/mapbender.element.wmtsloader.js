@@ -169,7 +169,7 @@
                 return;
             }
 
-            if(service.toUpperCase() !== "WMS"){
+            if(service.toUpperCase() !== "WMTS"){
                 Mapbender.error(Mapbender.trans('mb.wmts.wmtsloader.error.service', {"service": service}));
                 return false;
             }else if(request.toUpperCase() !== "GETCAPABILITIES" && request.toUpperCase() !== 'CAPABILITIES'){

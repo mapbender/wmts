@@ -160,8 +160,8 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
                 $getCapabilities = $this->parseOperationRequestInformation($operation);
                 $wmts->setGetCapabilities($getCapabilities);
             } elseif ($name === "GetTile") {
-                $getMap = $this->parseOperationRequestInformation($operation);
-                $wmts->setGetMap($getMap);
+                $getTile = $this->parseOperationRequestInformation($operation);
+                $wmts->setGetTile($getTile);
             } elseif ($name === "GetFeatureInfo") {
                 $getFeatureInfo = $this->parseOperationRequestInformation($operation);
                 $wmts->setGetFeatureInfo($getFeatureInfo);

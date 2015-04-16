@@ -18,9 +18,9 @@ OpenLayers.Layer.WMS.prototype.calculateInRange = function() {
 var Mapbender = Mapbender || {};
 $.extend(true, Mapbender, {
     source: {
-        'wms': {
+        'wmts': {
             defaultMqLayer: {
-                type: 'wms',
+                type: 'wmts',
                 noMagic: true,
                 transitionEffect: 'resize'
             },

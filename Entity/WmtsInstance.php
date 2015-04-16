@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Mapbender\CoreBundle\Entity\SourceInstance;
 use Mapbender\WmtsBundle\Component\WmtsMetadata;
-use Mapbender\WmtsBundle\Entity\WmsInstanceLayer;
+use Mapbender\WmtsBundle\Entity\WmtsInstanceLayer;
 use Mapbender\WmtsBundle\Entity\WmtsSource;
 
 /**
@@ -16,8 +16,8 @@ use Mapbender\WmtsBundle\Entity\WmtsSource;
  * @author Paul Schmidt
  *
  * @ORM\Entity
- * @ORM\Table(name="mb_wmts_wmsinstance")
- * ORM\DiscriminatorMap({"mb_wmts_wmssourceinstance" = "WmtsSourceInstance"})
+ * @ORM\Table(name="mb_wmts_wmtsinstance")
+ * ORM\DiscriminatorMap({"mb_wmts_wmtssourceinstance" = "WmtsSourceInstance"})
  */
 class WmtsInstance extends SourceInstance
 {
@@ -35,7 +35,7 @@ class WmtsInstance extends SourceInstance
     protected $source;
 //
 //    /**
-//     * @ORM\OneToMany(targetEntity="WmsInstanceLayer", mappedBy="sourceInstance", cascade={"refresh", "persist", "remove"})
+//     * @ORM\OneToMany(targetEntity="WmtsInstanceLayer", mappedBy="sourceInstance", cascade={"refresh", "persist", "remove"})
 //     * @ORM\JoinColumn(name="layers", referencedColumnName="id")
 //     * @ORM\OrderBy({"priority" = "asc"})
 //     */
@@ -110,7 +110,7 @@ class WmtsInstance extends SourceInstance
     /**
      * Set id
      * @param integer $id
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setId($id)
     {
@@ -142,7 +142,7 @@ class WmtsInstance extends SourceInstance
      * Sets dimensions
      * 
      * @param array $dimensions array of DimensionIst
-     * @return \Mapbender\WmsBundle\Entity\WmsInstance
+     * @return \Mapbender\WmtsBundle\Entity\WmtsInstance
      */
     public function setDimensions(array $dimensions)
     {
@@ -175,7 +175,7 @@ class WmtsInstance extends SourceInstance
      * Set layers
      *
      * @param array $layers
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setLayers($layers)
     {
@@ -196,7 +196,7 @@ class WmtsInstance extends SourceInstance
     /**
      * Get root layer
      *
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function getRootlayer()
     {
@@ -212,7 +212,7 @@ class WmtsInstance extends SourceInstance
      * Set title
      *
      * @param string $title
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setTitle($title)
     {
@@ -234,7 +234,7 @@ class WmtsInstance extends SourceInstance
      * Set srs
      *
      * @param array $srs
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setSrs($srs)
     {
@@ -256,7 +256,7 @@ class WmtsInstance extends SourceInstance
      * Set format
      *
      * @param string $format
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setFormat($format)
     {
@@ -278,7 +278,7 @@ class WmtsInstance extends SourceInstance
      * Set infoformat
      *
      * @param string $infoformat
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setInfoformat($infoformat)
     {
@@ -300,7 +300,7 @@ class WmtsInstance extends SourceInstance
      * Set exceptionformat
      *
      * @param string $exceptionformat
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setExceptionformat($exceptionformat)
     {
@@ -322,7 +322,7 @@ class WmtsInstance extends SourceInstance
      * Set transparency
      *
      * @param boolean $transparency
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setTransparency($transparency)
     {
@@ -344,7 +344,7 @@ class WmtsInstance extends SourceInstance
      * Set visible
      *
      * @param boolean $visible
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setVisible($visible)
     {
@@ -366,7 +366,7 @@ class WmtsInstance extends SourceInstance
      * Set opacity
      *
      * @param integer $opacity
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setOpacity($opacity)
     {
@@ -388,7 +388,7 @@ class WmtsInstance extends SourceInstance
      * Set proxy
      *
      * @param boolean $proxy
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setProxy($proxy)
     {
@@ -410,7 +410,7 @@ class WmtsInstance extends SourceInstance
      * Set tiled
      *
      * @param boolean $tiled
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setTiled($tiled)
     {
@@ -432,7 +432,7 @@ class WmtsInstance extends SourceInstance
      * Set ratio
      *
      * @param boolean $ratio
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setRatio($ratio)
     {
@@ -455,7 +455,7 @@ class WmtsInstance extends SourceInstance
      * Set buffer
      *
      * @param boolean $buffer
-     * @return WmsInstance
+     * @return WmtsInstance
      */
     public function setBuffer($buffer)
     {
@@ -475,21 +475,21 @@ class WmtsInstance extends SourceInstance
     }
 
     /**
-     * Set wmssource
+     * Set wmtssource
      *
-     * @param WmsSource $wmssource
-     * @return WmsInstance
+     * @param WmtsSource $wmtssource
+     * @return WmtsInstance
      */
-    public function setSource($wmssource = null)
+    public function setSource($wmtssource = null)
     {
-        $this->source = $wmssource;
+        $this->source = $wmtssource;
         return $this;
     }
 
     /**
-     * Get wmssource
+     * Get wmtssource
      *
-     * @return WmsSource
+     * @return WmtsSource
      */
     public function getSource()
     {
@@ -499,10 +499,10 @@ class WmtsInstance extends SourceInstance
     /**
      * Add layers
      *
-     * @param WmsInstanceLayer $layers
-     * @return WmsInstance
+     * @param WmtsInstanceLayer $layers
+     * @return WmtsInstance
      */
-    public function addLayer(WmsInstanceLayer $layer)
+    public function addLayer(WmtsInstanceLayer $layer)
     {
         $this->layers->add($layer);
         return $this;
@@ -511,9 +511,9 @@ class WmtsInstance extends SourceInstance
     /**
      * Remove layers
      *
-     * @param WmsInstanceLayer $layers
+     * @param WmtsInstanceLayer $layers
      */
-    public function removeLayer(WmsInstanceLayer $layers)
+    public function removeLayer(WmtsInstanceLayer $layers)
     {
         $this->layers->removeElement($layers);
     }
@@ -528,7 +528,7 @@ class WmtsInstance extends SourceInstance
      */
     public function getType()
     {
-        return "wms";
+        return "wmts";
     }
 
     /**
@@ -536,73 +536,73 @@ class WmtsInstance extends SourceInstance
      */
     public function getManagerType()
     {
-        return "wms";
+        return "wmts";
     }
+//
+//    /**
+//     * @inheritdoc
+//     */
+//    static public function listAssets()
+//    {
+//        return array(
+//            'js' => array(
+//                '@MapbenderWmtsBundle/Resources/public/mapbender.source.wmts.js'),
+//            'css' => array(),
+//            'trans' => array('MapbenderWmtsBundle::wmtsbundle.json.twig'));
+//    }
 
     /**
-     * @inheritdoc
-     */
-    static public function listAssets()
-    {
-        return array(
-            'js' => array(
-                '@MapbenderWmsBundle/Resources/public/mapbender.source.wms.js'),
-            'css' => array(),
-            'trans' => array('MapbenderWmsBundle::wmsbundle.json.twig'));
-    }
-
-    /**
-     * @return WmsMetadata
+     * @return WmtsMetadata
      */
     public function getMetadata()
     {
-        return new WmsMetadata($this);
+//        return new WmtsMetadata($this);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function copy(EntityManager $em)
-    {
-        $inst = new WmsInstance();
-        $inst->title = $this->title;
-        $inst->weight = $this->weight;
-        $inst->enabled = $this->enabled;
-        $inst->configuration = $this->configuration; //???
-        $inst->source = $this->source;
-        $inst->srs = $this->srs;
-        $inst->format = $this->format;
-        $inst->infoformat = $this->infoformat;
-        $inst->exceptionformat = $this->exceptionformat;
-        $inst->transparency = $this->transparency;
-        $inst->visible = $this->visible;
-        $inst->opacity = $this->opacity;
-        $inst->proxy = $this->proxy;
-        $inst->tiled = $this->tiled;
-        $inst->ratio = $this->ratio;
-        $inst->buffer = $this->buffer;
-        $this->copyLayerRecursive($em, $inst, $this->getRootlayer(), NULL);
-        return $inst;
-    }
-
-    /**
-     * Recursively copy a nested Layerstructure
-     * @param EntityManager $em
-     * @param WmsInstanceLayer $instLayer
-     */
-    private function copyLayerRecursive(EntityManager $em, WmsInstance $instCloned, WmsInstanceLayer $origin,
-        WmsInstanceLayer $clonedParent = null)
-    {
-        $cloned = $origin->copy($em);
-        $cloned->setWmsinstance($instCloned);
-        $cloned->setSourceItem($origin->getSourceItem());
-        if ($clonedParent !== null) {
-            $cloned->setParent($clonedParent);
-            $clonedParent->addSublayer($cloned);
-        }
-        $instCloned->addLayer($cloned);
-        foreach ($origin->getSublayer() as $sublayer) {
-            $this->copyLayerRecursive($em, $instCloned, $sublayer, $cloned);
-        }
-    }
+//
+//    /**
+//     * @inheritdoc
+//     */
+//    public function copy(EntityManager $em)
+//    {
+//        $inst = new WmtsInstance();
+//        $inst->title = $this->title;
+//        $inst->weight = $this->weight;
+//        $inst->enabled = $this->enabled;
+//        $inst->configuration = $this->configuration; //???
+//        $inst->source = $this->source;
+//        $inst->srs = $this->srs;
+//        $inst->format = $this->format;
+//        $inst->infoformat = $this->infoformat;
+//        $inst->exceptionformat = $this->exceptionformat;
+//        $inst->transparency = $this->transparency;
+//        $inst->visible = $this->visible;
+//        $inst->opacity = $this->opacity;
+//        $inst->proxy = $this->proxy;
+//        $inst->tiled = $this->tiled;
+//        $inst->ratio = $this->ratio;
+//        $inst->buffer = $this->buffer;
+//        $this->copyLayerRecursive($em, $inst, $this->getRootlayer(), NULL);
+//        return $inst;
+//    }
+//
+//    /**
+//     * Recursively copy a nested Layerstructure
+//     * @param EntityManager $em
+//     * @param WmtsInstanceLayer $instLayer
+//     */
+//    private function copyLayerRecursive(EntityManager $em, WmtsInstance $instCloned, WmtsInstanceLayer $origin,
+//        WmtsInstanceLayer $clonedParent = null)
+//    {
+//        $cloned = $origin->copy($em);
+//        $cloned->setWmtsinstance($instCloned);
+//        $cloned->setSourceItem($origin->getSourceItem());
+//        if ($clonedParent !== null) {
+//            $cloned->setParent($clonedParent);
+//            $clonedParent->addSublayer($cloned);
+//        }
+//        $instCloned->addLayer($cloned);
+//        foreach ($origin->getSublayer() as $sublayer) {
+//            $this->copyLayerRecursive($em, $instCloned, $sublayer, $cloned);
+//        }
+//    }
 }

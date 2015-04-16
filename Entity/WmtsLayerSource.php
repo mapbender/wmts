@@ -7,6 +7,8 @@
 
 namespace Mapbender\WmtsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Mapbender\CoreBundle\Component\ContainingKeyword;
 use Mapbender\CoreBundle\Component\SourceItem;
 use Mapbender\CoreBundle\Entity\Source;
@@ -15,9 +17,9 @@ use Mapbender\CoreBundle\Entity\Source;
  * Description of WmtsLayerSource
  * @author Pau Schmidt
  * @ORM\Entity
- * @ORM\Table(name="mb_wms_wmslayersource")
+ * @ORM\Table(name="mb_wmts_wmtslayersource")
  */
-class WmtsLayerSource extends SourceItem # implements ContainingKeyword
+class WmtsLayerSource extends SourceItem# implements ContainingKeyword
 {
     /**
      * @var integer $id
@@ -33,18 +35,18 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     protected $title = "";
 
     /**
-     * @ORM\Column(name="name", type="string", nullable="true")
+     * @ORM\Column(name="name", type="string", nullable=true)
      */
-    protected $identifier = "";
+    protected $identifier;
 
     /**
-     * @ORM\Column(type="text",nullable="true")
+     * @ORM\Column(type="text",nullable=true)
      */
     protected $abstract = "";
 
     /**
      * @ORM\ManyToOne(targetEntity="WmtsSource",inversedBy="layers")
-     * @ORM\JoinColumn(name="wmssource", referencedColumnName="id")
+     * @ORM\JoinColumn(name="wmtssource", referencedColumnName="id")
      */
     protected $source; # change this variable name together with "get" "set" functions (s. SourceItem too)
 
@@ -68,12 +70,12 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 
 
     /**
-     * @ORM\Column(type="array", nullable="true")
+     * @ORM\Column(type="array", nullable=true)
      */
     public $formats;
 
     /**
-     * @ORM\Column(type="array", nullable="true")
+     * @ORM\Column(type="array", nullable=true)
      */
     protected $resourceUrl;
 
@@ -174,9 +176,9 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     /**
      * @inheritdoc
      */
-    public function setSource(Source $wmssource)
+    public function setSource(Source $wmtssource)
     {
-        $this->source = $wmssource;
+        $this->source = $wmtssource;
         return $this;
     }
 

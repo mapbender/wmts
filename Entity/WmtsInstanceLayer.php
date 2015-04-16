@@ -13,7 +13,7 @@ use Mapbender\WmtsBundle\Entity\WmtsLayerSource;
 use Mapbender\CoreBundle\Component\Utils;
 
 /**
- * WmsInstanceLayer class
+ * WmtsInstanceLayer class
  *
  * @author Paul Schmidt
  *
@@ -33,7 +33,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
 //
 //    /**
 //     * @ORM\ManyToOne(targetEntity="WmtsInstance", inversedBy="layers", cascade={"refresh"})
-//     * @ORM\JoinColumn(name="wmsinstance", referencedColumnName="id")
+//     * @ORM\JoinColumn(name="wmtsinstance", referencedColumnName="id")
 //     */
 //    protected $sourceInstance;
 //
@@ -44,13 +44,13 @@ class WmtsInstanceLayer extends SourceInstanceItem
 //    protected $sourceItem;
 //
 //    /**
-//     * @ORM\ManyToOne(targetEntity="WmsInstanceLayer",inversedBy="sublayer")
+//     * @ORM\ManyToOne(targetEntity="WmtsInstanceLayer",inversedBy="sublayer")
 //     * @ORM\JoinColumn(name="parent", referencedColumnName="id", nullable=true)
 //     */
 //    protected $parent = null;
 //
 //    /**
-//     * @ORM\OneToMany(targetEntity="WmsInstanceLayer",mappedBy="parent", cascade={"remove"})
+//     * @ORM\OneToMany(targetEntity="WmtsInstanceLayer",mappedBy="parent", cascade={"remove"})
 //     * @ORM\OrderBy({"priority" = "asc"})
 //     */
 //    protected $sublayer;
@@ -129,7 +129,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
     /**
      * Set id
      * @param integer $id
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setId($id)
     {
@@ -151,7 +151,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set title
      *
      * @param string $title
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setTitle($title)
     {
@@ -173,7 +173,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set sublayer as array of string
      *
      * @param array $sublayer
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setSublayer($sublayer)
     {
@@ -184,10 +184,10 @@ class WmtsInstanceLayer extends SourceInstanceItem
     /**
      * Set sublayer as array of string
      *
-     * @param WmsInstanceLayer $sublayer
-     * @return WmsInstanceLayer
+     * @param WmtsInstanceLayer $sublayer
+     * @return WmtsInstanceLayer
      */
-    public function addSublayer(WmsInstanceLayer $sublayer)
+    public function addSublayer(WmtsInstanceLayer $sublayer)
     {
         $this->sublayer->add($sublayer);
         return $this;
@@ -206,8 +206,8 @@ class WmtsInstanceLayer extends SourceInstanceItem
     /**
      * Set parent
      *
-     * @param WmsInstanceLayer $parent
-     * @return WmsInstanceLayer
+     * @param WmtsInstanceLayer $parent
+     * @return WmtsInstanceLayer
      */
     public function setParent($parent)
     {
@@ -218,7 +218,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
     /**
      * Get parent
      *
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function getParent()
     {
@@ -229,7 +229,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set active
      *
      * @param boolean $active
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setActive($active)
     {
@@ -251,7 +251,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set allowselected
      *
      * @param boolean $allowselected
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setAllowselected($allowselected)
     {
@@ -273,7 +273,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set selected
      *
      * @param boolean $selected
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setSelected($selected)
     {
@@ -295,7 +295,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set info
      *
      * @param boolean $info
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setInfo($info)
     {
@@ -338,7 +338,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set allowinfo
      *
      * @param boolean $allowinfo
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setAllowinfo($allowinfo)
     {
@@ -402,7 +402,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set minScale
      *
      * @param float $minScale
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setMinScale($minScale)
     {
@@ -424,7 +424,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set maxScale
      *
      * @param float $maxScale
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setMaxScale($maxScale)
     {
@@ -446,7 +446,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set style
      *
      * @param string $style
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setStyle($style)
     {
@@ -468,7 +468,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * Set priority
      *
      * @param integer $priority
-     * @return WmsInstanceLayer
+     * @return WmtsInstanceLayer
      */
     public function setPriority($priority)
     {
@@ -536,7 +536,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      */
     public function copy(EntityManager $em)
     {
-        $inlay = new WmsInstanceLayer();
+        $inlay = new WmtsInstanceLayer();
         $inlay->title = $this->title;
         $inlay->active = $this->active;
         $inlay->allowselected = $this->allowselected;

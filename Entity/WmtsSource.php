@@ -103,7 +103,7 @@ class WmtsSource extends Source
     protected $theme = null;
 
     /**
-     * @ var ArrayCollections A list of WMS layers
+     * @ var ArrayCollections A list of WMTS layers
      * @ ORM\OneToMany(targetEntity="TileMatrixSet",mappedBy="source", cascade={"persist","remove"})
      * @ ORM\OrderBy({"id" = "asc"})
      */
@@ -119,18 +119,16 @@ class WmtsSource extends Source
      */
     protected $password = null;
 
-
-
     /**
-     * @var ArrayCollections A list of WMS layers
-     * @ORM\OneToMany(targetEntity="WmsLayerSource",mappedBy="source", cascade={"persist","remove"})
+     * @var ArrayCollections A list of WMTS layers
+     * @ORM\OneToMany(targetEntity="WmtsLayerSource",mappedBy="source", cascade={"persist","remove"})
      * @ORM\OrderBy({"priority" = "asc","id" = "asc"})
      */
     protected $layers;
 
     /**
      * @var ArrayCollections A list of WMTS instances
-     * @ORM\OneToMany(targetEntity="WmsInstance",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="WmtsInstance",mappedBy="source", cascade={"persist","remove"})
      */
     protected $instances;
 
@@ -162,7 +160,7 @@ class WmtsSource extends Source
      * Set originUrl
      *
      * @param string $originUrl
-     * @return WmsSource
+     * @return WmTsSource
      */
     public function setOriginUrl($originUrl)
     {
