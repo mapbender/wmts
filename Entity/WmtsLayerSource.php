@@ -17,7 +17,7 @@ use Mapbender\CoreBundle\Entity\Source;
  * @ORM\Entity
  * @ORM\Table(name="mb_wms_wmslayersource")
  */
-class WmtsLayerSource extends SourceItem implements ContainingKeyword
+class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 {
     /**
      * @var integer $id

@@ -46,7 +46,9 @@ class RequestInformation
 
     /**
      * Set httpGetRestful
+     *
      * @param string $value
+     * @return $this
      */
     public function setHttpGetRestful($value)
     {
@@ -66,7 +68,9 @@ class RequestInformation
 
     /**
      * Set httpGetKvp
+     *
      * @param string $value
+     * @return $this
      */
     public function setHttpGetKvp($value)
     {
@@ -85,7 +89,9 @@ class RequestInformation
 
     /**
      * Set httpPost
+     *
      * @param string $value
+     * @return $this
      */
     public function setHttpPost($value)
     {
@@ -104,7 +110,9 @@ class RequestInformation
 
     /**
      * Set formats
+     *
      * @param array $value
+     * @return $this
      */
     public function setFormats($value)
     {
@@ -114,7 +122,9 @@ class RequestInformation
 
     /**
      * Add format
+     *
      * @param string $value
+     * @return $this
      */
     public function addFormat($value)
     {
