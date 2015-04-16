@@ -128,15 +128,15 @@ class RepositoryController extends Controller
                 $content = $browserResponse->getContent();
                 $doc = WmtsCapabilitiesParser::createDocument($content);
                 if ($onlyvalid === true) {
-                    $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
-                    $doc = $validator->validate($doc);
+//                    $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
+//                    $doc = $validator->validate($doc);
                     $wmtsParser = WmtsCapabilitiesParser::getParser($doc);
                     $wmtssource = $wmtsParser->parse();
                     $wmtssource->setValid(true);
                 } else {
                     try {
-                        $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
-                        $doc = $validator->validate($doc);
+//                        $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
+//                        $doc = $validator->validate($doc);
                         $wmtsParser = WmtsCapabilitiesParser::getParser($doc);
                         $wmtssource = $wmtsParser->parse();
                         $wmtssource->setValid(true);

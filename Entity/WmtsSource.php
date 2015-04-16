@@ -66,100 +66,11 @@ class WmtsSource extends Source
      */
     protected $contact;
 
-    // FIXME: keywords cascade remove RM\OneToMany(targetEntity="Mapbender\CoreBundle\Entity\Keyword",mappedBy="id", cascade={"persist","remove"})
-
     /**
      * @var ArrayCollections A list of WMTS keywords
      * @ORM\OneToMany(targetEntity="Mapbender\CoreBundle\Entity\Keyword",mappedBy="id", cascade={"persist"})
      */
     protected $keywords;
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactIndividualName = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactPositionName = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactPhoneVoice = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactPhoneFacsimile = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactAddressDeliveryPoint = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactAddressCity = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactAddressPostalCode = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactAddressCountry = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactElectronicMailAddress = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable="true")
-//     */
-//    protected $contactAddressAdministrativeArea = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable=true)
-//     */
-//    protected $requestGetCapabilitiesGETREST = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable=true)
-//     */
-//    protected $requestGetCapabilitiesGETKVP = "";
-////    /**
-////    * @ORM\Column(type="string",nullable=true)
-////    */
-////    protected $requestGetCapabilitiesPOST = "";
-////        /**
-////    * @ORM\Column(type="string",nullable=true)
-////    */
-////    protected $requestGetCapabilitiesPOSTSOAP = "";
-//    /**
-//     * @ORM\Column(type="string",nullable=true)
-//     */
-//    protected $requestGetTileGETREST = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable=true)
-//     */
-//    protected $requestGetTileGETKVP = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable=true)
-//     */
-//    protected $requestGetFeatureInfoGETREST = "";
-//
-//    /**
-//     * @ORM\Column(type="string",nullable=true)
-//     */
-//    protected $requestGetFeatureInfoGETKVP = "";
 
     /**
      * @var RequestInformation A request information for the GetCapabilities operation
@@ -168,14 +79,14 @@ class WmtsSource extends Source
     public $getCapabilities = null;
 
     /**
-     * @var RequestInformation A request information for the GetCapabilities operation
+     * @var RequestInformation A request information for the GetTile operation
      * @ORM\Column(type="object", nullable=true)
      */
     //@TODO Doctrine bug: "protected" replaced with "public"
     public $getTile = null;
 
     /**
-     * @var RequestInformation A request information for the GetCapabilities operation
+     * @var RequestInformation A request information for the GetFeatureInfo operation
      * @ORM\Column(type="object", nullable=true)
      */
     //@TODO Doctrine bug: "protected" replaced with "public"
@@ -208,6 +119,21 @@ class WmtsSource extends Source
      */
     protected $password = null;
 
+
+
+    /**
+     * @var ArrayCollections A list of WMS layers
+     * @ORM\OneToMany(targetEntity="WmsLayerSource",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OrderBy({"priority" = "asc","id" = "asc"})
+     */
+    protected $layers;
+
+    /**
+     * @var ArrayCollections A list of WMTS instances
+     * @ORM\OneToMany(targetEntity="WmsInstance",mappedBy="source", cascade={"persist","remove"})
+     */
+    protected $instances;
+
     /**
      * Create an instance of WMTSService
      */
@@ -215,10 +141,10 @@ class WmtsSource extends Source
     {
         parent::__construct();
 //        $this->keywords = new ArrayCollection();
-//        $this->layers = new ArrayCollection();
+        $this->layers = new ArrayCollection();
         
 //        $this->exceptionFormats = array();
-        $this->tilematrixsets = new ArrayCollection();
+//        $this->tilematrixsets = new ArrayCollection();
         $this->theme = array();
     }
 
@@ -231,9 +157,6 @@ class WmtsSource extends Source
     {
         return "wmts";
     }
-
-    
-    
 
     /**
      * Set originUrl
@@ -249,8 +172,7 @@ class WmtsSource extends Source
 
     /**
      * Get originUrl
-     *
-     * @return string 
+     * @return strin
      */
     public function getOriginUrl()
     {
@@ -259,8 +181,7 @@ class WmtsSource extends Source
 
     /**
      * Set version
-     * 
-     * @param type $version 
+     * @param type $version
      */
     public function setVersion($version)
     {
@@ -279,8 +200,7 @@ class WmtsSource extends Source
 
     /**
      * Set alias
-     * 
-     * @param string $alias 
+     * @param string $alias
      */
     public function setAlias($alias)
     {
@@ -289,7 +209,6 @@ class WmtsSource extends Source
 
     /**
      * Get alias
-     * 
      * @return string
      */
     public function getAlias()
@@ -299,8 +218,7 @@ class WmtsSource extends Source
 
     /**
      * Set fees
-     * 
-     * @param string $fees 
+     * @param string $fees
      */
     public function setFees($fees)
     {
@@ -309,7 +227,6 @@ class WmtsSource extends Source
 
     /**
      * Get fees
-     * 
      * @return string
      */
     public function getFees()
@@ -319,8 +236,7 @@ class WmtsSource extends Source
 
     /**
      * Get accessConstraints
-     * 
-     * @param string $accessConstraints 
+     * @param string $accessConstraints
      */
     public function setAccessConstraints($accessConstraints)
     {
@@ -329,7 +245,6 @@ class WmtsSource extends Source
 
     /**
      * Get accessConstraints
-     * 
      * @return string
      */
     public function getAccessConstraints()
@@ -339,8 +254,7 @@ class WmtsSource extends Source
 
     /**
      * Set serviceType
-     * 
-     * @param string $serviceType 
+     * @param string $serviceType
      */
     public function setServiceType($serviceType)
     {
@@ -349,53 +263,51 @@ class WmtsSource extends Source
 
     /**
      * Get serviceType
-     * 
      * @return string
      */
     public function getServiceType()
     {
         return $this->serviceType;
     }
-
-    /**
-     * Get root layer
-     * 
-     * @return WMTSLayer
-     */
-    public function getRootLayer()
-    {
-        return $this->getLayer()->get(0);
-    }
-
-    /**
-     * returns all Layers of the WMTS as comma-seperated string so that they can be used in a WMTS Request's LAYER parameter
-     */
-    public function getAllLayerNames($grouplayers = null)
-    {
-        $grouplayers = $grouplayers == null ? $this->getLayer() : $grouplayers;
-        $names = "";
-        foreach ($grouplayers as $layer) {
-            $name = $layer->getName();
-            if ($name != "") {
-                $names .= $name;
-            }
-            $names .= "," . $this->getAllLayerNames($layer->getLayer());
-        }
-        return trim($names, ",");
-    }
-
-    /**
-     * returns all Layers of the WMTS as comma-seperated string so that they can be used in a WMTS Request's LAYER parameter
-     */
-    public function getAllLayer($grouplayers = null, &$layers = array())
-    {
-        $grouplayers = $grouplayers == null ? $this->getLayer() : $grouplayers;
-        foreach ($grouplayers as $layer) {
-            $layers[] = $layer;
-            $this->getAllLayer($layer->getLayer(), $layers);
-        }
-        return $layers;
-    }
+//
+//    /**
+//     * Get root layer
+//     * @return WMTSLayer
+//     */
+//    public function getRootLayer()
+//    {
+//        return $this->getLayer()->get(0);
+//    }
+//
+//    /**
+//     * returns all Layers of the WMTS as comma-seperated string so that they can be used in a WMTS Request's LAYER parameter
+//     */
+//    public function getAllLayerNames($grouplayers = null)
+//    {
+//        $grouplayers = $grouplayers == null ? $this->getLayer() : $grouplayers;
+//        $names = "";
+//        foreach ($grouplayers as $layer) {
+//            $name = $layer->getName();
+//            if ($name != "") {
+//                $names .= $name;
+//            }
+//            $names .= "," . $this->getAllLayerNames($layer->getLayer());
+//        }
+//        return trim($names, ",");
+//    }
+//
+//    /**
+//     * returns all Layers of the WMTS as comma-seperated string so that they can be used in a WMTS Request's LAYER parameter
+//     */
+//    public function getAllLayer($grouplayers = null, &$layers = array())
+//    {
+//        $grouplayers = $grouplayers == null ? $this->getLayer() : $grouplayers;
+//        foreach ($grouplayers as $layer) {
+//            $layers[] = $layer;
+//            $this->getAllLayer($layer->getLayer(), $layers);
+//        }
+//        return $layers;
+//    }
 
     /**
      * Set serviceProviderSite
@@ -438,345 +350,60 @@ class WmtsSource extends Source
     {
         return $this->contact;
     }
-//
-//    /**
-//     * Set ContactIndividualName
-//     *
-//     * @param string $contactIndividualName
-//     */
-//    public function setContactIndividualName($contactIndividualName)
-//    {
-//        $this->contactIndividualName = $contactIndividualName;
-//    }
-//
-//    /**
-//     * Get ContactIndividualName
-//     *
-//     * @return string 
-//     */
-//    public function getContactIndividualName()
-//    {
-//        return $this->contactIndividualName;
-//    }
-//
-//    /**
-//     * Set ServiceProviderName
-//     *
-//     * @param string $serviceProviderName
-//     */
-//    public function setServiceProviderName($serviceProviderName)
-//    {
-//        $this->serviceProviderName = $serviceProviderName;
-//    }
-//
-//    /**
-//     * Get ServiceProviderName
-//     *
-//     * @return string 
-//     */
-//    public function getServiceProviderName()
-//    {
-//        return $this->serviceProviderName;
-//    }
-//
-//    /**
-//     * Set ContactPositionName
-//     *
-//     * @param string $contactPositionName
-//     */
-//    public function setContactPositionName($contactPositionName)
-//    {
-//        $this->contactPositionName = $contactPositionName;
-//    }
-//
-//    /**
-//     * Get ContactPositionName
-//     *
-//     * @return string 
-//     */
-//    public function getContactPositionName()
-//    {
-//        return $this->contactPositionName;
-//    }
-//
-//    /**
-//     * Set contactPhoneVoice
-//     *
-//     * @param string $contactPhoneVoice
-//     */
-//    public function setContactPhoneVoice($contactPhoneVoice)
-//    {
-//        $this->contactPhoneVoice = $contactPhoneVoice;
-//    }
-//
-//    /**
-//     * Get contactPhoneVoice
-//     *
-//     * @return string 
-//     */
-//    public function getContactPhoneVoice()
-//    {
-//        return $this->contactPhoneVoice;
-//    }
-//
-//    /**
-//     * Set contactPhoneFacsimile
-//     *
-//     * @param string $contactPhoneFacsimile
-//     */
-//    public function setContactPhoneFacsimile($contactPhoneFacsimile)
-//    {
-//        $this->contactPhoneFacsimile = $contactPhoneFacsimile;
-//    }
-//
-//    /**
-//     * Get contactPhoneFacsimile
-//     *
-//     * @return string 
-//     */
-//    public function getContactPhoneFacsimile()
-//    {
-//        return $this->contactPhoneFacsimile;
-//    }
-//
-//    /**
-//     * Set ContactElectronicMailAddress
-//     *
-//     * @param string $contactElectronicMailAddress
-//     */
-//    public function setContactElectronicMailAddress($contactElectronicMailAddress)
-//    {
-//        $this->contactElectronicMailAddress = $contactElectronicMailAddress;
-//    }
-//
-//    /**
-//     * Get ContactElectronicMailAddress
-//     *
-//     * @return string 
-//     */
-//    public function getContactElectronicMailAddress()
-//    {
-//        return $this->contactElectronicMailAddress;
-//    }
-//
-//    /**
-//     * Set contactAddressDeliveryPoint
-//     *
-//     * @param string $contactAddressDeliveryPoint
-//     */
-//    public function setContactAddressDeliveryPoint($contactAddressDeliveryPoint)
-//    {
-//        $this->contactAddressDeliveryPoint = $contactAddressDeliveryPoint;
-//    }
-//
-//    /**
-//     * Get contactAddressDeliveryPoint
-//     *
-//     * @return string 
-//     */
-//    public function getContactAddressDeliveryPoint()
-//    {
-//        return $this->contactAddressDeliveryPoint;
-//    }
-//
-//    /**
-//     * Set ContactAddressCity
-//     *
-//     * @param string $contactAddressCity
-//     */
-//    public function setContactAddressCity($contactAddressCity)
-//    {
-//        $this->contactAddressCity = $contactAddressCity;
-//    }
-//
-//    /**
-//     * Get ContactAddressCity
-//     *
-//     * @return string 
-//     */
-//    public function getContactAddressCity()
-//    {
-//        return $this->contactAddressCity;
-//    }
-//
-//    /**
-//     * Set contactAddressAdministrativeArea
-//     *
-//     * @param string $contactAddressAdministrativeArea
-//     */
-//    public function setContactAddressAdministrativeArea($contactAddressAdministrativeArea)
-//    {
-//        $this->contactAddressAdministrativeArea = $contactAddressAdministrativeArea;
-//    }
-//
-//    /**
-//     * Get contactAddressAdministrativeArea
-//     *
-//     * @return string 
-//     */
-//    public function getContactAddressAdministrativeArea()
-//    {
-//        return $this->contactAddressAdministrativeArea;
-//    }
-//
-//    /**
-//     * Set ContactAddressPostalCode
-//     *
-//     * @param string $contactAddressPostalCode
-//     */
-//    public function setContactAddressPostalCode($contactAddressPostalCode)
-//    {
-//        $this->contactAddressPostalCode = $contactAddressPostalCode;
-//    }
-//
-//    /**
-//     * Get ContactAddressPostalCode
-//     *
-//     * @return string 
-//     */
-//    public function getContactAddressPostalCode()
-//    {
-//        return $this->contactAddressPostalCode;
-//    }
-//
-//    /**
-//     * Set ContactAddressCountry
-//     *
-//     * @param string $contactAddressCountry
-//     */
-//    public function setContactAddressCountry($contactAddressCountry)
-//    {
-//        $this->contactAddressCountry = $contactAddressCountry;
-//    }
-//
-//    /**
-//     * Get ContactAddressCountry
-//     *
-//     * @return string
-//     */
-//    public function getContactAddressCountry()
-//    {
-//        return $this->contactAddressCountry;
-//    }
 
     /**
-     * Set requestGetCapabilitiesGETREST
-     *
-     * @param type $requestGetCapabilitiesGETREST 
+     * Set GetCapabilities
+     * @param type $getCapabilites
      */
-    public function setRequestGetCapabilitiesGETREST($requestGetCapabilitiesGETREST)
+    public function setGetCapabilities($getCapabilites)
     {
-        $this->requestGetCapabilitiesGETREST = $requestGetCapabilitiesGETREST;
+        $this->getCapabilites = $getCapabilites;
     }
 
     /**
      * Get requestGetCapabilitiesGETREST
      *
-     * @return string 
-     */
-    public function getRequestGetCapabilitiesGETREST()
-    {
-        return $this->requestGetCapabilitiesGETREST;
-    }
-
-    /**
-     * Set requestGetCapabilitiesGETKVP
-     * 
-     * @param string $requestGetCapabilitiesGETKVP 
-     */
-    public function setRequestGetCapabilitiesGETKVP($requestGetCapabilitiesGETKVP)
-    {
-        $this->requestGetCapabilitiesGETKVP = $requestGetCapabilitiesGETKVP;
-    }
-
-    /**
-     * Get requestGetCapabilitiesGETKVP
-     * 
      * @return string
      */
-    public function getRequestGetCapabilitiesGETKVP()
+    public function getGetCapabilities()
     {
-        return $this->requestGetCapabilitiesGETKVP;
+        return $this->getCapabilites;
     }
 
     /**
-     * Set requestGetTileGETREST
-     * 
-     * @param string $requestGetTileGETREST 
+     * Set GetTile
+     * @param string $getTile
      */
-    public function setRequestGetTileGETREST($requestGetTileGETREST)
+    public function setGetTile($getTile)
     {
-        $this->requestGetTileGETREST = $requestGetTileGETREST;
+        $this->getTile = $getTile;
     }
 
     /**
-     * Get requestGetTileGETREST
-     * 
-     * @return string 
-     */
-    public function getRequestGetTileGETREST()
-    {
-        return $this->requestGetTileGETREST;
-    }
-
-    /**
-     * Set requestGetTileGETKVP
-     * 
-     * @param string $requestGetTileGETKVP 
-     */
-    public function setRequestGetTileGETKVP($requestGetTileGETKVP)
-    {
-        $this->requestGetTileGETKVP = $requestGetTileGETKVP;
-    }
-
-    /**
-     * Get requestGetTileGETKVP
-     * 
+     * Get GetTile
      * @return string
      */
-    public function getRequestGetTileGETKVP()
+    public function getGetTile()
     {
-        return $this->requestGetTileGETKVP;
+        return $this->getTile;
     }
 
     /**
-     * Set requestGetFeatureInfoGETREST
-     * 
-     * @param string $requestGetFeatureInfoGETREST
+     * Set GetFeatureInfo
+     * @param string $getFeatureInfo
      */
-    public function setRequestGetFeatureInfoGETREST($requestGetFeatureInfoGETREST)
+    public function setGetFeatureInfo($getFeatureInfo)
     {
-        $this->requestGetFeatureInfoGETREST = $requestGetFeatureInfoGETREST;
+        $this->getFeatureInfo = $getFeatureInfo;
     }
 
     /**
-     * Get requestGetFeatureInfoGETREST
-     * 
+     * Get requestGetFeatureInfo
      * @return string
      */
-    public function getRequestGetFeatureInfoGETREST()
+    public function getGetFeatureInfo()
     {
-        return $this->requestGetFeatureInfoGETREST;
-    }
-
-    /**
-     * Set requestGetFeatureInfoGETKVP
-     * 
-     * @param string $requestGetFeatureInfoGETKVP
-     */
-    public function setRequestGetFeatureInfoGETKVP($requestGetFeatureInfoGETKVP)
-    {
-        $this->requestGetFeatureInfoGETKVP = $requestGetFeatureInfoGETKVP;
-    }
-
-    /**
-     * Get requestGetFeatureInfoGETKVP
-     * 
-     * @return string
-     */
-    public function getRequestGetFeatureInfoGETKVP()
-    {
-        return $this->requestGetFeatureInfoGETKVP;
+        return $this->getFeatureInfo;
     }
 
     /**
@@ -801,8 +428,7 @@ class WmtsSource extends Source
 
     /**
      * Get theme
-     * 
-     * @return array 
+     * @return array
      */
     public function getTheme()
     {
@@ -811,8 +437,7 @@ class WmtsSource extends Source
 
     /**
      * Get theme as ArrayCollection of Theme
-     * 
-     * @return ArrayCollection 
+     * @return ArrayCollection
      */
     public function getThemeAsObjects()
     {
@@ -825,8 +450,7 @@ class WmtsSource extends Source
 
     /**
      * Set theme
-     * 
-     * @param array of Theme or Theme->getAsArray $themes 
+     * @param array of Theme or Theme->getAsArray $themes
      */
     public function setTheme($themes)
     {
@@ -909,7 +533,7 @@ class WmtsSource extends Source
 
     /**
      * Set tilematrixset
-     * 
+     *
      * @param array $tilematrixset 
      */
     public function setTtilematrixset($tilematrixset)

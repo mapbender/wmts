@@ -8,7 +8,7 @@ use Mapbender\CoreBundle\Entity\Contact;
 use Mapbender\WmtsBundle\Entity\WmtsSource;
 use Mapbender\WmtsBundle\Entity\WmtsSourceKeyword;
 //use Mapbender\WmtsBundle\Entity\WmtsLayerSource;
-use Mapbender\WmtsBundle\Component\RequestInformation;
+use Mapbender\WmtsBundle\Entity\RequestInformation;
 
 /**
  * Class that Parses WMTS 1.1.0 GetCapabilies Document
@@ -49,8 +49,15 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         $this->parseServiceIdentification($wmts, $this->getValue("./ows:ServiceIdentification", $root));
         $this->parseServiceProvider($wmts, $this->getValue("./ows:ServiceProvider", $root));
         $this->parseCapabilityRequest($wmts, $this->getValue("./ows:OperationsMetadata", $root));
-        $a++;
-//        $capabilities = $this->xpath->query("./wmts:Capability/*", $root);
+
+        $serviceMetadataUrl = $this->getValue("./wmts:ServiceMetadataURL/@xlink:href", $root);
+        $wmts->setServiceMetadataURL($serviceMetadataUrl);
+
+        $layerElms = $this->xpath->query("./wmts:Contents/wmts:Layer", $root);
+        foreach ($layerElms as $layerEl) {
+
+        }
+
 //        foreach ($capabilities as $capabilityEl) {
 //            if ($capabilityEl->localName === "Request") {
 //                $this->parseCapabilityRequest($wmts, $capabilityEl);
@@ -167,67 +174,31 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
      * document.
      * @param \DOMElement $contextElm the element to use as context for the
      * Operation Request Information section
+     * @return RequestInformation
      */
     private function parseOperationRequestInformation(\DOMElement $contextElm)
     {
-//        <ows:Operation name="GetCapabilities">
-//            <ows:DCP>
-//                <ows:HTTP>
-//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS/1.0.0/WMTSCapabilities.xml">
-//                        <ows:Constraint name="GetEncoding">
-//                            <ows:AllowedValues>
-//                                <ows:Value>RESTful</ows:Value>
-//                            </ows:AllowedValues>
-//                        </ows:Constraint>
-//                    </ows:Get>
-//<!-- add KVP binding in 10.1 beta2 -->
-//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS?">
-//                        <ows:Constraint name="GetEncoding">
-//                            <ows:AllowedValues>
-//                                <ows:Value>KVP</ows:Value>
-//                            </ows:AllowedValues>
-//                        </ows:Constraint>
-//                    </ows:Get>
-//                </ows:HTTP>
-//            </ows:DCP>
-//        </ows:Operation>
-//        <ows:Operation name="GetTile">
-//            <ows:DCP>
-//                <ows:HTTP>
-//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS/tile/1.0.0/">
-//                        <ows:Constraint name="GetEncoding">
-//                            <ows:AllowedValues>
-//                                <ows:Value>RESTful</ows:Value>
-//                            </ows:AllowedValues>
-//                        </ows:Constraint>
-//                    </ows:Get>
-//                    <ows:Get xlink:href="http://arcgis.geodatenzentrum.de/arcgis/rest/services/DOP_cache/MapServer/WMTS?">
-//                        <ows:Constraint name="GetEncoding">
-//                            <ows:AllowedValues>
-//                                <ows:Value>KVP</ows:Value>
-//                            </ows:AllowedValues>
-//                        </ows:Constraint>
-//                    </ows:Get>
-//                </ows:HTTP>
-//            </ows:DCP>
-//        </ows:Operation>
-
-
-        $requestImformation = new RequestInformation();
+        $ri = new RequestInformation();
         $tempList = $this->xpath->query("./wmts:Format", $contextElm);
         if ($tempList !== null) {
             foreach ($tempList as $item) {
-                $requestImformation->addFormat($this->getValue("./text()", $item));
+                $ri->addFormat($this->getValue("./text()", $item));
             }
         }
-        $requestImformation->setHttpGet(
-            $this->getValue("./ows:DCP/ows:HTTP/ows:Get/wmts:OnlineResource/@xlink:href", $contextElm)
+        $ri->setHttpGetRestful(
+            $this->getValue(
+                "./ows:DCP/ows:HTTP/ows:Get[./ows:Constraint/ows:AllowedValues/ows:Value/text()='RESTful']/@xlink:href",
+                $contextElm
+            )
         );
-        $requestImformation->setHttpPost(
-            $this->getValue("./wmts:DCPType/wmts:HTTP/wmts:Post/wmts:OnlineResource/@xlink:href", $contextElm)
+        $ri->setHttpGetKvp(
+            $this->getValue(
+                "./ows:DCP/ows:HTTP/ows:Get[./ows:Constraint/ows:AllowedValues/ows:Value/text()='KVP']/@xlink:href",
+                $contextElm
+            )
         );
-
-        return $requestImformation;
+        // TOD $ri->setHttpPost ?
+        return $ri;
     }
 
     /**
@@ -265,6 +236,97 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
             $wmts->setInlineFeature($this->getValue("./@InlineFeature", $contextElm));
             $wmts->setRemoteWcs($this->getValue("./@RemoteWCS", $contextElm));
         }
+    }
+
+    private function parseLayerI(WmtsLayerSource $layer, \DOMElement $contextElm){
+//        foreach($layerlist as $layerEl) {
+//                $layer = new WmtsLayerDetail();
+//                $layer->setName($node->nodeValue); ???
+                $layer->setTitle($this->getValue("./ows:Title/text()", $layerEl));
+                $layer->setAbstract($this->getValue("./ows:Abstract/text()", $layerEl));
+                $crs = array();
+                $bounds = array();
+//                <ows:BoundingBox crs="urn:ogc:def:crs:EPSG::25832">
+//                    <ows:LowerCorner>280388.0 5235855.0</ows:LowerCorner>
+//                    <ows:UpperCorner>921290.0 6101349.0</ows:UpperCorner>
+//                </ows:BoundingBox>
+                $bboxesEl = $this->xpath->query("./ows:BoundingBox", $layerEl);
+                foreach($bboxesEl as $bboxEl) {
+                    $crsStr = $this->getValue("./@crs", $bboxEl);
+                    $crs[] = $crsStr;
+                    $bounds[$crsStr] = $this->getValue("./ows:BoundingBox/ows:LowerCorner/text()", $layerEl)
+                        ." ". $this->getValue("./ows:BoundingBox/ows:UpperCorner/text()", $layerEl);
+                }
+                $layer->setCrs($crs);
+                $layer->setCrsBounds($bounds);
+
+                $latlonbounds = $this->getValue("./ows:WGS84BoundingBox/ows:LowerCorner/text()", $layerEl)
+                        ." ". $this->getValue("./ows:WGS84BoundingBox/ows:UpperCorner/text()", $layerEl);
+                $layer->setLatLonBounds($latlonbounds);
+                $crs84 = $this->getValue("./ows:WGS84BoundingBox/@crs", $layerEl);
+                $layer->setCrsLatLon($crs84);
+                if(count($crs) == 0) {
+                    $layer->setDefaultCrs($this->getValue("./ows:WGS84BoundingBox/@crs", $layerEl));
+                }
+                unset($crs);
+                unset($crs84);
+                $layer->setIdentifier($this->getValue("./ows:Identifier/text()", $layerEl));
+
+                $metadataUrlsEl = $this->xpath->query("./ows:Metadata", $layerEl);
+                $metadata = array();
+                foreach($metadataUrlsEl as $metadataUrlEl) {
+                    $metadata[] = $this->getValue("./xlink:href", $metadataUrlEl);
+                }
+                $layer->setMetadataURL($metadata);
+                unset($metadata);
+                unset($metadataUrlsEl);
+
+                $stylesEl = $this->xpath->query("./wmts:Style", $layerEl);
+                foreach($stylesEl as $styleEl) {
+                    $layer->addStyle(
+                            array(
+                                "identifier"=>$this->getValue("./ows:Identifier/text()", $styleEl),
+                                "title"=>$this->getValue("./ows:Title/text()", $styleEl),
+                                "legendUrl"=> array (
+                                "link" =>$this->getValue("./wmts:LegendURL/xlink:href", $styleEl))));
+                }
+                unset($stylesEl);
+
+                $format = array();
+                $formatsEl = $this->xpath->query("./wmts:Format", $layerEl);
+                foreach($formatsEl as $formatEl) {
+                    $format[] = $this->getValue("./text()", $formatEl);
+                }
+                $layer->setRequestDataFormats($format);
+                //TODO InfoFormat
+                $format = array();
+                $formatsEl = $this->xpath->query("./wmts:InfoFormat", $layerEl);
+                foreach($formatsEl as $formatEl) {
+                   $format[] = $this->getValue("./text()", $formatEl);
+                }
+                $layer->setRequestInfoFormats($format);
+                unset($fromatsElmats);
+                unset($format);
+
+                $tileMatrixSetLinks = array();
+                $tileMatrixSetLinksEl = $this->xpath->query("./wmts:TileMatrixSetLink", $layerEl);
+                foreach($tileMatrixSetLinksEl as $tileMatrixSetLinkEl) {
+                   //TODO set formats
+                    $tileMatrixSetLinks[] = $this->getValue("./wmts:TileMatrixSet/text()", $tileMatrixSetLinkEl);
+                }
+                $layer->setTileMatrixSetLink($tileMatrixSetLinks);
+                $resourceURL = array();
+                $resourceURLsEl = $this->xpath->query("./wmts:ResourceURL", $layerEl);
+                foreach($resourceURLsEl as $resourceURLEl) {
+                    $resourceURL[] = array(
+                        "format" => $this->getValue("./@format", $resourceURLEl),
+                        "resourceType" => $this->getValue("./@resourceType", $resourceURLEl),
+                        "template" => $this->getValue("./@template", $resourceURLEl));
+                }
+                $layer->setResourceURL($resourceURL);
+                $wmts->getLayer()->add($layer);
+//            }
+//            unset($layerlist);
     }
 
     /**
