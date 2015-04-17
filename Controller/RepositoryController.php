@@ -117,7 +117,7 @@ class RepositoryController extends Controller
                 $proxy_query->addQueryParameter("request", "GetCapabilities");
             }
             if ($proxy_query->getGetPostParamValue("service", true) === null) {
-                $proxy_query->addQueryParameter("service", "WMTSS");
+                $proxy_query->addQueryParameter("service", "WMTS");
             }
             $wmtssource_req->setOriginUrl($proxy_query->getGetUrl());
             $proxy = new CommonProxy($proxy_config, $proxy_query);
@@ -246,36 +246,6 @@ class RepositoryController extends Controller
         $this->get('session')->getFlashBag()->set('success', "Your WMTS has been deleted");
         return $this->redirect($this->generateUrl("mapbender_manager_repository_index"));
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     /**
      * Removes a WmtsInstance
@@ -290,7 +260,7 @@ class RepositoryController extends Controller
             ->find($instanceId);
         $em = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
-        $instance->remove($em);
+        EntityHandler::createHandler($this->container, $instance)->remove();
         $em->flush();
         $em->getConnection()->commit();
         $this->get('session')->getFlashBag()->set('success', 'Your source instance has been deleted.');
@@ -315,7 +285,7 @@ class RepositoryController extends Controller
             if ($form->isValid()) { //save
                 $em = $this->getDoctrine()->getManager();
                 $em->getConnection()->beginTransaction();
-                foreach ($wmtsinstance->getLayers() as $layer){
+                foreach ($wmtsinstance->getLayers() as $layer) {
                     $em->persist($layer);
                     $em->flush();
                     $em->refresh($layer);
@@ -330,10 +300,13 @@ class RepositoryController extends Controller
                 $em->persist($wmtsinstance);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->set(
-                    'success', 'Your Wmts Instance has been changed.');
-                return $this->redirect($this->generateUrl(
-                            'mapbender_manager_application_edit', array("slug" => $slug)) . '#layersets');
+                $this->get('session')->getFlashBag()->set('success', 'Your Wmts Instance has been changed.');
+                return $this->redirect(
+                    $this->generateUrl(
+                        'mapbender_manager_application_edit',
+                        array("slug" => $slug)
+                    ) . '#layersets'
+                );
             } else { // edit
                 return array(
                     "form" => $form->createView(),
@@ -341,8 +314,7 @@ class RepositoryController extends Controller
                     "instance" => $wmtsinstance);
             }
         } else { // edit
-            $form = $this->createForm(
-                new WmtsInstanceInstanceLayersType(), $wmtsinstance);
+            $form = $this->createForm(new WmtsInstanceInstanceLayersType(), $wmtsinstance);
             $fv = $form->createView();
             return array(
                 "form" => $form->createView(),
@@ -380,7 +352,8 @@ class RepositoryController extends Controller
         $em->flush();
         $query = $em->createQuery(
             "SELECT il FROM MapbenderWmtsBundle:WmtsInstanceLayer il"
-            . " WHERE il.wmtsinstance=:wmtsi ORDER BY il.priority ASC");
+            . " WHERE il.wmtsinstance=:wmtsi ORDER BY il.priority ASC"
+        );
         $query->setParameters(array("wmtsi" => $instanceId));
         $instList = $query->getResult();
 
@@ -432,8 +405,11 @@ class RepositoryController extends Controller
             ->getRepository("MapbenderWmtsBundle:WmtsInstance")
             ->find($instanceId);
         if (!$wmtsinstance) {
-            return new Response(json_encode(array(
-                    'error' => 'The wmts instance with the id "' . $instanceId . '" does not exist.')), 200, array('Content-Type' => 'application/json'));
+            return new Response(
+                json_encode(array('error' => 'The wmts instance with the id "' . $instanceId . '" does not exist.')),
+                200,
+                array('Content-Type' => 'application/json')
+            );
         } else {
             $enabled_before = $wmtsinstance->getEnabled();
             $enabled = $enabled === "true" ? true : false;

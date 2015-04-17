@@ -56,17 +56,6 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      * @ORM\Column(type="object", nullable=true)
      */
     public $latlonBounds;
-//
-//    /**
-//     * @ORM\Column(type="array", nullable=true)
-//     */
-//    public $boundingBoxes;
-//
-//    public $crs;
-//
-//    public $crsBounds;
-//
-//    public $metadataUrl;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -87,8 +76,17 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    protected $resourceUrl;
+    public $tilematrixSetlinks;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    protected $dimensions;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    protected $resourceUrl;
 
     /**
      * TODO: describe initial method
@@ -99,15 +97,15 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
         $this->keywords = new ArrayCollection();
         $this->infoformats = array();
         $this->formats = array();
-//        $this->boundingBoxes = array();
+        $this->styles = array();
+        $this->dimension = array();
+        $this->resourceUrl = array();
+        $this->tilematrixSetlinks = array();
 //        $this->metadataUrl = array();
-//        $this->dimension = array();
 //        $this->dataUrl = array();
 //        $this->featureListUrl = array();
-        $this->styles = array();
 //        $this->srs = array();
 //        $this->identifier = array();
-        $this->resourceUrl = array();
     }
     /**
      * Get id
@@ -301,7 +299,7 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      * @param array $infoformats
      * @return WmtsSource
      */
-    public function setinfoformats($infoformats)
+    public function setInfoformats($infoformats)
     {
         $this->infoformats = $infoformats;
         return $this;
@@ -330,6 +328,69 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     }
 
     /**
+     *Gets tilematrixSetlinks.
+     * @return \Mapbender\WmtsBundle\Entity\TileMatrixSetLink[]
+     */
+    public function getTilematrixSetlinks()
+    {
+        return $this->tilematrixSetlinks;
+    }
+
+    /**
+     * Sets tilematrixSetlinks
+     * @param \Mapbender\WmtsBundle\Entity\TileMatrixSetLink $tilematrixSetlinks
+     * @return \Mapbender\WmtsBundle\Entity\WmtsLayerSource
+     */
+    public function setTilematrixSetlinks(array $tilematrixSetlinks = array())
+    {
+        $this->tilematrixSetlinks = $tilematrixSetlinks;
+        return $this;
+    }
+
+    /**
+     * Adds TileMatrixSetLink.
+     * @param \Mapbender\WmtsBundle\Entity\TileMatrixSetLink $tilematrixSetlinks
+     * @return \Mapbender\WmtsBundle\Entity\WmtsLayerSource
+     */
+    public function addTilematrixSetlinks(TileMatrixSetLink $tilematrixSetlinks)
+    {
+        $this->tilematrixSetlinks[] = $tilematrixSetlinks;
+        return $this;
+    }
+
+
+    /**
+     * Gets dimensions.
+     * @return Dimension[]
+     */
+    public function getDimensions()
+    {
+        return $this->dimensions;
+    }
+
+    /**
+     * Sets dimensions.
+     * @param array $dimensions
+     * @return \Mapbender\WmtsBundle\Entity\WmtsLayerSource
+     */
+    public function setDimensions(array $dimensions = array())
+    {
+        $this->dimensions = $dimensions;
+        return $this;
+    }
+
+    /**
+     * Adds dimension.
+     * @param Dimension $dimension
+     * @return \Mapbender\WmtsBundle\Entity\WmtsLayerSource
+     */
+    public function addDimension($dimension)
+    {
+        $this->dimensions[] = $dimension;
+        return $this;
+    }
+
+    /**
      * Set resourceUrl
      * @param array $resourceUrls
      * @return \Mapbender\WmtsBundle\Entity\WmtsLayerSource
@@ -342,11 +403,10 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
 
     /**
      * Add resourceUrl
-     *
      * @param string $resourceUrl
      * @return $this resourceUrl
      */
-    public function addResourceUrl($resourceUrl)
+    public function addResourceUrl(UrlTemplateType $resourceUrl)
     {
         $this->resourceUrl[] = $resourceUrl;
         return $this;

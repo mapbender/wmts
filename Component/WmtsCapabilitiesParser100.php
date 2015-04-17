@@ -53,7 +53,10 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         $wmtssource->setVersion($this->getValue("./@version", $root));
         $this->parseServiceIdentification($wmtssource, $this->getValue("./ows:ServiceIdentification", $root));
         $this->parseServiceProvider($wmtssource, $this->getValue("./ows:ServiceProvider", $root));
-        $this->parseCapabilityRequest($wmtssource, $this->getValue("./ows:OperationsMetadata", $root));
+        $operationsMetadata = $this->getValue("./ows:OperationsMetadata", $root);
+        if ($operationsMetadata) {
+            $this->parseCapabilityRequest($wmtssource, $this->getValue("./ows:OperationsMetadata", $root));
+        }
 
         $serviceMetadataUrl = $this->getValue("./wmts:ServiceMetadataURL/@xlink:href", $root);
         $wmtssource->setServiceMetadataURL($serviceMetadataUrl);
@@ -131,8 +134,7 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         );
         $contact->setAddressStateOrProvince(
             $this->getValue(
-                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:AdministrativeArea/text()",
-                $contextElm
+                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:AdministrativeArea/text()", $contextElm
             )
         );
         $contact->setAddressPostCode(
@@ -143,8 +145,7 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         );
         $contact->setElectronicMailAddress(
             $this->getValue(
-                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:ElectronicMailAddress/text()",
-                $contextElm
+                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:ElectronicMailAddress/text()", $contextElm
             )
         );
         $wmts->setContact($contact);
@@ -295,28 +296,39 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         foreach ($formatsFiEls as $formatEl) {
             $wmtslayer->addInfoformat($this->getValue("./text()", $formatEl));
         }
+        $dimsEls = $this->xpath->query("./wmts:Dimension", $contextElm);
+        foreach ($dimsEls as $dimEl) {
+            $dim        = new \Mapbender\WmtsBundle\Entity\Dimension();
+            $dim->setCurrent($this->getValue("./wmts:Current/text()", $dimEl))
+                ->setDefault($this->getValue("./wmts:Default/text()", $dimEl))
+                ->setIdentifier($this->getValue("./ows:Identifier/text()", $dimEl))
+                ->setOum($this->getValue("./ows:UOM/text()", $dimEl))
+                ->setUnitSymbol($this->getValue("./wmts:UnitSymbol/text()", $dimEl));
+            $valuesElms = $this->xpath->query("./wmts:Value", $dimEl);
+            foreach ($valuesElms as $valueElm) {
+                $dim->addValue($this->getValue("./text()", $valueElm));
+            }
+            $wmtslayer->addDimension($dim);
+        }
 
-        // TODO Dimension
+        $tmslsEls = $this->xpath->query("./wmts:TileMatrixSetLink", $contextElm);
+        foreach ($tmslsEls as $tmslEl) {
+            $tmsl = new \Mapbender\WmtsBundle\Entity\TileMatrixSetLink();
+            $tmsl->setTileMatrixSet($this->getValue("./wmts:TileMatrixSet/text()", $tmslEl))
+                ->setTileMatrixSetLimits($this->getValue("./wmts:TileMatrixSetLimits/text()", $tmslEl));
+            $wmtslayer->addTilematrixSetlinks($tmsl);
+        }
 
-//                $tileMatrixSetLinks = array();
-//                $tileMatrixSetLinksEl = $this->xpath->query("./wmts:TileMatrixSetLink", $contextElm);
-//                foreach($tileMatrixSetLinksEl as $tileMatrixSetLinkEl) {
-//                   //TODO set formats
-//                    $tileMatrixSetLinks[] = $this->getValue("./wmts:TileMatrixSet/text()", $tileMatrixSetLinkEl);
-//                }
-//                $wmtslayer->setTileMatrixSetLink($tileMatrixSetLinks);
-//                $resourceURL = array();
-//                $resourceURLsEl = $this->xpath->query("./wmts:ResourceURL", $contextElm);
-//                foreach($resourceURLsEl as $resourceURLEl) {
-//                    $resourceURL[] = array(
-//                        "format" => $this->getValue("./@format", $resourceURLEl),
-//                        "resourceType" => $this->getValue("./@resourceType", $resourceURLEl),
-//                        "template" => $this->getValue("./@template", $resourceURLEl));
-//                }
-//                $wmtslayer->setResourceURL($resourceURL);
-//                $wmts->getLayer()->add($wmtslayer);
-//            }
-//            unset($layerlist);
+        $resourceUrlElms = $this->xpath->query("./wmts:ResourceURL", $contextElm);
+        foreach ($resourceUrlElms as $resourceUrlElm) {
+            $resourceUrl = new \Mapbender\WmtsBundle\Entity\UrlTemplateType();
+            $wmtslayer->addResourceUrl(
+                $resourceUrl
+                    ->setFormat($this->getValue("./@format", $resourceUrlElm))
+                    ->setResourceType($this->getValue("./@resourceType", $resourceUrlElm))
+                    ->setTemplate($this->getValue("./@template", $resourceUrlElm))
+            );
+        }
     }
 
     /**

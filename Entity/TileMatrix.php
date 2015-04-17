@@ -3,30 +3,52 @@
 namespace Mapbender\WmtsBundle\Entity;
 
 /**
- * TileMatrix class
+ * TileMatrix class describes a particular tile matrix.
  * @author Paul Schmidt
  */
 class TileMatrix
 {
-    /**  @var string identifier */
+    /**
+     * Tile matrix identifier. Typically an abreviation of the ScaleDenominator value or its equivalent pixel size
+     * @var string identifier
+     */
     public $identifier;
 
-    /**  @var string scaledenominator */
+    /**
+     * Scale denominator level of this tile matrix
+     * @var float scaledenominator
+     */
     public $scaledenominator;
 
-    /**  @var string topleftcorner */
+    /**
+     * Position in CRS coordinates of the top-left corner of this tile matrix. This are the  precise coordinates
+     *  of the top left corner of top left pixel of the 0,0 tile in SupportedCRS coordinates of this TileMatrixSet.
+     * @var string
+     */
     public $topleftcorner;
 
-    /**  @var string tilewidth */
+    /**
+     * Width of each tile of this tile matrix in pixels.
+     * @var string tilewidth
+     */
     public $tilewidth;
 
-    /**  @var string tileheight */
+    /**
+     * Height of each tile of this tile matrix in pixels
+     * @var integer
+     */
     public $tileheight;
 
-    /**  @var string matrixwidth */
+    /**
+     * Width of the matrix (number of tiles in width)
+     * @var integer
+     */
     public $matrixwidth;
 
-    /**  @var string matrixheight */
+    /**
+     * Height of the matrix (number of tiles in height)
+     * @var integer
+     */
     public $matrixheight;
 
     /**

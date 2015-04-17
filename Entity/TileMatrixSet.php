@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * A TileMatrixSet entity presents an OGC WMTS TileMatrixSet.
+ * A TileMatrixSet entity describes a particular set of tile matrices.
  * @author Paul Schmidt
  * @ORM\Entity
  * @ORM\Table(name="mb_wmts_tilematrixset")
@@ -30,9 +30,16 @@ class TileMatrixSet
     protected $source;
 
     /**
+     * Tile matrix set identifier
      * @ORM\Column(type="string",nullable=false)
      */
     protected $identifier;
+
+    /**
+     * Minimum bounding rectangle surrounding the visible layer presented by this tile matrix set, in the supported CRS
+     * @var type
+     */
+    protected $boundingBox;
 
     /**
      * @ORM\Column(type="string",nullable=true)

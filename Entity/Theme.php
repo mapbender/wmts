@@ -6,7 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Theme class
+ * Theme class:
+ * Metadata describing the top-level themes where layers available on this server can be classified.
  *
  * @author Paul Schmidt
  * @ORM\Entity

@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * Mapbender WMTS extension loader
  *
- * @author paul Schmidt
+ * @author Paul Schmidt
  */
 class MapbenderWmtsExtension extends Extension
 {
