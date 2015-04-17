@@ -206,8 +206,6 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
         return $this->source;
     }
 
-
-
     /**
      * Set latlonBounds
      *

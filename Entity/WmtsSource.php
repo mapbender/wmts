@@ -16,12 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class WmtsSource extends Source
 {
-    /**
-     * TODO: describe and change access modifier of variables
-     */
-    public $tilematrixset;
-    public $getCapabilites;
-
+    
     /**
      * @var string An origin WMTS URL
      * @ORM\Column(type="string", nullable=true)
@@ -69,8 +64,9 @@ class WmtsSource extends Source
     protected $contact;
 
     /**
-     * @var ArrayCollections A list of WMTS keywords
-     * @ORM\OneToMany(targetEntity="Mapbender\CoreBundle\Entity\Keyword",mappedBy="id", cascade={"persist"})
+     * @var ArrayCollections A list of WMS keywords
+     * @ORM\OneToMany(targetEntity="WmtsSourceKeyword",mappedBy="reference", cascade={"persist","remove"})
+     * @ORM\OrderBy({"value" = "asc"})
      */
     protected $keywords;
 
@@ -84,14 +80,12 @@ class WmtsSource extends Source
      * @var RequestInformation A request information for the GetTile operation
      * @ORM\Column(type="object", nullable=true)
      */
-    //@TODO Doctrine bug: "protected" replaced with "public"
     public $getTile = null;
 
     /**
      * @var RequestInformation A request information for the GetFeatureInfo operation
      * @ORM\Column(type="object", nullable=true)
      */
-    //@TODO Doctrine bug: "protected" replaced with "public"
     public $getFeatureInfo = null;
 
     /**
@@ -100,14 +94,16 @@ class WmtsSource extends Source
     protected $serviceMetadataURL = "";
 
     /**
-     * @ORM\Column(type="array",nullable=true);
+     * @var ArrayCollections A list of WMTS Theme
+     * @ORM\OneToMany(targetEntity="Theme",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OrderBy({"id" = "asc"})
      */
-    protected $theme = null;
+    protected $themes;
 
     /**
-     * @ var ArrayCollections A list of WMTS layers
-     * @ ORM\OneToMany(targetEntity="TileMatrixSet",mappedBy="source", cascade={"persist","remove"})
-     * @ ORM\OrderBy({"id" = "asc"})
+     * @var ArrayCollections A list of WMTS layers
+     * @ORM\OneToMany(targetEntity="TileMatrixSet",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OrderBy({"id" = "asc"})
      */
     protected $tilematrixsets;
 
@@ -140,12 +136,12 @@ class WmtsSource extends Source
     public function __construct()
     {
         parent::__construct();
-//        $this->keywords = new ArrayCollection();
+        $this->keywords = new ArrayCollection();
         $this->layers = new ArrayCollection();
         
 //        $this->exceptionFormats = array();
-//        $this->tilematrixsets = new ArrayCollection();
-        $this->theme = array();
+        $this->tilematrixsets = new ArrayCollection();
+        $this->themes = new ArrayCollection();
     }
 
     public function getType()
@@ -160,9 +156,9 @@ class WmtsSource extends Source
 
     /**
      * Set originUrl
-     *
      * @param string $originUrl
-     * @return $this     */
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
+     */
     public function setOriginUrl($originUrl)
     {
         $this->originUrl = $originUrl;
@@ -181,15 +177,16 @@ class WmtsSource extends Source
     /**
      * Set version
      * @param type $version
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setVersion($version)
     {
         $this->version = $version;
+        return $this;
     }
 
     /**
      * Get version
-     *
      * @return string
      */
     public function getVersion()
@@ -199,13 +196,13 @@ class WmtsSource extends Source
 
     /**
      * Set alias
-     *
      * @param string $alias
-     * @return Source|void
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setAlias($alias)
     {
         $this->alias = $alias;
+        return $this;
     }
 
     /**
@@ -220,10 +217,12 @@ class WmtsSource extends Source
     /**
      * Set fees
      * @param string $fees
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setFees($fees)
     {
         $this->fees = $fees;
+        return $this;
     }
 
     /**
@@ -238,10 +237,12 @@ class WmtsSource extends Source
     /**
      * Get accessConstraints
      * @param string $accessConstraints
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setAccessConstraints($accessConstraints)
     {
         $this->accessConstraints = $accessConstraints;
+        return $this;
     }
 
     /**
@@ -256,10 +257,12 @@ class WmtsSource extends Source
     /**
      * Set serviceType
      * @param string $serviceType
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setServiceType($serviceType)
     {
         $this->serviceType = $serviceType;
+        return $this;
     }
 
     /**
@@ -274,9 +277,8 @@ class WmtsSource extends Source
 
     /**
      * Set layers
-     *
      * @param ArrayCollection $layers
-     * @return WmtsSource
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setLayers(ArrayCollection $layers)
     {
@@ -286,7 +288,6 @@ class WmtsSource extends Source
 
     /**
      * Get layers
-     *
      * @return ArrayCollection
      */
     public function getLayers()
@@ -296,9 +297,8 @@ class WmtsSource extends Source
 
     /**
      * Add layer
-     *
      * @param WmtsLayerSource $layer
-     * @return WmtsSource
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function addLayer(WmtsLayerSource $layer)
     {
@@ -309,18 +309,18 @@ class WmtsSource extends Source
 
     /**
      * Set serviceProviderSite
-     *
      * @param string $serviceProviderSite
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setServiceProviderSite($serviceProviderSite)
     {
         $this->serviceProviderSite = $serviceProviderSite;
+        return $this;
     }
 
     /**
      * Get serviceProviderSite
-     *
-     * @return string 
+     * @return string
      */
     public function getServiceProviderSite()
     {
@@ -329,9 +329,8 @@ class WmtsSource extends Source
 
     /**
      * Set Contact
-     *
      * @param Contact $contact
-     * @return WmtsSource 
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setContact(Contact $contact)
     {
@@ -341,8 +340,7 @@ class WmtsSource extends Source
 
     /**
      * Get Contact
-     *
-     * @return Contact 
+     * @return Contact
      */
     public function getContact()
     {
@@ -350,17 +348,49 @@ class WmtsSource extends Source
     }
 
     /**
-     * Set GetCapabilities
-     * @param type $getCapabilites
+     * Set keywords
+     * @param ArrayCollection $keywords
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function setGetCapabilities($getCapabilites)
+    public function setKeywords(ArrayCollection $keywords)
     {
-        $this->getCapabilites = $getCapabilites;
+        $this->keywords = $keywords;
+        return $this;
     }
 
     /**
-     * Get requestGetCapabilitiesGETREST
-     *
+     * Get keywords
+     * @return ArrayCollection
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * Add keyword
+     * @param WmsSourceKeyword $keyword
+     * @return Source
+     */
+    public function addKeyword(Keyword $keyword)
+    {
+        $this->keywords->add($keyword);
+        return $this;
+    }
+
+    /**
+     * Set getCapabilities
+     * @param RequestInformation $getCapabilites
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
+     */
+    public function setGetCapabilities(RequestInformation $getCapabilites)
+    {
+        $this->getCapabilites = $getCapabilites;
+        return $this;
+    }
+
+    /**
+     * Get getCapabilities
      * @return string
      */
     public function getGetCapabilities()
@@ -369,17 +399,19 @@ class WmtsSource extends Source
     }
 
     /**
-     * Set GetTile
-     * @param string $getTile
+     * Set getTile
+     * @param RequestInformation $getTile
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function setGetTile($getTile)
+    public function setGetTile(RequestInformation $getTile)
     {
         $this->getTile = $getTile;
+        return $this;
     }
 
     /**
-     * Get GetTile
-     * @return string
+     * Get getTile
+     * @return RequestInformation
      */
     public function getGetTile()
     {
@@ -387,17 +419,19 @@ class WmtsSource extends Source
     }
 
     /**
-     * Set GetFeatureInfo
-     * @param string $getFeatureInfo
+     * Set getFeatureInfo
+     * @param RequestInformation $getFeatureInfo
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function setGetFeatureInfo($getFeatureInfo)
+    public function setGetFeatureInfo(RequestInformation $getFeatureInfo)
     {
         $this->getFeatureInfo = $getFeatureInfo;
+        return $this;
     }
 
     /**
-     * Get requestGetFeatureInfo
-     * @return string
+     * Get getFeatureInfo
+     * @return RequestInformation
      */
     public function getGetFeatureInfo()
     {
@@ -406,17 +440,18 @@ class WmtsSource extends Source
 
     /**
      * Set serviceMetadataURL
-     * 
      * @param string $serviceMetadataURL
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setServiceMetadataURL($serviceMetadataURL)
     {
         $this->serviceMetadataURL = $serviceMetadataURL;
+        return $this;
     }
 
     /**
      * Get serviceMetadataURL
-     * 
+     *
      * @return string
      */
     public function getServiceMetadataURL()
@@ -425,153 +460,69 @@ class WmtsSource extends Source
     }
 
     /**
-     * Get theme.
-     * @return array
+     * Get themes.
+     * @return ArrayCollection
      */
-    public function getTheme()
+    public function getThemes()
     {
-        return $this->theme;
+        return $this->themes;
     }
 
     /**
-     * Get theme as ArrayCollection of Theme.
-     * @return ArrayCollection[Theme]
+     * Set themes
+     * @param ArrayCollection $themes
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function getThemeAsObjects()
+    public function setThemes(ArrayCollection $themes)
     {
-        $array = new ArrayCollection();
-        foreach ($this->theme as $theme) {
-            $array->add(new Theme($theme));
-        }
-        return $array;
+        $this->themes = $themes;
+        return $this;
     }
 
     /**
-     * Set theme
-     *
-     * @param array|Theme|mixed $themes
+     * Add theme
+     * @param Theme $theme
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function setTheme($themes)
+    public function addTheme(Theme $theme)
     {
-        if ($themes === null) {
-            $this->theme = $themes;
-        } else if (count($themes) > 0) {
-            if (is_array($themes[0])) {
-                $this->theme = $themes;
-            } else if ($themes[0] instanceof Theme) {
-                foreach ($themes as $theme) {
-                    $this->theme[] = $theme->getAsArray();
-                }
-            }
-        } else {
-            $this->theme = $themes;
-        }
+        $this->themes->add($theme);
+        return $this;
     }
 
     /**
-     * Add $theme to theme
-     * 
-     * @param Theme|array $theme
+     * Set tilematrixsets
+     * @param ArrayCollection $tilematrixsets
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function addTheme($theme)
+    public function setTilematrixsets(ArrayCollection $tilematrixsets)
     {
-        if (is_array($theme)) {
-            $this->theme[] = $theme;
-        } else if ($theme instanceof Theme) {
-            $this->theme[] = $theme->getAsArray();
-        }
+        $this->tilematrixsets = $tilematrixsets;
+        return $this;
     }
 
     /**
-     * Get tile matrix set
-     * 
-     * @return array 
+     * Get tilematrixset
+     * @return ArrayCollection
      */
-    public function getTileMatrixSet()
+    public function getTilematrixsets()
     {
-        return $this->tilematrixset;
+        return $this->tilematrixsets;
     }
 
     /**
-     * Get tile matrix set as object list
-     * 
-     * @return array 
+     * Add a tilematrixset.
+     * @param TileMatrixSet $tilematrixset
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function getTileMatrixSetAsObjects()
+    public function addTilematrixset(TileMatrixSet $tilematrixset)
     {
-        $array = new ArrayCollection();
-        foreach ($this->tilematrixset as $tilematrixset) {
-            $array->add(new TileMatrixSet($tilematrixset));
-        }
-        return $array;
-    }
-
-    /**
-     * Get tile matrix set by the name.
-     *
-     * @param string|array $name name of set
-     * @return array 
-     */
-    public function getTileMatrixSetByName($name)
-    {
-        $array = array();
-        foreach ($this->tilematrixset as $tilematrixset) {
-            if (is_string($name)) {
-                if ($tilematrixset["title"] == $name) {
-                    $array[$name] = $tilematrixset;
-                }
-            } else if (is_array($name)) {
-                foreach ($name as $name_) {
-                    if ($tilematrixset["title"] == $name_) {
-                        $array[$name_] = $tilematrixset;
-                    }
-                }
-            }
-        }
-        return $array;
-    }
-
-    /**
-     * Set tile matrix set.
-     *
-     * @param array $tilematrixset 
-     */
-    public function setTtilematrixset($tilematrixset)
-    {
-        $this->tilematrixset = $tilematrixset;
-        if ($tilematrixset === null) {
-            $this->tilematrixset = $tilematrixset;
-        } else if (count($tilematrixset) > 0) {
-            if (is_array($tilematrixset[0])) {
-                $this->tilematrixset = $tilematrixset;
-            } else if ($tilematrixset[0] instanceof TileMatrixSet) {
-                foreach ($tilematrixset as $tilematrixset_) {
-                    $this->tilematrixset = array();
-                    $this->tilematrixset[] = $tilematrixset_->getAsArray();
-                }
-            }
-        } else {
-            $this->tilematrixset = $tilematrixset;
-        }
-    }
-
-    /**
-     * Add tile matrix set.
-     *
-     * @param TileMatrixSet|array $tilematrixset
-     */
-    public function addTtilematrixset($tilematrixset)
-    {
-        if (is_array($tilematrixset)) {
-            $this->tilematrixset[] = $tilematrixset;
-        } else if ($tilematrixset instanceof TileMatrixSet) {
-            $this->tilematrixset[] = $tilematrixset->getAsArray();
-        }
+        $this->tilematrixsets->add($tilematrixset);
+        return $this;
     }
 
     /**
      * Get username.
-     * 
      * @return string
      */
     public function getUsername()
@@ -581,17 +532,17 @@ class WmtsSource extends Source
 
     /**
      * Set username.
-     * 
-     * @param string $username 
+     * @param string $username
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setUsername($username)
     {
         $this->username = $username;
+        return $this;
     }
 
     /**
      * Get password.
-     * 
      * @return string
      */
     public function getPassword()
@@ -601,12 +552,12 @@ class WmtsSource extends Source
 
     /**
      * Set password.
-     * 
-     * @param string $password 
+     * @param string $password
      */
     public function setPassword($password)
     {
         $this->password = $password;
+        return $this;
     }
 
     /**
@@ -619,6 +570,7 @@ class WmtsSource extends Source
 
     /**
      * @inheritdoc
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
     public function setIdentifier($identifier)
     {

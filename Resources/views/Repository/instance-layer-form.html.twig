@@ -1,4 +1,4 @@
-{% if layer.parent == null %}
+{#% if layer.parent == null %}
     {% set type = "root" %}
 {% elseif layer.sublayer|length > 0 %}
     {% set type = "node" %}
@@ -43,4 +43,4 @@
             {% endif %}
         </tr>
     {% endif %}
-{% endfor %}
+{% endfor %#}

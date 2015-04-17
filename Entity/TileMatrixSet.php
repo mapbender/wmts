@@ -7,9 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A TileMatrixSet entity presents an OGC WMTS TileMatrixSet.
- * @ ORM\Entity
- * @ ORM\Table(name="mb_wmts_tilematrixset")
- * O RM\DiscriminatorMap({"mb_wmts_tilematrixset" = "TileMatrixSet"})
+ * @author Paul Schmidt
+ * @ORM\Entity
+ * @ORM\Table(name="mb_wmts_tilematrixset")
+ * ORM\DiscriminatorMap({"mb_wmts_tilematrixset" = "TileMatrixSet"})
  */
 class TileMatrixSet
 {
@@ -49,27 +50,24 @@ class TileMatrixSet
     protected $supportedCrs;
 
     /**
-     * @var ArrayCollections A list of tilematrixsets
-     * @ORM\OneToMany(targetEntity="TilematrixSet",mappedBy="source", cascade={"persist","remove"})
-     * @ORM\OrderBy({"id" = "asc"})
+     * @ORM\Column(type="array",nullable=false);
      */
     protected $tilematrixes;
 
-    /**
-     * @ORM\Column(type="string",nullable=true)
-     */
-    protected $wellknowscaleset;
-
-    /**  @var string keyword ??? */
-    protected $keyword;
-
-    /**  @var array $tilematrixes */
-    protected $boundingbox = array();
+//    /**
+//     * @ORM\Column(type="string",nullable=true)
+//     */
+//    protected $wellknowscaleset;
+//
+//    /**  @var string keyword ??? */
+//    protected $keyword;
+//
+//    /**  @var array $tilematrixes */
+//    protected $boundingbox = array();
 
     /**
      * Create an instance of TileMatrixSet
-     * 
-     * @param type $tilematrixset 
+     * @param type $tilematrixset
      */
     public function __construct()
     {
@@ -78,7 +76,6 @@ class TileMatrixSet
     
     /**
      * Get id
-     * 
      * @return integer TileMatrixSet id
      */
     public function getId()
@@ -87,8 +84,27 @@ class TileMatrixSet
     }
 
     /**
+     *
+     * @return TileMatrixSet
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     *
+     * @param WmtsSource $wmtssource
+     * @return TileMatrixSet
+     */
+    public function setSource(WmtsSource $wmtssource)
+    {
+        $this->source = $wmtssource;
+        return $this;
+    }
+
+    /**
      * Get supportedCrs
-     * 
      * @return string supportedCrs
      */
     public function getSupportedCrs()
@@ -98,7 +114,6 @@ class TileMatrixSet
     
     /**
      * Set supportedCrs
-     * 
      * @param string $supportedCrs
      * @return \Mapbender\WmtsBundle\Entity\TileMatrixSet
      */
@@ -110,7 +125,6 @@ class TileMatrixSet
 
         /**
      * Get title
-     * 
      * @return string
      */
     public function getTitle()
@@ -120,7 +134,7 @@ class TileMatrixSet
 
     /**
      * Set title
-     * @param string $value 
+     * @param string $value
      */
     public function setTitle($value)
     {
@@ -138,7 +152,7 @@ class TileMatrixSet
 
     /**
      * Set abstract
-     * @param string $value 
+     * @param string $value
      */
     public function setAbstract($value)
     {
@@ -147,7 +161,6 @@ class TileMatrixSet
 
     /**
      * Get identifier
-     * 
      * @return string
      */
     public function getIdentifier()
@@ -157,8 +170,7 @@ class TileMatrixSet
 
     /**
      * Set identifier
-     * 
-     * @param string $value 
+     * @param string $value
      */
     public function setIdentifier($value)
     {
@@ -167,7 +179,6 @@ class TileMatrixSet
 
     /**
      * Get keyword
-     * 
      * @return string
      */
     public function getKeyword()
@@ -177,8 +188,7 @@ class TileMatrixSet
 
     /**
      * Set keyword
-     * 
-     * @param string $value 
+     * @param string $value
      */
     public function setKeyword($value)
     {
@@ -187,7 +197,6 @@ class TileMatrixSet
 
     /**
      * Get suppertedsrs
-     * 
      * @return string
      */
     public function getSupportedSRS()
@@ -197,8 +206,7 @@ class TileMatrixSet
 
     /**
      * Set supportedsrs
-     * 
-     * @param string $value 
+     * @param string $value
      */
     public function setSupportedSRS($value)
     {
@@ -206,7 +214,6 @@ class TileMatrixSet
     }
     /**
      * Get wellknowscaleset
-     * 
      * @return string
      */
     public function getWellknowscaleset()
@@ -216,8 +223,7 @@ class TileMatrixSet
 
     /**
      * Set wellknowscaleset
-     * 
-     * @param string $value 
+     * @param string $value
      */
     public function setWellknowscaleset($value)
     {
@@ -225,9 +231,8 @@ class TileMatrixSet
     }
 
     /**
-     * Get Tilematrix as ArrayCollection of Tilematrix
-     * 
-     * @return array
+     * Get tilematrixes
+     * @return TileMatrix[]
      */
     public function getTilematrixes()
     {
@@ -235,9 +240,8 @@ class TileMatrixSet
     }
 
     /**
-     * Set tilematrix: ArrayCollection of Tilematrix
-     * 
-     * @param ArrayCollection $tilematrixes 
+     * Set tilematrixes
+     * @param array $tilematrixes
      */
     public function setTilematrixes($tilematrixes)
     {
@@ -245,22 +249,16 @@ class TileMatrixSet
     }
 
     /**
-     * Add to tilematrix TileMatrix or Tilematrix as array
-     * 
-     * @param $tilematrix 
+     * Add a tilematrix
+     * @param TielMatrix $tilematrix
      */
-    public function addTilematrix($tilematrix)
+    public function addTilematrix(TileMatrix $tilematrix)
     {
-        if ($tilematrix instanceof TileMatrix) {
-            $this->tilematrixes->add($tilematrix);
-        } else if (is_array($tilematrix)) {
-            $this->tilematrixes->add(new TileMatrix($tilematrix));
-        }
+        $this->tilematrixes[] = $tilematrix;
     }
 
     /**
      * Get boundingbox
-     * 
      * @return array
      */
     public function getBoundingbox()
@@ -269,35 +267,11 @@ class TileMatrixSet
     }
 
     /**
-     * Set boundingbox:
-     * 
+     * Set boundingbox.
      * @param array $boundingbox
      */
     public function setBoundingbox($boundingbox)
     {
         $this->boundingbox = $boundingbox;
     }
-
-    /**
-     * Get TilematrixSet as array of string inc. TileMatrixes
-     * 
-     * @return array
-     */
-    public function getAsArray()
-    {
-        $tilematrixset = array();
-        $tilematrixset["title"] = $this->getTitle();
-        $tilematrixset["abstract"] = $this->getAbstract();
-        $tilematrixset["identifier"] = $this->getIdentifier();
-        $tilematrixset["keyword"] = $this->getKeyword();
-        $tilematrixset["supportedsrs"] = $this->getSupportedSRS();
-        $tilematrixset["wellknowscaleset"] = $this->getBoundingbox();
-        $tilematrix = array();
-        foreach ($this->getTilematrix() as $tilematrixObj) {
-            $tilematrix[] = $tilematrixObj->toArray();
-        }
-        $tilematrixset["tilematrixes"] = $tilematrix;
-        return $tilematrixset;
-    }
-
 }

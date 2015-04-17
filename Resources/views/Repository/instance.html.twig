@@ -1,14 +1,9 @@
-{% extends "FOMManagerBundle::manager.html.twig" %}
+{#% extends "FOMManagerBundle::manager.html.twig" %}
 
 {% block title %}{{ 'mb.wmts.wmtsloader.repo.instance.title.wmtsinstance' | trans }} - {{ form.vars.value.title }}{% endblock %}
 
 {% block css %}
   {{parent()}}
-  {% stylesheets filter="compass,cssrewrite"
-    "bundles/mapbendermanager/sass/manager/services.scss"
-  %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-  {% endstylesheets %}
 {% endblock %}
 
 {% block js %}
@@ -126,4 +121,4 @@
     {{ form_row(form._token) }}
   </form>
 </div>
-{% endblock %}
+{% endblock %#}

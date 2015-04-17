@@ -38,6 +38,9 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
         foreach ($this->entity->getLayers() as $layer) {
             self::createHandler($this->container, $layer)->save();
         }
+        foreach ($this->entity->getThemes() as $theme) {
+            self::createHandler($this->container, $theme)->save();
+        }
         $this->container->get('doctrine')->getManager()->persist($this->entity);
     }
 
