@@ -1,5 +1,5 @@
 {% extends "FOMManagerBundle::manager.html.twig" %}
-{% from "MapbenderWmtsBundle:Repository:macros.html.twig" import requestinformation  %}
+{% import "MapbenderWmtsBundle:Repository:macros.html.twig" as view %}
 
 {% block title %}{{ 'mb.wmts.wmtsloader.repo.view.title.wmts' | trans }} {{ wmts.title }}{% endblock %}
 
@@ -104,37 +104,22 @@
     <div class="clearContainer"></div> {# #}
   </div>
   <div id="containerService" class="container serviceContainer serviceServiceContainer">
-    <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.version" | trans }}:</div>
-    <div class="metaText">{{ wmts.version }}</div>
-    <div class="clearContainer"></div>
+  <ul class="itemLevel0 list">
+      <li>
+          <span class="labelText left">{{ "mb.wmts.wmtsloader.repo.view.label.version" | trans }}:</span>
+          <span class="metaText">{{ wmts.version }}</span>
+      </li>
+      {% if wmts.getCapabilities is not empty %}
+          <li>{{ view.requestinformation(wmts.getCapabilities, "GetCapabilities") }}</li>
+      {% endif %}
+      {% if wmts.getTile is not empty %}
+          <li>{{ view.requestinformation(wmts.getTile, "GetMap") }}</li>
+      {% endif %}
 
-    {% if wmts.getCapabilities is not empty %}
-    {{ requestinformation(wmts.getCapabilities, "GetCapabilities") }}
-    {% endif %}
-
-{#    {% if wmts.getMap is not empty %}
-    {{ requestinformation(wmts.getMap, "GetMap") }}
-    {% endif %}
-
-    {% if wmts.getFeatureinfo is not empty %}
-    {{ requestinformation(wmts.getFeatureinfo, "GetFeatureinfo") }}
-    {% endif %}
-
-    {% if wmts.getLegendGraphic is not empty %}
-    {{ requestinformation(wmts.getLegendGraphic, "GetLegendGraphic") }}
-    {% endif %}
-
-    {% if wmts.describeLayer is not empty %}
-    {{ requestinformation(wmts.describeLayer, "DescribeLayer") }}
-    {% endif %}
-
-    {% if wmts.getStyles is not empty %}
-    {{ requestinformation(wmts.getStyles, "GetStyles") }}
-    {% endif %}
-
-    {% if wmts.putStyles is not empty %}
-    {{ requestinformation(wmts.putStyles, "PutStyles") }}
-    {% endif %}#}
+      {% if wmts.getFeatureinfo is not empty %}
+          <li>{{ view.requestinformation(wmts.getFeatureinfo, "GetFeatureinfo") }}</li>
+      {% endif %}
+  </ul>
   </div>
   <div id="containerLayers" class="container serviceContainer serviceLayersContainer">
     {#% if wmts.version == '1.1.1' %}
