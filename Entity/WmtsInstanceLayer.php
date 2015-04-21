@@ -4,13 +4,11 @@ namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\EntityManager;
 use Mapbender\CoreBundle\Component\SourceInstanceItem;
 use Mapbender\CoreBundle\Component\SourceItem;
 use Mapbender\CoreBundle\Entity\SourceInstance;
 use Mapbender\WmtsBundle\Entity\WmtsInstance;
 use Mapbender\WmtsBundle\Entity\WmtsLayerSource;
-use Mapbender\CoreBundle\Component\Utils;
 
 /**
  * WmtsInstanceLayer class
@@ -22,7 +20,6 @@ use Mapbender\CoreBundle\Component\Utils;
  */
 class WmtsInstanceLayer extends SourceInstanceItem
 {
-
     /**
      * @var integer $id
      * @ORM\Id
@@ -30,70 +27,73 @@ class WmtsInstanceLayer extends SourceInstanceItem
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-//
-//    /**
-//     * @ORM\ManyToOne(targetEntity="WmtsInstance", inversedBy="layers", cascade={"refresh"})
-//     * @ORM\JoinColumn(name="wmtsinstance", referencedColumnName="id")
-//     */
-//    protected $sourceInstance;
-//
-//    /**
-//     * @ORM\ManyToOne(targetEntity="WmtsLayerSource", inversedBy="id", cascade={"refresh"})
-//     * @ORM\JoinColumn(name="wmtslayersource", referencedColumnName="id")
-//     */
-//    protected $sourceItem;
-//
-//    /**
-//     * @ORM\ManyToOne(targetEntity="WmtsInstanceLayer",inversedBy="sublayer")
-//     * @ORM\JoinColumn(name="parent", referencedColumnName="id", nullable=true)
-//     */
-//    protected $parent = null;
-//
-//    /**
-//     * @ORM\OneToMany(targetEntity="WmtsInstanceLayer",mappedBy="parent", cascade={"remove"})
-//     * @ORM\OrderBy({"priority" = "asc"})
-//     */
-//    protected $sublayer;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="WmtsInstance", inversedBy="layers", cascade={"refresh"})
+     * @ORM\JoinColumn(name="wmtsinstance", referencedColumnName="id")
+     */
+    protected $sourceInstance;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="WmtsLayerSource", inversedBy="id", cascade={"refresh"})
+     * @ORM\JoinColumn(name="wmtslayersource", referencedColumnName="id")
+     */
+    protected $sourceItem;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $format;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $infoformat;
 //
 //    /**
 //     * @ORM\Column(type="string", nullable=true)
 //     */
-//    protected $title;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $active = true;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $allowselected = true;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $selected = true;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $info;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $allowinfo;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $toggle;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $allowtoggle;
+//    protected $exceptionformat = null;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $active = true;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $allowselected = true;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $selected = true;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $info;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $allowinfo;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $toggle;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $allowtoggle;
 //
 //    /**
 //     * @ORM\Column(type="boolean", nullable=true)
@@ -109,21 +109,20 @@ class WmtsInstanceLayer extends SourceInstanceItem
 //     * @ORM\Column(type="float", nullable=true)
 //     */
 //    protected $maxScale;
-//
-//    /**
-//     * @ORM\Column(type="string", nullable=true)
-//     */
-//    protected $style = "";
-//
-//    /**
-//     * @ORM\Column(type="integer", nullable=true)
-//     */
-//    protected $priority;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $style = "";
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $tileMatrixSet = "";
 
     public function __construct()
     {
-        $this->sublayer = new ArrayCollection();
-        $this->style = "";
+//        $this->style    = "";
     }
 
     /**
@@ -170,60 +169,70 @@ class WmtsInstanceLayer extends SourceInstanceItem
     }
 
     /**
-     * Set sublayer as array of string
+     * Set format
      *
-     * @param array $sublayer
-     * @return WmtsInstanceLayer
+     * @param string $format
+     * @return WmtsInstance
      */
-    public function setSublayer($sublayer)
+    public function setFormat($format)
     {
-        $this->sublayer = $sublayer;
+        $this->format = $format;
         return $this;
     }
 
     /**
-     * Set sublayer as array of string
+     * Get format
      *
-     * @param WmtsInstanceLayer $sublayer
-     * @return WmtsInstanceLayer
+     * @return string
      */
-    public function addSublayer(WmtsInstanceLayer $sublayer)
+    public function getFormat()
     {
-        $this->sublayer->add($sublayer);
+        return $this->format !== null ? $this->format : 'image/png';
+    }
+
+    /**
+     * Set infoformat
+     *
+     * @param string $infoformat
+     * @return WmtsInstance
+     */
+    public function setInfoformat($infoformat)
+    {
+        $this->infoformat = $infoformat;
         return $this;
     }
 
     /**
-     * Get sublayer
+     * Get infoformat
      *
-     * @return array
+     * @return string
      */
-    public function getSublayer()
+    public function getInfoformat()
     {
-        return $this->sublayer;
+        return $this->infoformat;
     }
-
-    /**
-     * Set parent
-     *
-     * @param WmtsInstanceLayer $parent
-     * @return WmtsInstanceLayer
-     */
-    public function setParent($parent)
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
-     * Get parent
-     *
-     * @return WmtsInstanceLayer
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
+//
+//    /**
+//     * Set exceptionformat
+//     *
+//     * @param string $exceptionformat
+//     * @return WmtsInstance
+//     */
+//    public function setExceptionformat($exceptionformat)
+//    {
+//        $this->exceptionformat = $exceptionformat;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get exceptionformat
+//     *
+//     * @return string
+//     */
+//    public function getExceptionformat()
+//    {
+//        return $this->exceptionformat;
+//    }
 
     /**
      * Set active
@@ -376,71 +385,71 @@ class WmtsInstanceLayer extends SourceInstanceItem
         $this->allowtoggle = $allowtoggle;
         return $this;
     }
-
-    /**
-     * Get allowreorder
-     *
-     * @return boolean $allowreorder
-     */
-    public function getAllowreorder()
-    {
-        return $this->allowreorder;
-    }
-
-    /**
-     * Set allowreorder
-     *
-     * @param boolean $allowreorder
-     */
-    public function setAllowreorder($allowreorder)
-    {
-        $this->allowreorder = $allowreorder;
-        return $this;
-    }
-
-    /**
-     * Set minScale
-     *
-     * @param float $minScale
-     * @return WmtsInstanceLayer
-     */
-    public function setMinScale($minScale)
-    {
-        $this->minScale = $minScale;
-        return $this;
-    }
-
-    /**
-     * Get minScale
-     *
-     * @return float
-     */
-    public function getMinScale()
-    {
-        return $this->minScale;
-    }
-
-    /**
-     * Set maxScale
-     *
-     * @param float $maxScale
-     * @return WmtsInstanceLayer
-     */
-    public function setMaxScale($maxScale)
-    {
-        $this->maxScale = $maxScale;
-        return $this;
-    }
-
-    /**
-     * Get maxScale
-     *
-     * @return float
-     */
-    public function getMaxScale()
-    {
-        return $this->maxScale;
-    }
+//
+//    /**
+//     * Get allowreorder
+//     *
+//     * @return boolean $allowreorder
+//     */
+//    public function getAllowreorder()
+//    {
+//        return $this->allowreorder;
+//    }
+//
+//    /**
+//     * Set allowreorder
+//     *
+//     * @param boolean $allowreorder
+//     */
+//    public function setAllowreorder($allowreorder)
+//    {
+//        $this->allowreorder = $allowreorder;
+//        return $this;
+//    }
+//
+//    /**
+//     * Set minScale
+//     *
+//     * @param float $minScale
+//     * @return WmtsInstanceLayer
+//     */
+//    public function setMinScale($minScale)
+//    {
+//        $this->minScale = $minScale;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get minScale
+//     *
+//     * @return float
+//     */
+//    public function getMinScale()
+//    {
+//        return $this->minScale;
+//    }
+//
+//    /**
+//     * Set maxScale
+//     *
+//     * @param float $maxScale
+//     * @return WmtsInstanceLayer
+//     */
+//    public function setMaxScale($maxScale)
+//    {
+//        $this->maxScale = $maxScale;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get maxScale
+//     *
+//     * @return float
+//     */
+//    public function getMaxScale()
+//    {
+//        return $this->maxScale;
+//    }
 
     /**
      * Set style
@@ -465,31 +474,6 @@ class WmtsInstanceLayer extends SourceInstanceItem
     }
 
     /**
-     * Set priority
-     *
-     * @param integer $priority
-     * @return WmtsInstanceLayer
-     */
-    public function setPriority($priority)
-    {
-        if ($priority !== null)
-            $this->priority = intval($priority);
-        else
-            $this->priority = $priority;
-        return $this;
-    }
-
-    /**
-     * Get priority
-     *
-     * @return integer
-     */
-    public function getPriority()
-    {
-        return $this->priority;
-    }
-
-    /**
      * @inheritdoc
      */
     public function setSourceInstance(SourceInstance $sourceInstance = NULL)
@@ -505,7 +489,6 @@ class WmtsInstanceLayer extends SourceInstanceItem
     {
         return $this->sourceInstance;
     }
-
 
     /**
      * @inheritdoc
@@ -531,26 +514,4 @@ class WmtsInstanceLayer extends SourceInstanceItem
     {
         return (string) $this->getId();
     }
-
-    /**
-     */
-    public function copy(EntityManager $em)
-    {
-        $inlay = new WmtsInstanceLayer();
-        $inlay->title = $this->title;
-        $inlay->active = $this->active;
-        $inlay->allowselected = $this->allowselected;
-        $inlay->selected = $this->selected;
-        $inlay->info = $this->info;
-        $inlay->allowinfo = $this->allowinfo;
-        $inlay->toggle = $this->toggle;
-        $inlay->allowtoggle = $this->allowtoggle;
-        $inlay->allowreorder = $this->allowreorder;
-        $inlay->minScale = $this->minScale;
-        $inlay->maxScale = $this->maxScale;
-        $inlay->style = $this->style;
-        $inlay->priority = $this->priority;
-        return $inlay;
-    }
-
 }

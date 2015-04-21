@@ -49,24 +49,24 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
      */
     public function createInstance(Layerset $layerset = NULL, $persist = true)
     {
-//        $instance        = new WmtsInstance();
-//        $instance->setSource($this->entity);
-//        $instance->setLayerset($layerset);
-//        $instanceHandler = self::createHandler($this->container, $instance);
-//        $instanceHandler->create();
-//        if ($instanceHandler->getEntity()->getLayerset()) {
-//            $num = 0;
-//            foreach ($instanceHandler->getEntity()->getLayerset()->getInstances() as $instanceAtLayerset) {
-//                $instHandler = self::createHandler($this->container, $instanceAtLayerset);
-//                $instHandler->getEntity()->setWeight($num);
-//                $instHandler->generateConfiguration();
-//                if ($persist) {
-//                    $this->container->get('doctrine')->getManager()->persist($instHandler->getEntity());
-//                }
-//                $num++;
-//            }
-//        }
-//        return $instanceHandler->getEntity();
+        $instance        = new WmtsInstance();
+        $instance->setSource($this->entity);
+        $instance->setLayerset($layerset);
+        $instanceHandler = self::createHandler($this->container, $instance);
+        $instanceHandler->create();
+        if ($instanceHandler->getEntity()->getLayerset()) {
+            $num = 0;
+            foreach ($instanceHandler->getEntity()->getLayerset()->getInstances() as $instanceAtLayerset) {
+                $instHandler = self::createHandler($this->container, $instanceAtLayerset);
+                $instHandler->getEntity()->setWeight($num);
+                $instHandler->generateConfiguration();
+                if ($persist) {
+                    $this->container->get('doctrine')->getManager()->persist($instHandler->getEntity());
+                }
+                $num++;
+            }
+        }
+        return $instanceHandler->getEntity();
     }
 
     /**

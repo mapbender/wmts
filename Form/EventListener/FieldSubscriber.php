@@ -55,52 +55,52 @@ class FieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($data->getSublayer()->count() > 0) {
-            $form->remove('toggle');
-            $form->add($this->factory->createNamed(
-                    'toggle', 'checkbox', null, array(
-                    'disabled' => false,
-                    "required" => false,
-                    'auto_initialize' => false)));
-            $form->remove('allowtoggle');
-            $form->add($this->factory->createNamed(
-                    'allowtoggle', 'checkbox', null, array(
-                    'required' => false,
-                    'disabled' => false,
-                    'auto_initialize' => false)));
-        } else {
-            $form->remove('toggle');
-            $form->add($this->factory->createNamed(
-                    'toggle', 'checkbox', null, array(
-                    'disabled' => true,
-                    "required" => false,
-                    'auto_initialize' => false)));
-            $form->remove('allowtoggle');
-            $form->add($this->factory->createNamed(
-                    'allowtoggle', 'checkbox', null, array(
-                    'required' => false,
-                    'disabled' => true,
-                    'auto_initialize' => false)));
-        }
+//        if ($data->getSublayer()->count() > 0) {
+//            $form->remove('toggle');
+//            $form->add($this->factory->createNamed(
+//                    'toggle', 'checkbox', null, array(
+//                    'disabled' => false,
+//                    "required" => false,
+//                    'auto_initialize' => false)));
+//            $form->remove('allowtoggle');
+//            $form->add($this->factory->createNamed(
+//                    'allowtoggle', 'checkbox', null, array(
+//                    'required' => false,
+//                    'disabled' => false,
+//                    'auto_initialize' => false)));
+//        } else {
+//            $form->remove('toggle');
+//            $form->add($this->factory->createNamed(
+//                    'toggle', 'checkbox', null, array(
+//                    'disabled' => true,
+//                    "required" => false,
+//                    'auto_initialize' => false)));
+//            $form->remove('allowtoggle');
+//            $form->add($this->factory->createNamed(
+//                    'allowtoggle', 'checkbox', null, array(
+//                    'required' => false,
+//                    'disabled' => true,
+//                    'auto_initialize' => false)));
+//        }
 
-        if ($data->getWmtslayersource()->getQueryable() === true) {
-            $form->remove('info');
-            $form->add($this->factory->createNamed(
-                    'info', 'checkbox', null, array(
-                    'disabled' => false,
-                    "required" => false,
-                    'auto_initialize' => false)));
-            $form->remove('allowinfo');
-            $form->add($this->factory->createNamed(
-                    'allowinfo', 'checkbox', null, array(
-                    'disabled' => false,
-                    "required" => false,
-                    'auto_initialize' => false)));
-        }
-        $arrStyles = $data->getWmtslayersource()->getStyles();
+//        if ($data->getSourceItem()->getQueryable() === true) {
+//            $form->remove('info');
+//            $form->add($this->factory->createNamed(
+//                    'info', 'checkbox', null, array(
+//                    'disabled' => false,
+//                    "required" => false,
+//                    'auto_initialize' => false)));
+//            $form->remove('allowinfo');
+//            $form->add($this->factory->createNamed(
+//                    'allowinfo', 'checkbox', null, array(
+//                    'disabled' => false,
+//                    "required" => false,
+//                    'auto_initialize' => false)));
+//        }
+        $arrStyles = $data->getSourceItem()->getStyles();
         $styleOpt = array("" => "");
         foreach ($arrStyles as $style) {
-            $styleOpt[$style->getName()] = $style->getTitle();
+            $styleOpt[$style->getIdentifier()] = $style->getTitle();
         }
 
         $form->remove('style');

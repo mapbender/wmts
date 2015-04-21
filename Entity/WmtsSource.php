@@ -5,6 +5,7 @@ namespace Mapbender\WmtsBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Mapbender\CoreBundle\Entity\Contact;
+use Mapbender\CoreBundle\Entity\Keyword;
 use Mapbender\CoreBundle\Entity\Source;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -383,9 +384,9 @@ class WmtsSource extends Source
      * @param RequestInformation $getCapabilites
      * @return \Mapbender\WmtsBundle\Entity\WmtsSource
      */
-    public function setGetCapabilities(RequestInformation $getCapabilites)
+    public function setGetCapabilities(RequestInformation $getCapabilities)
     {
-        $this->getCapabilites = $getCapabilites;
+        $this->getCapabilities = $getCapabilities;
         return $this;
     }
 
@@ -395,7 +396,7 @@ class WmtsSource extends Source
      */
     public function getGetCapabilities()
     {
-        return $this->getCapabilites;
+        return $this->getCapabilities;
     }
 
     /**

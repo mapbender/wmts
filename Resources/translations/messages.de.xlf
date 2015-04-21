@@ -358,6 +358,134 @@
         <source>mb.wmts.wmtsloader.repo.theme.label.layerrefs</source>
         <target>Layerrefs</target>
       </trans-unit>
+      <trans-unit id="d41ce0cd0c1f6726e11ca0e5085b9a63" resname="mb.wmts.wmtsloader.repo.instance.title.wmtsinstance">
+        <source>mb.wmts.wmtsloader.repo.instance.title.wmtsinstance</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.title.wmtsinstance</target>
+      </trans-unit>
+      <trans-unit id="66779bfca125af3eea046da2734beba3" resname="mb.wmts.wmtsloader.repo.instance.btn.save">
+        <source>mb.wmts.wmtsloader.repo.instance.btn.save</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.btn.save</target>
+      </trans-unit>
+      <trans-unit id="2d103cd7ae6e04b65dab8bc9aac490f5" resname="mb.wmts.wmtsloader.repo.instance.btn.cancel">
+        <source>mb.wmts.wmtsloader.repo.instance.btn.cancel</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.btn.cancel</target>
+      </trans-unit>
+      <trans-unit id="a1410e793ec2a98bf94d6022cb783dfe" resname="mb.wmts.wmtsloader.repo.instance.label.originurl">
+        <source>mb.wmts.wmtsloader.repo.instance.label.originurl</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.originurl</target>
+      </trans-unit>
+      <trans-unit id="6b10716f6650a730f84adced2057aa81" resname="mb.wmts.wmtsloader.repo.instance.label.visible">
+        <source>mb.wmts.wmtsloader.repo.instance.label.visible</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.visible</target>
+      </trans-unit>
+      <trans-unit id="90d23702b65df80bd1cdbf7370e16f3e" resname="mb.wmts.wmtsloader.repo.instance.label.basesource">
+        <source>mb.wmts.wmtsloader.repo.instance.label.basesource</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.basesource</target>
+      </trans-unit>
+      <trans-unit id="9b7b0711508fc72d9322de0887ce10be" resname="mb.wmts.wmtsloader.repo.instance.label.proxy">
+        <source>mb.wmts.wmtsloader.repo.instance.label.proxy</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.proxy</target>
+      </trans-unit>
+      <trans-unit id="f3e48402de37db586627351592370a61" resname="mb.wmts.wmtsloader.repo.instance.label.title">
+        <source>mb.wmts.wmtsloader.repo.instance.label.title</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.title</target>
+      </trans-unit>
+      <trans-unit id="1a12f9deed3ff4469c4e93484172d69f" resname="mb.wmts.wmtsloader.repo.instance.label.active">
+        <source>mb.wmts.wmtsloader.repo.instance.label.active</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.active</target>
+      </trans-unit>
+      <trans-unit id="3f0ce64e592e170bcd78c817cd639d55" resname="mb.wmts.wmtsloader.repo.instance.label.select">
+        <source>mb.wmts.wmtsloader.repo.instance.label.select</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.select</target>
+      </trans-unit>
+      <trans-unit id="9a09be572d218aafffe04d7b677c46ed" resname="mb.wmts.wmtsloader.repo.instance.label.info">
+        <source>mb.wmts.wmtsloader.repo.instance.label.info</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.info</target>
+      </trans-unit>
+      <trans-unit id="d2bed55090814df1ee7e6e62b02ef87c" resname="mb.wmts.wmtsloader.repo.instance.label.toggle">
+        <source>mb.wmts.wmtsloader.repo.instance.label.toggle</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.toggle</target>
+      </trans-unit>
+      <trans-unit id="f4894a4f4aaf33a15f30fbf10ec06629" resname="mb.wmts.wmtsloader.repo.instance.label.reorder">
+        <source>mb.wmts.wmtsloader.repo.instance.label.reorder</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.reorder</target>
+      </trans-unit>
+      <trans-unit id="17b02f77bddd7044dfd8fce1d5b8a064" resname="mb.wmts.wmtsloader.repo.instance.label.allow">
+        <source>mb.wmts.wmtsloader.repo.instance.label.allow</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.allow</target>
+      </trans-unit>
+      <trans-unit id="28d861dd0c77621788c425db0a6ad73d" resname="mb.wmts.wmtsloader.repo.instance.label.on">
+        <source>mb.wmts.wmtsloader.repo.instance.label.on</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.on</target>
+      </trans-unit>
+      <trans-unit id="22772041b88711dd9f9378ba13987707" resname="mb.wmts.wmtsloader.repo.instance.label.save">
+        <source>mb.wmts.wmtsloader.repo.instance.label.save</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.save</target>
+      </trans-unit>
+      <trans-unit id="d60b543019ad30e4ebc01de84a3782b2" resname="mb.wmts.wmtsloader.repo.instance.label.cancel">
+        <source>mb.wmts.wmtsloader.repo.instance.label.cancel</source>
+        <target>__mb.wmts.wmtsloader.repo.instance.label.cancel</target>
+      </trans-unit>
+      <trans-unit id="de1d641346d922ce579b1b4917960b1a" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layerstitle">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layerstitle</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.layerstitle</target>
+      </trans-unit>
+      <trans-unit id="9ef2fa740c3c793bb7ab64dcf773c9aa" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.minscale">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.minscale</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.minscale</target>
+      </trans-unit>
+      <trans-unit id="6001965dd22b92f69d847ee7b0dc1438" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.maxsclase">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.maxsclase</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.maxsclase</target>
+      </trans-unit>
+      <trans-unit id="9772e4fafd848054a0f449857e00aa98" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.active">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.active</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.active</target>
+      </trans-unit>
+      <trans-unit id="f70f41351e4b99bfa31e792f0e15b0b3" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.allowselecttoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.allowselecttoc</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.allowselecttoc</target>
+      </trans-unit>
+      <trans-unit id="a19a0aa8a93842b5f1f9deb0a2f45943" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.selectedtoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.selectedtoc</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.selectedtoc</target>
+      </trans-unit>
+      <trans-unit id="ea3ed3ac40ed2e88c83752e15a4d8077" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.allowinfotoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.allowinfotoc</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.allowinfotoc</target>
+      </trans-unit>
+      <trans-unit id="8733e9d6f7123daabd0d103250bd9551" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.infotoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.infotoc</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.infotoc</target>
+      </trans-unit>
+      <trans-unit id="2449b093a8bc0b26786f72f9dd768fd9" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.allowtoggletoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.allowtoggletoc</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.allowtoggletoc</target>
+      </trans-unit>
+      <trans-unit id="130c1be2142ec2af104bc06e95c3f110" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc</target>
+      </trans-unit>
+      <trans-unit id="26c8f8bf43af6e0e9d4b53d3743c47e6" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.allowreordertoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.allowreordertoc</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.allowreordertoc</target>
+      </trans-unit>
+      <trans-unit id="140db5e3bc401e7c5c874fd4471566d1" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.moreinfo">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.moreinfo</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.moreinfo</target>
+      </trans-unit>
+      <trans-unit id="7a0ef70f16f54aed9691c9b9bad48b12" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.id">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.id</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.id</target>
+      </trans-unit>
+      <trans-unit id="c22bde5b8c1a021cfe2d43c930c0d504" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layersname">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layersname</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.layersname</target>
+      </trans-unit>
+      <trans-unit id="0ce1f5b29bf8fc16386ed466953163ee" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.style">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.style</source>
+        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.style</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

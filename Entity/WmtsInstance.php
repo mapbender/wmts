@@ -3,7 +3,6 @@
 namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Mapbender\CoreBundle\Entity\SourceInstance;
 use Mapbender\WmtsBundle\Component\WmtsMetadata;
@@ -33,13 +32,13 @@ class WmtsInstance extends SourceInstance
      * @ORM\JoinColumn(name="wmtssource", referencedColumnName="id")
      */
     protected $source;
-//
-//    /**
-//     * @ORM\OneToMany(targetEntity="WmtsInstanceLayer", mappedBy="sourceInstance", cascade={"refresh", "persist", "remove"})
-//     * @ORM\JoinColumn(name="layers", referencedColumnName="id")
-//     * @ORM\OrderBy({"priority" = "asc"})
-//     */
-//    protected $layers; //{ name: 1,   title: Webatlas,   visible: true }
+
+    /**
+     * @ORM\OneToMany(targetEntity="WmtsInstanceLayer", mappedBy="sourceInstance",
+     * cascade={"refresh", "persist", "remove"})
+     * @ORM\JoinColumn(name="layers", referencedColumnName="id")
+     */
+    protected $layers; //{ name: 1,   title: Webatlas,   visible: true }
 //
 //    /**
 //     * @ORM\Column(type="string", nullable=true)
@@ -65,31 +64,31 @@ class WmtsInstance extends SourceInstance
 //     * @ORM\Column(type="boolean", nullable=true)
 //     */
 //    protected $transparency = true;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $visible = true;
-//
-//    /**
-//     * @ORM\Column(type="integer", nullable=true)
-//     */
-//    protected $opacity = 100;
-//
-//    /**
-//     * @ORM\Column(type="boolean", nullable=true)
-//     */
-//    protected $proxy = false;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $visible = true;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $opacity = 100;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $proxy = false;
 //
 //    /**
 //     * @ORM\Column(type="boolean", nullable=true)
 //     */
 //    protected $tiled = false;
-//
-//    /**
-//     * @ORM\Column(type="array", nullable=true)
-//     */
-//    protected $dimensions;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    protected $dimensions;
 //
 //    /**
 //     * @ORM\Column(type="integer", options={"default" = 0})
@@ -103,8 +102,8 @@ class WmtsInstance extends SourceInstance
 
     public function __construct()
     {
-//        $this->layers = new ArrayCollection();
-//        $this->dimensions = array();
+        $this->layers = new ArrayCollection();
+        $this->dimensions = array();
     }
 
     /**
@@ -130,7 +129,7 @@ class WmtsInstance extends SourceInstance
 
     /**
      * Returns dimensions
-     * 
+     *
      * @return array of DimensionIst
      */
     public function getDimensions()
@@ -140,7 +139,7 @@ class WmtsInstance extends SourceInstance
 
     /**
      * Sets dimensions
-     * 
+     *
      * @param array $dimensions array of DimensionIst
      * @return \Mapbender\WmtsBundle\Entity\WmtsInstance
      */
@@ -192,21 +191,21 @@ class WmtsInstance extends SourceInstance
     {
         return $this->layers;
     }
-
-    /**
-     * Get root layer
-     *
-     * @return WmtsInstanceLayer
-     */
-    public function getRootlayer()
-    {
-        foreach ($this->layers as $layer) {
-            if ($layer->getParent() === null) {
-                return $layer;
-            }
-        }
-        return null;
-    }
+//
+//    /**
+//     * Get root layer
+//     *
+//     * @return WmtsInstanceLayer
+//     */
+//    public function getRootlayer()
+//    {
+//        foreach ($this->layers as $layer) {
+//            if ($layer->getParent() === null) {
+//                return $layer;
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Set title
@@ -229,116 +228,116 @@ class WmtsInstance extends SourceInstance
     {
         return $this->title;
     }
-
-    /**
-     * Set srs
-     *
-     * @param array $srs
-     * @return WmtsInstance
-     */
-    public function setSrs($srs)
-    {
-        $this->srs = $srs;
-        return $this;
-    }
-
-    /**
-     * Get srs
-     *
-     * @return array
-     */
-    public function getSrs()
-    {
-        return $this->srs;
-    }
-
-    /**
-     * Set format
-     *
-     * @param string $format
-     * @return WmtsInstance
-     */
-    public function setFormat($format)
-    {
-        $this->format = $format;
-        return $this;
-    }
-
-    /**
-     * Get format
-     *
-     * @return string
-     */
-    public function getFormat()
-    {
-        return $this->format !== null ? $this->format : 'image/png';
-    }
-
-    /**
-     * Set infoformat
-     *
-     * @param string $infoformat
-     * @return WmtsInstance
-     */
-    public function setInfoformat($infoformat)
-    {
-        $this->infoformat = $infoformat;
-        return $this;
-    }
-
-    /**
-     * Get infoformat
-     *
-     * @return string
-     */
-    public function getInfoformat()
-    {
-        return $this->infoformat;
-    }
-
-    /**
-     * Set exceptionformat
-     *
-     * @param string $exceptionformat
-     * @return WmtsInstance
-     */
-    public function setExceptionformat($exceptionformat)
-    {
-        $this->exceptionformat = $exceptionformat;
-        return $this;
-    }
-
-    /**
-     * Get exceptionformat
-     *
-     * @return string
-     */
-    public function getExceptionformat()
-    {
-        return $this->exceptionformat;
-    }
-
-    /**
-     * Set transparency
-     *
-     * @param boolean $transparency
-     * @return WmtsInstance
-     */
-    public function setTransparency($transparency)
-    {
-        $this->transparency = $transparency;
-        return $this;
-    }
-
-    /**
-     * Get transparency
-     *
-     * @return boolean
-     */
-    public function getTransparency()
-    {
-        return $this->transparency;
-    }
+//
+//    /**
+//     * Set srs
+//     *
+//     * @param array $srs
+//     * @return WmtsInstance
+//     */
+//    public function setSrs($srs)
+//    {
+//        $this->srs = $srs;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get srs
+//     *
+//     * @return array
+//     */
+//    public function getSrs()
+//    {
+//        return $this->srs;
+//    }
+//
+//    /**
+//     * Set format
+//     *
+//     * @param string $format
+//     * @return WmtsInstance
+//     */
+//    public function setFormat($format)
+//    {
+//        $this->format = $format;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get format
+//     *
+//     * @return string
+//     */
+//    public function getFormat()
+//    {
+//        return $this->format !== null ? $this->format : 'image/png';
+//    }
+//
+//    /**
+//     * Set infoformat
+//     *
+//     * @param string $infoformat
+//     * @return WmtsInstance
+//     */
+//    public function setInfoformat($infoformat)
+//    {
+//        $this->infoformat = $infoformat;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get infoformat
+//     *
+//     * @return string
+//     */
+//    public function getInfoformat()
+//    {
+//        return $this->infoformat;
+//    }
+//
+//    /**
+//     * Set exceptionformat
+//     *
+//     * @param string $exceptionformat
+//     * @return WmtsInstance
+//     */
+//    public function setExceptionformat($exceptionformat)
+//    {
+//        $this->exceptionformat = $exceptionformat;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get exceptionformat
+//     *
+//     * @return string
+//     */
+//    public function getExceptionformat()
+//    {
+//        return $this->exceptionformat;
+//    }
+//
+//    /**
+//     * Set transparency
+//     *
+//     * @param boolean $transparency
+//     * @return WmtsInstance
+//     */
+//    public function setTransparency($transparency)
+//    {
+//        $this->transparency = $transparency;
+//        return $this;
+//    }
+//
+//    /**
+//     * Get transparency
+//     *
+//     * @return boolean
+//     */
+//    public function getTransparency()
+//    {
+//        return $this->transparency;
+//    }
 
     /**
      * Set visible
@@ -427,52 +426,52 @@ class WmtsInstance extends SourceInstance
     {
         return $this->tiled;
     }
-
-    /**
-     * Set ratio
-     *
-     * @param boolean $ratio
-     * @return WmtsInstance
-     */
-    public function setRatio($ratio)
-    {
-        $this->ratio = $ratio;
-
-        return $this;
-    }
-
-    /**
-     * Get ratio
-     *
-     * @return boolean
-     */
-    public function getRatio()
-    {
-        return $this->ratio;
-    }
-
-    /**
-     * Set buffer
-     *
-     * @param boolean $buffer
-     * @return WmtsInstance
-     */
-    public function setBuffer($buffer)
-    {
-        $this->buffer = $buffer;
-
-        return $this;
-    }
-
-    /**
-     * Get buffer
-     *
-     * @return boolean
-     */
-    public function getBuffer()
-    {
-        return $this->buffer;
-    }
+//
+//    /**
+//     * Set ratio
+//     *
+//     * @param boolean $ratio
+//     * @return WmtsInstance
+//     */
+//    public function setRatio($ratio)
+//    {
+//        $this->ratio = $ratio;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get ratio
+//     *
+//     * @return boolean
+//     */
+//    public function getRatio()
+//    {
+//        return $this->ratio;
+//    }
+//
+//    /**
+//     * Set buffer
+//     *
+//     * @param boolean $buffer
+//     * @return WmtsInstance
+//     */
+//    public function setBuffer($buffer)
+//    {
+//        $this->buffer = $buffer;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get buffer
+//     *
+//     * @return boolean
+//     */
+//    public function getBuffer()
+//    {
+//        return $this->buffer;
+//    }
 
     /**
      * Set wmtssource
@@ -538,18 +537,18 @@ class WmtsInstance extends SourceInstance
     {
         return "wmts";
     }
-//
-//    /**
-//     * @inheritdoc
-//     */
-//    static public function listAssets()
-//    {
-//        return array(
-//            'js' => array(
-//                '@MapbenderWmtsBundle/Resources/public/mapbender.source.wmts.js'),
-//            'css' => array(),
-//            'trans' => array('MapbenderWmtsBundle::wmtsbundle.json.twig'));
-//    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function listAssets()
+    {
+        return array(
+            'js' => array(
+                '@MapbenderWmtsBundle/Resources/public/mapbender.source.wmts.js'),
+            'css' => array(),
+            'trans' => array('MapbenderWmtsBundle::wmtsbundle.json.twig'));
+    }
 
     /**
      * @return WmtsMetadata
@@ -558,51 +557,4 @@ class WmtsInstance extends SourceInstance
     {
 //        return new WmtsMetadata($this);
     }
-//
-//    /**
-//     * @inheritdoc
-//     */
-//    public function copy(EntityManager $em)
-//    {
-//        $inst = new WmtsInstance();
-//        $inst->title = $this->title;
-//        $inst->weight = $this->weight;
-//        $inst->enabled = $this->enabled;
-//        $inst->configuration = $this->configuration; //???
-//        $inst->source = $this->source;
-//        $inst->srs = $this->srs;
-//        $inst->format = $this->format;
-//        $inst->infoformat = $this->infoformat;
-//        $inst->exceptionformat = $this->exceptionformat;
-//        $inst->transparency = $this->transparency;
-//        $inst->visible = $this->visible;
-//        $inst->opacity = $this->opacity;
-//        $inst->proxy = $this->proxy;
-//        $inst->tiled = $this->tiled;
-//        $inst->ratio = $this->ratio;
-//        $inst->buffer = $this->buffer;
-//        $this->copyLayerRecursive($em, $inst, $this->getRootlayer(), NULL);
-//        return $inst;
-//    }
-//
-//    /**
-//     * Recursively copy a nested Layerstructure
-//     * @param EntityManager $em
-//     * @param WmtsInstanceLayer $instLayer
-//     */
-//    private function copyLayerRecursive(EntityManager $em, WmtsInstance $instCloned, WmtsInstanceLayer $origin,
-//        WmtsInstanceLayer $clonedParent = null)
-//    {
-//        $cloned = $origin->copy($em);
-//        $cloned->setWmtsinstance($instCloned);
-//        $cloned->setSourceItem($origin->getSourceItem());
-//        if ($clonedParent !== null) {
-//            $cloned->setParent($clonedParent);
-//            $clonedParent->addSublayer($cloned);
-//        }
-//        $instCloned->addLayer($cloned);
-//        foreach ($origin->getSublayer() as $sublayer) {
-//            $this->copyLayerRecursive($em, $instCloned, $sublayer, $cloned);
-//        }
-//    }
 }

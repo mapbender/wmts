@@ -1,4 +1,4 @@
-{#% extends "FOMManagerBundle::manager.html.twig" %}
+{% extends "FOMManagerBundle::manager.html.twig" %}
 
 {% block title %}{{ 'mb.wmts.wmtsloader.repo.instance.title.wmtsinstance' | trans }} - {{ form.vars.value.title }}{% endblock %}
 
@@ -28,12 +28,6 @@
       <div class="left leftContainer">
         {{ form_label(form.title) }}{{ form_widget(form.title) }}
         <div class="clear"></div>
-        {{ form_label(form.format) }}{{ form_widget(form.format) }}
-        <div class="clear"></div>
-        {{ form_label(form.infoformat) }}{{ form_widget(form.infoformat) }}
-        <div class="clear"></div>
-        {{ form_label(form.exceptionformat) }}{{ form_widget(form.exceptionformat) }}
-        <div class="clear"></div>
         {{ form_label(form.opacity) }}{{ form_widget(form.opacity) }}
         <div class="clear"></div>
       </div>
@@ -51,25 +45,16 @@
         {{ form_widget(form.proxy) }}<label for="{{form.proxy.vars.id}}" class="labelCheck">{{"mb.wmts.wmtsloader.repo.instance.label.proxy"|trans}}</label>
         </div>
         <div class="clear"></div>
-        <div class="left">
-        {{ form_widget(form.transparency) }}<label for="{{form.transparency.vars.id}}" class="labelCheck">{{"mb.wmts.wmtsloader.repo.instance.label.transparency"|trans}}</label>
-        </div>
-        <div class="clear"></div>
-        <div class="left">
-        {{ form_widget(form.tiled) }}<label for="{{form.tiled.vars.id}}" class="labelCheck">{{"mb.wmts.wmtsloader.repo.instance.label.tiled"|trans}}</label>
-        </div>
-        <div class="clear"></div>
       </div>
     </div>
 
-    {% set root = instance.source.getRootlayer() %}
     <table id="instanceTable" class="table instanceTable">
       <thead>
         <tr>
           <th></th>
           <th>{{"mb.wmts.wmtsloader.repo.instance.label.title"|trans}}</th>
-          <th>{{"mb.wmts.wmtsloader.repo.instance.label.minsc"|trans}}</th>
-          <th>{{"mb.wmts.wmtsloader.repo.instance.label.maxsc"|trans}}</th>
+          <th>{#{"mb.wmts.wmtsloader.repo.instance.label.minsc"|trans}#}</th>
+          <th>{#{"mb.wmts.wmtsloader.repo.instance.label.maxsc"|trans}#}</th>
           <th class="checkboxColumn">{{"mb.wmts.wmtsloader.repo.instance.label.active"|trans}}</th>
           <th class="checkboxColumn odd" colspan="2">{{"mb.wmts.wmtsloader.repo.instance.label.select"|trans}}</th>
           <th class="checkboxColumn" colspan="2">{{"mb.wmts.wmtsloader.repo.instance.label.info"|trans}}</th>
@@ -102,7 +87,9 @@
         </tr>
       </thead>
       <tbody id="instanceTableCheckBody">
-        {% include "MapbenderWmtsBundle:Repository:instance-layer-form.html.twig"  with {'form_layers': form.layers, 'layer': instance.getrootlayer, 'level': 0 }%}
+        {% for form in form.layers %}
+        {% include "MapbenderWmtsBundle:Repository:instance-layer-form.html.twig"  with {'form': form }%}
+        {% endfor %}
         <tr class="dummy">
           <td colspan="20"></td>
         </tr>
@@ -112,8 +99,8 @@
     <div class="clearContainer"></div>
 
     <div class="right">
-      <input class="button" type="submit" name="save" value="{{"mb.wmts.wmtsloader.repo.instance.label.save2"|trans}}" />
-      <a href="{{ path('mapbender_manager_application_edit', {'slug': app.request.attributes.get('slug')}) }}" class="button critical">{{"mb.wmts.wmtsloader.repo.instance.label.cancel2"|trans}}</a>
+      <input class="button" type="submit" name="save" value="{{"mb.wmts.wmtsloader.repo.instance.label.save"|trans}}" />
+      <a href="{{ path('mapbender_manager_application_edit', {'slug': app.request.attributes.get('slug')}) }}" class="button critical">{{"mb.wmts.wmtsloader.repo.instance.label.cancel"|trans}}</a>
     </div>
 
     <div class="clearContainer"></div>
@@ -121,4 +108,4 @@
     {{ form_row(form._token) }}
   </form>
 </div>
-{% endblock %#}
+{% endblock %}

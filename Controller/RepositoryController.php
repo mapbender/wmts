@@ -347,7 +347,7 @@ class RepositoryController extends Controller
                     'result' => 'ok')), 200, array('Content-Type' => 'application/json'));
         }
         $em = $this->getDoctrine()->getManager();
-        $instLay->setPriority($number);
+//        $instLay->setPriority($number);
         $em->persist($instLay);
         $em->flush();
         $query = $em->createQuery(
