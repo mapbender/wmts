@@ -35,11 +35,6 @@ class RequestInformation
     public $formats = array();
 
     /**
-     * @var TODO: describe and set access modifier of variable
-     */
-    public $httpGetKvpl;
-
-    /**
      * Get httpGet
      *
      * @return string
@@ -79,7 +74,7 @@ class RequestInformation
      */
     public function setHttpGetKvp($value)
     {
-        $this->httpGetKvpl = $value;
+        $this->httpGetKvp = $value;
         return $this;
     }
 
