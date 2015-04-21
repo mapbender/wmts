@@ -236,11 +236,9 @@ class RepositoryController extends Controller
         $aclProvider->deleteAcl($oid);
 
         foreach ($wmtsinstances as $wmtsinstance) {
-            $wmtsinstance->remove($em);
-            $em->flush();
+            EntityHandler::createHandler($this->container, $wmtsinstance)->remove();
         }
         EntityHandler::createHandler($this->container, $wmtssource)->remove();
-//        $wmtssource->remove($em);
         $em->flush();
         $em->getConnection()->commit();
         $this->get('session')->getFlashBag()->set('success', "Your WMTS has been deleted");

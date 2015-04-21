@@ -56,9 +56,6 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
      */
     public function remove()
     {
-        foreach ($this->entity->getSublayer() as $sublayer) {
-            self::createHandler($this->container, $sublayer)->remove();
-        }
         $this->container->get('doctrine')->getManager()->remove($this->entity);
     }
 
