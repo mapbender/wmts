@@ -13,26 +13,17 @@ class RequestInformation
     /**
      * ORM\Column(type="string", nullable=true)
      */
-    //@TODO Doctrine bug: "protected" replaced with "public"
     public $httpGetRestful;
 
     /**
      * ORM\Column(type="string", nullable=true)
      */
-    //@TODO Doctrine bug: "protected" replaced with "public"
     public $httpGetKvp;
 
     /**
      * ORM\Column(type="string", nullable=true)
      */
-    //@TODO Doctrine bug: "protected" replaced with "public"
     public $httpPost;
-
-    /**
-     * ORM\Column(type="array", nullable=true)
-     */
-    //@TODO Doctrine bug: "protected" replaced with "public"
-    public $formats = array();
 
     /**
      * Get httpGet
@@ -96,39 +87,6 @@ class RequestInformation
     public function setHttpPost($value)
     {
         $this->httpPost = $value;
-        return $this;
-    }
-
-    /**
-     * Get formats
-     * @return array
-     */
-    public function getFormats()
-    {
-        return $this->formats;
-    }
-
-    /**
-     * Set formats
-     *
-     * @param array $value
-     * @return $this
-     */
-    public function setFormats($value)
-    {
-        $this->formats = $value;
-        return $this;
-    }
-
-    /**
-     * Add format
-     *
-     * @param string $value
-     * @return $this
-     */
-    public function addFormat($value)
-    {
-        $this->formats[] = $value;
         return $this;
     }
 }

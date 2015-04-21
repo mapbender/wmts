@@ -18,10 +18,42 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
 {
 
     /**
+     * ORM\Column(type="array", nullable=true)
+     */
+
+    public $layers;
+
+    /**
+     * ORM\Column(type="array", nullable=true)
+     */
+    public $matrixsets;
+
+    public function getLayers()
+    {
+        return $this->layers;
+    }
+
+    public function getMatrixsets()
+    {
+        return $this->matrixsets;
+    }
+
+    public function setLayers($layers)
+    {
+        $this->layers = $layers;
+        return $this;
+    }
+
+    public function setMatrixsets($matrixsets)
+    {
+        $this->matrixsets = $matrixsets;
+        return $this;
+    }
+
+    /**
      * Sets options
-     * 
      * @param ServiceConfigurationOptions $options ServiceConfigurationOptions
-     * @return InstanceConfiguration 
+     * @return InstanceConfiguration
      */
     public function setOptions(InstanceConfigurationOptions $options)
     {
@@ -31,7 +63,6 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
 
     /**
      * Returns options
-     * 
      * @return ServiceConfigurationOptions
      */
     public function getOptions()
@@ -41,9 +72,8 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
 
     /**
      * Sets a children
-     * 
      * @param array $children children
-     * @return InstanceConfiguration 
+     * @return InstanceConfiguration
      */
     public function setChildren($children)
     {
@@ -53,7 +83,6 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
 
     /**
      * Returns a title
-     * 
      * @return integer children
      */
     public function getChildren()
@@ -71,7 +100,9 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
             "title" => $this->title,
             "isBaseSource" => $this->isBaseSource,
             "options" => $this->options->toArray(),
-            "children" => $this->children
+            "children" => $this->children,
+            "layers" => $this->layers,
+            "matrixsets" => $this->matrixsets
         );
     }
 
@@ -81,24 +112,21 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
     public static function fromArray($options)
     {
         $ic = null;
-        if($options && is_array($options))
-        {
+        if ($options && is_array($options)) {
             $ic = new WmtsInstanceConfiguration();
-            if(isset($options['type'])){
+            if (isset($options['type'])) {
                 $ic->type = $options['type'];
             }
-            if(isset($options['title'])){
+            if (isset($options['title'])) {
                 $ic->title = $options['title'];
             }
-            if(isset($options['isBaseSource'])){
+            if (isset($options['isBaseSource'])) {
                 $ic->isBaseSource = $options['isBaseSource'];
             }
-            if(isset($options['options'])){
+            if (isset($options['options'])) {
                 $ic->options = WmtsInstanceConfigurationOptions::fromArray($options['options']);
             }
         }
         return $ic;
     }
-
 }
-?>

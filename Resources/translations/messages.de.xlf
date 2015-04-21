@@ -474,6 +474,18 @@
         <source>mb.wmts.wmtsloader.repo.instance.label.maxscale</source>
         <target>Maximaler Maßstab</target>
       </trans-unit>
+      <trans-unit id="d2bed55090814df1ee7e6e62b02ef87c" resname="mb.wmts.wmtsloader.repo.instance.label.toggle">
+        <source>mb.wmts.wmtsloader.repo.instance.label.toggle</source>
+        <target>aufklappen</target>
+      </trans-unit>
+      <trans-unit id="2449b093a8bc0b26786f72f9dd768fd9" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.allowtoggletoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.allowtoggletoc</source>
+        <target>Erlaubt Umschalten im Layerbaum</target>
+      </trans-unit>
+      <trans-unit id="130c1be2142ec2af104bc06e95c3f110" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc</source>
+        <target>Umschalten im Layerbaum</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

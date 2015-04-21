@@ -93,7 +93,7 @@ class WmtsInstanceConfigurationOptions extends InstanceConfigurationOptions
     public function toArray()
     {
         return array(
-            "url" => $this->url,
+//            "url" => $this->url,
             "proxy" => $this->proxy,
             "visible" => $this->visible,
 //            "format" => $this->format,

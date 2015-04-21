@@ -290,14 +290,14 @@ class RepositoryController extends Controller
                 }
                 $em->persist($wmtsinstance);
                 $em->flush();
-                $em->getConnection()->commit();
                 $wmtsinstance = $this->getDoctrine()
                     ->getRepository("MapbenderWmtsBundle:WmtsInstance")
                     ->find($wmtsinstance->getId());
-                $wmtsinstance->generateConfiguration();
-                $em->persist($wmtsinstance);
+                $wmtsinsthandler = EntityHandler::createHandler($this->container, $wmtsinstance);
+                $wmtsinsthandler->generateConfiguration();
+                $wmtsinsthandler->save();
                 $em->flush();
-
+                $em->getConnection()->commit();
                 $this->get('session')->getFlashBag()->set('success', 'Your Wmts Instance has been changed.');
                 return $this->redirect(
                     $this->generateUrl(
@@ -380,8 +380,9 @@ class RepositoryController extends Controller
         $wmtsinstance = $this->getDoctrine()
             ->getRepository("MapbenderCoreBundle:SourceInstance")
             ->find($instanceId);
-        $wmtsinstance->generateConfiguration();
-        $em->persist($wmtsinstance);
+        $wmtsinsthandler = EntityHandler::createHandler($this->container, $wmtsinstance);
+        $wmtsinsthandler->generateConfiguration();
+        $wmtsinsthandler->save();
         $em->flush();
         $em->getConnection()->commit();
         return new Response(json_encode(array(

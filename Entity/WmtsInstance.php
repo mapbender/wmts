@@ -89,6 +89,47 @@ class WmtsInstance extends SourceInstance
      * @ORM\Column(type="array", nullable=true)
      */
     protected $dimensions;
+
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $roottitle;
+
+    /**
+     * ORM\Column(type="boolean", nullable=true)
+     */
+    protected $active = true;
+
+    /**
+     * ORM\Column(type="boolean", nullable=true)
+     */
+    protected $allowselected = true;
+
+    /**
+     * ORM\Column(type="boolean", nullable=true)
+     */
+    protected $selected = true;
+
+    /**
+     * ORM\Column(type="boolean", nullable=true)
+     */
+    protected $info = true;
+
+    /**
+     * ORM\Column(type="boolean", nullable=true)
+     */
+    protected $allowinfo = true;
+
+    /**
+     * ORM\Column(type="boolean", nullable=true)
+     */
+    protected $toggle = true;
+
+    /**
+     * ORM\Column(type="boolean", nullable=true)
+     */
+    protected $allowtoggle = true;
 //
 //    /**
 //     * @ORM\Column(type="integer", options={"default" = 0})
@@ -104,6 +145,7 @@ class WmtsInstance extends SourceInstance
     {
         $this->layers = new ArrayCollection();
         $this->dimensions = array();
+        $this->roottitle = $this->getSource->getTitle();
     }
 
     /**
@@ -515,6 +557,95 @@ class WmtsInstance extends SourceInstance
     public function removeLayer(WmtsInstanceLayer $layers)
     {
         $this->layers->removeElement($layers);
+    }
+
+    public function getRoottitle()
+    {
+        return $this->roottitle;
+    }
+
+    public function setRoottitle($roottitle)
+    {
+        $this->roottitle = $roottitle;
+        return $this;
+    }
+
+
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    public function getAllowselected()
+    {
+        return $this->allowselected;
+    }
+
+    public function getSelected()
+    {
+        return $this->selected;
+    }
+
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    public function getAllowinfo()
+    {
+        return $this->allowinfo;
+    }
+
+    public function getToggle()
+    {
+        return $this->toggle;
+    }
+
+    public function getAllowtoggle()
+    {
+        return $this->allowtoggle;
+    }
+
+    public function setActive($active)
+    {
+        $this->active = $active;
+        return $this;
+    }
+
+    public function setAllowselected($allowselected)
+    {
+        $this->allowselected = $allowselected;
+        return $this;
+    }
+
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+        return $this;
+    }
+
+    public function setInfo($info)
+    {
+        $this->info = $info;
+        return $this;
+    }
+
+    public function setAllowinfo($allowinfo)
+    {
+        $this->allowinfo = $allowinfo;
+        return $this;
+    }
+
+    public function setToggle($toggle)
+    {
+        $this->toggle = $toggle;
+        return $this;
+    }
+
+    public function setAllowtoggle($allowtoggle)
+    {
+        $this->allowtoggle = $allowtoggle;
+        return $this;
     }
 
     public function __toString()

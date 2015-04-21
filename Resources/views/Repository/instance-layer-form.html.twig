@@ -1,15 +1,13 @@
-<tr id="node{#{ layer.id }#}" class="item level0" {#data-id="{{ form_layer.vars.value.id }}"{% if layer.parent != null %} data-parent="{{layer.parent.id}}"{% endif %} data-type="{{ type }}"
-    data-href="{{url("mapbender_manager_repository_instancelayerweight", {"slug": slug, "instanceId": instance.id, "instLayerId": form_layer.vars.value.id})}}"#}>
+<tr class="item level0" >
+    <td class="level1 itemType iconLinkButton iconSmall"></td>
     <td class="titleColumn" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.layerstitle"|trans }}">{{ form_widget(form.title) }}</td>
-{#
-    <td class="minScaleColumn" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.minscale"|trans }}"></td>
-    <td class="maxScaleColumn" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.maxsclase"|trans }}"></td>
-#}
     <td class="checkboxColumn" data-check-identifier="checkActive" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.active"|trans }}">{{ form_widget(form.active) }}</td>
     <td class="checkboxColumn odd" data-check-identifier="checkSelectAllow" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.allowselecttoc"|trans }}">{{ form_widget(form.allowselected) }}</td>
     <td class="checkboxColumn odd" data-check-identifier="checkSelectOn" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.selectedtoc"|trans }}">{{ form_widget(form.selected) }}</td>
     <td class="checkboxColumn" data-check-identifier="checkInfoAllow" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.allowinfotoc"|trans }}">{{ form_widget(form.allowinfo) }}</td>
     <td class="checkboxColumn" data-check-identifier="checkInfoOn" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.infotoc"|trans }}">{{ form_widget(form.info) }}</td>
+    <td class="checkboxColumn odd" data-check-identifier="checkToggleAllow" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.allowtoggletoc"|trans }}">{{ form_widget(form.allowtoggle) }}</td>
+    <td class="checkboxColumn odd" data-check-identifier="checkToggleOn" title="{{ "mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc"|trans }}">{{ form_widget(form.toggle) }}</td>
     <td class="moreColumn">
       <span class="iconMore" title="{{'mb.wmts.wmtsloader.repo.instancelayerform.label.moreinfo'|trans}}">
         <div class="infoMsgBox hide">

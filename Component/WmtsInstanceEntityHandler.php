@@ -201,24 +201,24 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
         $wmtsconf->setIsBaseSource($this->entity->isBasesource());
 
         $options    = new WmtsInstanceConfigurationOptions();
-        $dimensions = array();
-        foreach ($this->entity->getDimensions() as $dimension) {
-            if ($dimension->getActive()) {
-                $name         = $dimension->getName();
-                $dimensions[] = array(
-                    'current' => $dimension->getCurrent(),
-                    'default' => $dimension->getDefault(),
-                    'multipleValues' => $dimension->getMultipleValues(),
-                    'name' => $dimension->getName(),
-                    '__name' => $name === 'time' || $name === 'elevation' ? $name : "dim_" . $name,
-                    'nearestValue' => $dimension->getNearestValue(),
-                    'unitSymbol' => $dimension->getUnitSymbol(),
-                    'units' => $dimension->getUnits(),
-                    'extent' => $dimension->getData($dimension->getExtent()),
-                    'type' => $dimension->getType(),
-                );
-            }
-        }
+//        $dimensions = array();
+//        foreach ($this->entity->getDimensions() as $dimension) {
+//            if ($dimension->getActive()) {
+//                $name         = $dimension->getName();
+//                $dimensions[] = array(
+//                    'current' => $dimension->getCurrent(),
+//                    'default' => $dimension->getDefault(),
+//                    'multipleValues' => $dimension->getMultipleValues(),
+//                    'name' => $dimension->getName(),
+//                    '__name' => $name === 'time' || $name === 'elevation' ? $name : "dim_" . $name,
+//                    'nearestValue' => $dimension->getNearestValue(),
+//                    'unitSymbol' => $dimension->getUnitSymbol(),
+//                    'units' => $dimension->getUnits(),
+//                    'extent' => $dimension->getData($dimension->getExtent()),
+//                    'type' => $dimension->getType(),
+//                );
+//            }
+//        }
 
         $options
 //            ->setUrl($this->entity->getSource()->getGetMap()->getHttpGet())
@@ -236,10 +236,17 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
         $wmtsconf->setOptions($options);
         $layersConf = array();
         foreach ($this->entity->getLayers() as $layer) {
-            $layersConf[] = self::createHandler($this->container, $layer)->generateConfiguration();
+            if ($layer->getActive()) {
+                $layersConf[] = self::createHandler($this->container, $layer)->generateConfiguration();
+            }
         }
-        $wmtsconf->setChildren($layersConf);
-
+        $wmtsconf->setLayers($layersConf);
+        $mattixsets = array();
+        foreach ($this->entity->getSource()->getMatrixsets() as $matrixset) {
+//            $mattixsets[] = self::createHandler($this->container, $layer)->generateConfiguration();
+        }
+        $wmtsconf->setLayers($layersConf);
+//$a = $wmtsconf->toArray();
         $this->entity->setConfiguration($wmtsconf->toArray());
     }
 

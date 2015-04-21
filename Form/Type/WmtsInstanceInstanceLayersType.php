@@ -76,10 +76,6 @@ class WmtsInstanceInstanceLayersType extends AbstractType
         $builder
             ->add('title', 'text', array(
                 'required' => true))
-//            ->add('exceptionformat', 'choice',
-//                      array(
-//                'choices' => $formats_exc,
-//                'required' => false))
             ->add('basesource', 'checkbox', array(
                 'required' => false))
             ->add('visible', 'checkbox', array(
@@ -89,33 +85,28 @@ class WmtsInstanceInstanceLayersType extends AbstractType
             ->add('opacity', 'choice', array(
                 'choices' => $opacity,
                 'required' => true))
-//            ->add('transparency', 'checkbox', array(
-//                'required' => false))
-//            ->add('tiled', 'checkbox', array(
-//                'required' => false))
-//            ->add('ratio', 'number', array(
-//                'required' => false,
-//                'precision' => 2))
-//            ->add('buffer', 'integer', array(
-//                'required' => false))
-//            ->add('dimensions', 'collection',
-//                  array(
-//                'required' => false,
-//                'type' => new DimensionInstType(),
-//                'auto_initialize' => false,t/
-//                'allow_add' => true,
-//                'allow_delete' => true,))
-            ->add(
-                'layers',
-                'collection',
-                array(
-                    'type' => new WmtsInstanceLayerType(),
-                    'options' => array(
-                        'data_class' => 'Mapbender\WmtsBundle\Entity\WmtsInstanceLayer',
-                        'num_layers' => count($wmtsinstance->getLayers())
-                    )
-                )
-            )
+            ->add('layers', 'collection', array(
+                'type' => new WmtsInstanceLayerType(),
+                'options' => array(
+                    'data_class' => 'Mapbender\WmtsBundle\Entity\WmtsInstanceLayer',
+                    'num_layers' => count($wmtsinstance->getLayers()))))
+
+            ->add('roottitle', 'text', array(
+                'required' => true))
+            ->add('active', 'checkbox', array(
+                'required' => false))
+            ->add('selected', 'checkbox', array(
+                'required' => false))
+            ->add('info', 'checkbox', array(
+                    'required' => false, 'disabled' => true))
+            ->add('toggle', 'checkbox', array(
+                'required' => false))
+            ->add('allowselected', 'checkbox', array(
+                'required' => false))
+            ->add('allowinfo', 'checkbox', array(
+                'required' => false, 'disabled' => true))
+            ->add('allowtoggle', 'checkbox', array(
+                'required' => false))
         ;
     }
 }
