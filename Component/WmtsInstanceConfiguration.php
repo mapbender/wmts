@@ -26,16 +26,16 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
     /**
      * ORM\Column(type="array", nullable=true)
      */
-    public $matrixsets;
+    public $tilematrixsets;
 
     public function getLayers()
     {
         return $this->layers;
     }
 
-    public function getMatrixsets()
+    public function getTilematrixsets()
     {
-        return $this->matrixsets;
+        return $this->tilematrixsets;
     }
 
     public function setLayers($layers)
@@ -44,9 +44,17 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
         return $this;
     }
 
-    public function setMatrixsets($matrixsets)
+    public function setTilematrixsets($tilematrixsets)
     {
-        $this->matrixsets = $matrixsets;
+        $this->tilematrixsets = $tilematrixsets;
+        return $this;
+    }
+
+
+
+    public function addTilematrixset($tilematrixset)
+    {
+        $this->tilematrixsets[] = $tilematrixset;
         return $this;
     }
 
@@ -95,6 +103,12 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
      */
     public function toArray()
     {
+//        foreach ($this->tilematrixsets as $tilematrixset) {
+//            $tilematrixset = new \Mapbender\WmtsBundle\Entity\TileMatrixSet();
+//            foreach ($tilematrixset- as $value) {
+//
+//            }
+//        }
         return array(
             "type" => $this->type,
             "title" => $this->title,
@@ -102,7 +116,7 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
             "options" => $this->options->toArray(),
             "children" => $this->children,
             "layers" => $this->layers,
-            "matrixsets" => $this->matrixsets
+            "tilematrixsets" => $this->tilematrixsets
         );
     }
 

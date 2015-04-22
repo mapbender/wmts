@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -44,7 +43,7 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
         $this->entity->setAllowinfo(Utils::getBool(count($wmtslayersource->getInfoformats())));
 //        $this->entity->setPriority($num);
         $instance->addLayer($this->entity);
-        
+
         if ($persist) {
             $this->container->get('doctrine')->getManager()->persist($this->entity);
             $this->container->get('doctrine')->getManager()->flush();
@@ -118,27 +117,13 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
     public function generateConfiguration()
     {
         if ($this->entity->getActive() === true) {
-//            $children = array();
-//            if ($this->entity->getSublayer()->count() > 0) {
-//                foreach ($this->entity->getSublayer() as $sublayer) {
-//                    $instLayHandler = self::createHandler($this->container, $sublayer);
-//                    $configurationTemp = $instLayHandler->generateConfiguration();
-//                    if (count($configurationTemp) > 0) {
-//                        $children[] = $configurationTemp;
-//                    }
-//                }
-//            }
-            $layerConf = $this->getConfiguration();
             return array(
-                "options" => $layerConf,
+                "options" => $this->getConfiguration(),
                 "state" => array(
                     "visibility" => null,
                     "info" => null,
                     "outOfScale" => null,
                     "outOfBounds" => null),);
-//            if (count($children) > 0) {
-//                $configuration["children"] = $children;
-//            }
         }
         return array();
     }
@@ -148,19 +133,20 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
      */
     public function getConfiguration()
     {
-        $configuration = array(
-            "id" => strval($this->entity->getId()),
-//            "priority" => $this->entity->getPriority(),
-//            "name" => $this->entity->getSourceItem()->getName() !== null ?
-//                $this->entity->getSourceItem()->getName() : "",
+        $sourceItem      = $this->entity->getSourceItem();
+        $resourceUrl     = $sourceItem->getResourceUrl();
+        $urlTemplateType = count($resourceUrl) > 0 ? $resourceUrl[0] : null;
+        $configuration   = array(
+            "id" => $this->entity->getId() ? strval($this->entity->getId())
+                : strval($this->entity->getSourceInstance()->getId()),
+            'url' => $urlTemplateType ? $urlTemplateType->getTemplate() : null,
+            'format' => $urlTemplateType ? $urlTemplateType->getFormat() : null,
             "title" => $this->entity->getTitle(),
-            "queryable" => $this->entity->getInfo(),
-            "style" => $this->entity->getStyle(),
-//            "minScale" => $this->entity->getMinScale() !== null ? floatval($this->entity->getMinScale()) : null,
-//            "maxScale" => $this->entity->getMaxScale() !== null ? floatval($this->entity->getMaxScale()) : null
+            "style" => $this->entity->getStyle()
         );
-        $srses         = array();
-        $llbbox        = $this->entity->getSourceItem()->getLatlonBounds();
+
+        $srses  = array();
+        $llbbox = $this->entity->getSourceItem()->getLatlonBounds();
         if ($llbbox !== null) {
             $srses[$llbbox->getSrs()] = array(
                 floatval($llbbox->getMinx()),
@@ -169,38 +155,20 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
                 floatval($llbbox->getMaxy())
             );
         }
-//        foreach ($this->entity->getSourceItem()->getBoundingBoxes() as $bbox) {
-//            $srses[$bbox->getSrs()] = array(
-//                floatval($bbox->getMinx()),
-//                floatval($bbox->getMiny()),
-//                floatval($bbox->getMaxx()),
-//                floatval($bbox->getMaxy()));
-//        }
-        $configuration['bbox'] = $srses;
-//        if (count($this->entity->getSourceItem()->getStyles()) > 0) {
-//            $styles    = $this->entity->getSourceItem()->getStyles();
-//            $legendurl = $styles[count($styles) - 1]->getLegendUrl(); // the last style from object's styles
-//            if ($legendurl !== null) {
-//                $configuration["legend"] = array(
-//                    "url" => $legendurl->getOnlineResource()->getHref(),
-//                    "width" => intval($legendurl->getWidth()),
-//                    "height" => intval($legendurl->getHeight()));
-//            }
-//        } elseif ($this->entity->getSourceInstance()->getSource()->getGetLegendGraphic() !== null &&
-//            $this->entity->getSourceItem()->getName() !== null &&
-//            $this->entity->getSourceItem()->getName() !== "") {
-//            $legend                  = $this->entity->getSourceInstance()->getSource()->getGetLegendGraphic();
-//            $url                     = $legend->getHttpGet();
-//            $formats                 = $legend->getFormats();
-//            $params                  = "service=WMS&request=GetLegendGraphic"
-//                . "&version=" . $this->entity->getSourceInstance()->getSource()->getVersion()
-//                . "&layer=" . $this->entity->getSourceItem()->getName()
-//                . (count($formats) > 0 ? "&format=" . $formats[0] : "")
-//                . "&sld_version=1.1.0";
-//            $legendgraphic           = Utils::getHttpUrl($url, $params);
-//            $configuration["legend"] = array(
-//                "graphic" => $legendgraphic);
-//        }
+        $configuration['bbox']        = $srses;
+        if (count($this->entity->getSourceItem()->getStyles()) > 0) {
+            foreach ($this->entity->getSourceItem()->getStyles() as $style) {
+                if (!$this->entity->getStyle()
+                    || ($this->entity->getStyle() && $this->entity->getStyle() === $style->getIdentifier())) {
+                    if ($style->getLegendUrl()) {
+                        $configuration["legend"] = array(
+                            "url" => $style->getLegendUrl()->getHref(),
+                            "format" => $style->getLegendUrl()->getFormat());
+                    }
+                    break;
+                }
+            }
+        }
         $configuration["treeOptions"] = array(
             "info" => $this->entity->getInfo(),
             "selected" => $this->entity->getSelected(),

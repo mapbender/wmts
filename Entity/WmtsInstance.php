@@ -145,7 +145,6 @@ class WmtsInstance extends SourceInstance
     {
         $this->layers = new ArrayCollection();
         $this->dimensions = array();
-        $this->roottitle = $this->getSource->getTitle();
     }
 
     /**

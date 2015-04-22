@@ -31,6 +31,15 @@ $.extend(true, Mapbender, {
 //                    rootLayer.options.treeOptions.selected = false;
 //                    rootLayer.options.treeOptions.allow.selected = false;
 //                }
+                var proj = Mapbender.Model.getCurrentProj();
+                for(var i = 0; i < sourceDef.configuration.layers.lenght; i++){
+                    var layer = sourceDef.configuration.layers[i];
+                    for(var j = 0; j < sourceDef.configuration.tilematrixsets.lenght; j++){
+                        var tilematrixset = sourceDef.configuration.tilematrixsets[i];
+                    }
+                }
+                // find layer with crs == proj.projCode
+                
                 var origin = null;
                 if (sourceDef.configuration.origin) {
                     origin = new OpenLayers.LonLat(

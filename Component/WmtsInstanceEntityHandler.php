@@ -32,6 +32,7 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
     public function create($persist = true)
     {
         $this->entity->setTitle($this->entity->getSource()->getTitle());
+        $this->entity->setRoottitle($this->entity->getSource()->getTitle());
         $source = $this->entity->getSource();
 //        $this->entity->setFormat(ArrayUtil::getValueFromArray($source->getGetMap()->getFormats(), null, 0));
 //        $this->entity->setInfoformat(
@@ -158,10 +159,11 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
             );
             $configuration['options']['url'] = $url;
         } elseif ($signer) {
-            $configuration['options']['url'] = $signer->signUrl($configuration['options']['url']);
-            if ($this->entity->getProxy()) {
-                $this->signeUrls($signer, $configuration['children'][0]);
-            }
+            
+//            $configuration['options']['url'] = $signer->signUrl($configuration['options']['url']);
+//            if ($this->entity->getProxy()) {
+//                $this->signeUrls($signer, $configuration['children'][0]);
+//            }
         }
         $status = $this->entity->getSource()->getStatus();
         $configuration['status'] = $status ? strtolower($status) : strtolower(Source::STATUS_OK);
@@ -221,33 +223,47 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
 //        }
 
         $options
-//            ->setUrl($this->entity->getSource()->getGetMap()->getHttpGet())
             ->setProxy($this->entity->getProxy())
             ->setVisible($this->entity->getVisible())
-//            ->setFormat($this->entity->getFormat())
-//            ->setInfoformat($this->entity->getInfoformat())
-//            ->setTransparency($this->entity->getTransparency())
             ->setOpacity($this->entity->getOpacity() / 100)
-//            ->setTiled($this->entity->getTiled())
-//            ->setBbox($srses)
 //            ->setDimensions($dimensions)
             ;
         
         $wmtsconf->setOptions($options);
+        // make fake root layer for layertree
+        $root = $this->createRootNode();
+
         $layersConf = array();
         foreach ($this->entity->getLayers() as $layer) {
             if ($layer->getActive()) {
+                $conf = self::createHandler($this->container, $layer)->generateConfiguration();
                 $layersConf[] = self::createHandler($this->container, $layer)->generateConfiguration();
             }
         }
         $wmtsconf->setLayers($layersConf);
-        $mattixsets = array();
-        foreach ($this->entity->getSource()->getMatrixsets() as $matrixset) {
-//            $mattixsets[] = self::createHandler($this->container, $layer)->generateConfiguration();
+//        $tilematrixsets = array();
+        foreach ($this->entity->getSource()->getTilematrixsets() as $tilematrixset) {
+            $tilematrixsetArr = array(
+                'id' => $tilematrixset->getId(),
+                'identifier' => $tilematrixset->getIdentifier(),
+                'supportedCrs' => $tilematrixset->getSupportedCrs()
+            );
+
+            foreach ($tilematrixset->getTilematrixes() as $tilematrix) {
+                if (!isset($tilematrixsetArr['tilematrixes']['tileSize'])) {
+                    $tilematrixsetArr['tilematrixes']['tileSize'] =
+                        array($tilematrix->getTilewidth(), $tilematrix->getTileheight());
+                }
+                $tilematrixArr = array(
+                    'identifier' => $tilematrix->getIdentifier(),
+                    'scaleDenominator' => $tilematrix->getScaledenominator()
+                );
+                $tilematrixsetArr['tilematrixes'][] = $tilematrixArr;
+            }
+            $wmtsconf->addTilematrixset($tilematrixsetArr);
         }
-        $wmtsconf->setLayers($layersConf);
-//$a = $wmtsconf->toArray();
         $this->entity->setConfiguration($wmtsconf->toArray());
+
     }
 
     /**
@@ -412,5 +428,15 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
             $dimensions[] = $dimension;
         }
         return $dimensions;
+    }
+
+    private function createRootNode()
+    {
+        $root = new WmtsLayerSource();
+        $rootInst = new WmtsInstanceLayer();
+        $rootInst->setSourceItem($root);
+        $rootInst->setSourceInstance($this->entity);
+        $rootlayerHandler = self::createHandler($this->container, $rootInst);
+        return $rootlayerHandler->generateConfiguration();
     }
 }

@@ -129,12 +129,9 @@ class Style
         return $this->legendurl;
     }
 
-    public function setLegendurl($legendurl)
+    public function setLegendurl(LegendUrl $legendurl)
     {
         $this->legendurl = $legendurl;
         return $this;
     }
-
-
-
 }

@@ -201,24 +201,7 @@ class TileMatrixSet
     {
         $this->keyword = $value;
     }
-
-    /**
-     * Get suppertedsrs
-     * @return string
-     */
-    public function getSupportedSRS()
-    {
-        return $this->supportedsrs;
-    }
-
-    /**
-     * Set supportedsrs
-     * @param string $value
-     */
-    public function setSupportedSRS($value)
-    {
-        $this->supportedsrs = $value;
-    }
+    
     /**
      * Get wellknowscaleset
      * @return string
