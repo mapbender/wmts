@@ -13,6 +13,7 @@ use Mapbender\CoreBundle\Entity\Source;
 use Mapbender\CoreBundle\Utils\ArrayUtil;
 use Mapbender\WmtsBundle\Component\Dimension;
 use Mapbender\WmtsBundle\Component\DimensionInst;
+use Mapbender\WmtsBundle\Entity\WmtsInstance;
 use Mapbender\WmtsBundle\Entity\WmtsInstanceLayer;
 use Mapbender\WmtsBundle\Entity\WmtsLayerSource;
 use Mapbender\WmtsBundle\Entity\WmtsSource;
@@ -25,6 +26,16 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
 {
+    /**
+     * @param array $configuration
+     * @return WmtsInstance
+     */
+    public function configure(array $configuration = array())
+    {
+        /** @var WmtsInstance $sourceInstance */
+        $sourceInstance = $this->getEntity();
+        return $sourceInstance;
+    }
 
     /**
      * @inheritdoc
