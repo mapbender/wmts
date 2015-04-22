@@ -195,6 +195,7 @@ class WmtsInstance extends SourceInstance
      * Set configuration
      *
      * @param array $configuration
+     * @return $this
      */
     public function setConfiguration($configuration)
     {
