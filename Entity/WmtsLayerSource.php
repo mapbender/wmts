@@ -56,6 +56,12 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      * @ORM\Column(type="object", nullable=true)
      */
     public $latlonBounds;
+    
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    //@TODO Doctrine bug: "protected" replaced with "public"
+    public $boundingBoxes;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -93,7 +99,6 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      */
     public function __construct()
     {
-//        $this->layer = new ArrayCollection();
         $this->keywords = new ArrayCollection();
         $this->infoformats = array();
         $this->formats = array();
@@ -101,11 +106,7 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
         $this->dimension = array();
         $this->resourceUrl = array();
         $this->tilematrixSetlinks = array();
-//        $this->metadataUrl = array();
-//        $this->dataUrl = array();
-//        $this->featureListUrl = array();
-//        $this->srs = array();
-//        $this->identifier = array();
+        $this->boundingBoxes = array();
     }
     /**
      * Get id
@@ -224,6 +225,40 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     public function getLatlonBounds()
     {
         return $this->latlonBounds;
+    }
+
+    /**
+     * Add boundingBox
+     *
+     * @param BoundingBox $boundingBoxes
+     * @return WmsLayerSource
+     */
+    public function addBoundingBox(BoundingBox $boundingBoxes)
+    {
+        $this->boundingBoxes[] = $boundingBoxes;
+        return $this;
+    }
+
+    /**
+     * Set boundingBoxes
+     *
+     * @param array $boundingBoxes
+     * @return WmsLayerSource
+     */
+    public function setBoundingBoxes($boundingBoxes)
+    {
+        $this->boundingBoxes = $boundingBoxes ? $boundingBoxes : array();
+        return $this;
+    }
+
+    /**
+     * Get boundingBoxes
+     *
+     * @return array
+     */
+    public function getBoundingBoxes()
+    {
+        return $this->boundingBoxes;
     }
 
     /**

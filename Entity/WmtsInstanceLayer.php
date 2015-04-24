@@ -187,7 +187,7 @@ class WmtsInstanceLayer extends SourceInstanceItem
      */
     public function getFormat()
     {
-        return $this->format !== null ? $this->format : 'image/png';
+        return $this->format;
     }
 
     /**
@@ -474,6 +474,26 @@ class WmtsInstanceLayer extends SourceInstanceItem
     }
 
     /**
+     * Sets a tileMatrixSetLink
+     * @param string $tileMatrixSet
+     * @return \Mapbender\WmtsBundle\Entity\WmtsInstanceLayer
+     */
+    public function setTileMatrixSet($tileMatrixSet)
+    {
+        $this->tileMatrixSet = $tileMatrixSet;
+        return $this;
+    }
+
+    /**
+     * Gets a tileMatrixSetLink
+     * @return string
+     */
+    public function getTileMatrixSet()
+    {
+        return $this->tileMatrixSet;
+    }
+
+        /**
      * @inheritdoc
      */
     public function setSourceInstance(SourceInstance $sourceInstance = NULL)

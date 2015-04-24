@@ -142,7 +142,9 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
             'url' => $urlTemplateType ? $urlTemplateType->getTemplate() : null,
             'format' => $urlTemplateType ? $urlTemplateType->getFormat() : null,
             "title" => $this->entity->getTitle(),
-            "style" => $this->entity->getStyle()
+            "style" => $this->entity->getStyle(),
+            "identifier" => $this->entity->getSourceItem()->getIdentifier(),
+            "tilematrixset" => $this->entity->getTileMatrixSet(),
         );
 
         $srses  = array();
@@ -154,6 +156,20 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
                 floatval($llbbox->getMaxx()),
                 floatval($llbbox->getMaxy())
             );
+        }
+        if($this->entity->getSourceItem()->getBoundingBoxes()){
+            foreach ($this->entity->getSourceItem()->getBoundingBoxes() as $bbox) {
+                $srses = array_merge(
+                    $srses,
+                    array($bbox->getSrs() => array(
+                        floatval($bbox->getMinx()),
+                        floatval($bbox->getMiny()),
+                        floatval($bbox->getMaxx()),
+                        floatval($bbox->getMaxy())
+                        )
+                    )
+                );
+            }
         }
         $configuration['bbox']        = $srses;
         if (count($this->entity->getSourceItem()->getStyles()) > 0) {

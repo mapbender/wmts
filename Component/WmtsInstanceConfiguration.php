@@ -99,16 +99,20 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
     }
 
     /**
+     * Returns a title
+     * @return integer children
+     */
+    public function addChild($child)
+    {
+        $this->children[] = $child;
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      */
     public function toArray()
     {
-//        foreach ($this->tilematrixsets as $tilematrixset) {
-//            $tilematrixset = new \Mapbender\WmtsBundle\Entity\TileMatrixSet();
-//            foreach ($tilematrixset- as $value) {
-//
-//            }
-//        }
         return array(
             "type" => $this->type,
             "title" => $this->title,
@@ -125,6 +129,7 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
      */
     public static function fromArray($options)
     {
+        throw new \Exception('not implemented yet.');
         $ic = null;
         if ($options && is_array($options)) {
             $ic = new WmtsInstanceConfiguration();

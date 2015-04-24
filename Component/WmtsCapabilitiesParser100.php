@@ -269,6 +269,23 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
                 ->setMaxy($bounds[3]);
             $wmtslayer->setLatlonBounds($latlonBounds);
         }
+
+        $bboxEls = $this->xpath->query("./ows:BoundingBox", $contextElm);
+        foreach ($bboxEls as $bboxEl) {
+            $bbox = new BoundingBox();
+            $bounds       = explode(
+                " ",
+                $this->getValue("./ows:LowerCorner/text()", $bboxEl)
+                . " " . $this->getValue("./ows:UpperCorner/text()", $bboxEl)
+            );
+            $bbox->setSrs($this->getValue("./@crs", $bboxEl))
+                ->setMinx($bounds[0])
+                ->setMiny($bounds[1])
+                ->setMaxx($bounds[2])
+                ->setMaxy($bounds[3]);
+            $wmtslayer->addBoundingBox($bbox);
+        }
+
         $wmtslayer->setIdentifier($this->getValue("./ows:Identifier/text()", $contextElm));
 
         $stylesEl = $this->xpath->query("./wmts:Style", $contextElm);

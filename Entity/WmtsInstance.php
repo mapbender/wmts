@@ -114,12 +114,12 @@ class WmtsInstance extends SourceInstance
     /**
      * ORM\Column(type="boolean", nullable=true)
      */
-    protected $info = true;
+    protected $info;
 
     /**
      * ORM\Column(type="boolean", nullable=true)
      */
-    protected $allowinfo = true;
+    protected $allowinfo;
 
     /**
      * ORM\Column(type="boolean", nullable=true)
@@ -676,9 +676,12 @@ class WmtsInstance extends SourceInstance
     {
         return array(
             'js' => array(
-                '@MapbenderWmtsBundle/Resources/public/mapbender.source.wmts.js'),
+                '@MapbenderCoreBundle/Resources/public/mapbender.source.js',
+                '@MapbenderWmtsBundle/Resources/public/mapbender.source.wmts.js'
+            ),
             'css' => array(),
-            'trans' => array('MapbenderWmtsBundle::wmtsbundle.json.twig'));
+            'trans' => array('MapbenderWmtsBundle::wmtsbundle.json.twig')
+        );
     }
 
     /**

@@ -125,16 +125,71 @@ class FieldSubscriber implements EventSubscriberInterface
         foreach ($arrStyles as $style) {
             $styleOpt[$style->getIdentifier()] = $style->getTitle();
         }
-
         $form->remove('style');
         $form->add($this->factory->createNamed(
             'style',
             'choice',
             null,
             array(
-                'label' => 'style',
                 'choices' => $styleOpt,
                 "required" => false,
+                'auto_initialize' => false
+            )
+        ));
+
+        $tileMatrixLinks = $data->getSourceItem()->getTilematrixSetlinks();
+        $tileMatrixLinkOpt = array();
+        foreach ($tileMatrixLinks as $tileMatrixLink) {
+            foreach ($data->getSourceInstance()->getSource()->getTilematrixsets() as $tilematrixset) {
+                if ($tilematrixset->getIdentifier() === $tileMatrixLink->getTileMatrixSet()) {
+                    $tileMatrixLinkOpt[$tilematrixset->getIdentifier()] =
+                        ($tilematrixset->getTitle() ? $tilematrixset->getTitle() : $tileMatrixLink->getTileMatrixSet())
+                        . "(" . $tilematrixset->getSupportedCrs() . ")";
+                }
+            }
+        }
+        $form->remove('tileMatrixSet');
+        $form->add($this->factory->createNamed(
+            'tileMatrixSet',
+            'choice',
+            null,
+            array(
+                'choices' => $tileMatrixLinkOpt,
+                "required" => true,
+                'auto_initialize' => false
+            )
+        ));
+
+        $infoFormats = $data->getSourceItem()->getInfoformats();
+        $form->remove('infoformat');
+        $infoFormatOpt = array();
+        foreach ($infoFormats as $infoFromat) {
+            $infoFormatOpt[$infoFromat] = $infoFromat;
+        }
+        $form->add($this->factory->createNamed(
+            'infoformat',
+            'choice',
+            null,
+            array(
+                'choices' => $infoFormatOpt,
+                "required" => false,
+                'auto_initialize' => false
+            )
+        ));
+
+        $formats = $data->getSourceItem()->getFormats();
+        $form->remove('format');
+        $formatOpt = array();
+        foreach ($formats as $format) {
+            $formatOpt[$format] = $format;
+        }
+        $form->add($this->factory->createNamed(
+            'format',
+            'choice',
+            null,
+            array(
+                'choices' => $formatOpt,
+                "required" => true,
                 'auto_initialize' => false
             )
         ));

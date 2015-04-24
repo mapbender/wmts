@@ -55,18 +55,13 @@ class WmtsInstanceLayerType extends AbstractType
                 'required' => false, 'disabled' => true))
             ->add('allowtoggle', 'checkbox', array(
                 'required' => false))
-//            ->add('allowreorder', 'checkbox', array(
-//                'required' => false))
-//                ->add('minScale', 'text',
-//                      array(
-//                    'required' => false))
-//                ->add('maxScale', 'text',
-//                      array(
-//                    'required' => false))
             ->add('style', 'choice', array(
                     'label' => 'style', 'choices' => array(), 'required' => false))
-//            ->add('priority', 'hidden', array(
-//                'required' => true))
-        ;
+            ->add('format', 'choice', array(
+                    'label' => 'style', 'choices' => array(), 'required' => false))
+            ->add('infoformat', 'choice', array(
+                    'label' => 'style', 'choices' => array(), 'required' => false))
+            ->add('tileMatrixSet', 'choice', array(
+                'choices' => array(), 'required' => true));
     }
 }
