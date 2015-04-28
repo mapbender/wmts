@@ -2,7 +2,6 @@
 
 namespace Mapbender\WmtsBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -59,7 +58,7 @@ class TileMatrixSet
     /**
      * @ORM\Column(type="array",nullable=false);
      */
-    protected $tilematrixes;
+    protected $tilematrices;
 
 //    /**
 //     * @ORM\Column(type="string",nullable=true)
@@ -69,7 +68,7 @@ class TileMatrixSet
 //    /**  @var string keyword ??? */
 //    protected $keyword;
 //
-//    /**  @var array $tilematrixes */
+//    /**  @var array $tilematrices */
 //    protected $boundingbox = array();
 
     /**
@@ -78,7 +77,7 @@ class TileMatrixSet
      */
     public function __construct()
     {
-        $this->tilematrixes = array();
+        $this->tilematrices = array();
     }
     
     /**
@@ -221,21 +220,21 @@ class TileMatrixSet
     }
 
     /**
-     * Get tilematrixes
+     * Get tilematrices
      * @return TileMatrix[]
      */
-    public function getTilematrixes()
+    public function getTilematrices()
     {
-        return $this->tilematrixes;
+        return $this->tilematrices;
     }
 
     /**
-     * Set tilematrixes
-     * @param array $tilematrixes
+     * Set tilematrices
+     * @param array $tilematrices
      */
-    public function setTilematrixes($tilematrixes)
+    public function setTilematrices($tilematrices)
     {
-        $this->tilematrixes = $tilematrixes;
+        $this->tilematrices = $tilematrices;
     }
 
     /**
@@ -244,7 +243,7 @@ class TileMatrixSet
      */
     public function addTilematrix(TileMatrix $tilematrix)
     {
-        $this->tilematrixes[] = $tilematrix;
+        $this->tilematrices[] = $tilematrix;
     }
 
     /**

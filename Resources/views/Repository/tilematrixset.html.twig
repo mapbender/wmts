@@ -15,7 +15,7 @@
     <span class="labelText">{{"mb.wmts.wmtsloader.repo.tilematrixset.label.abstract" | trans }}:</span>
     <span class="metaText">{{ tilematrixset.abstract }}</span>
   </li>
-  {% for tilematrix in tilematrixset.tilematrixes %}
+  {% for tilematrix in tilematrixset.tilematrices %}
   <li>
     <ul class="itemLevel2 list">
     {% include "MapbenderWmtsBundle:Repository:tilematrix.html.twig"  with {'tilematrix': tilematrix, 'itemLevel': 2 }%}

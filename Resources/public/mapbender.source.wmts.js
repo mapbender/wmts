@@ -74,7 +74,7 @@ Mapbender.Geo.WmtsSource = Class({'extends': Mapbender.Geo.Source },{
             layer: layer.options.identifier,//sourceDef.configuration.layer,
             style: layer.options.style,
             matrixSet: tilematrixset.identifier,//layer.options.matrixSet,
-            matrixIds: tilematrixset.tilematrixes,
+            matrixIds: tilematrixset.tilematrices,
             format: layer.options.format,
             tileOrigin: OpenLayers.LonLat.fromArray(tilematrixset.origin),
             tileSize: new OpenLayers.Size(tilematrixset.tileSize[0], tilematrixset.tileSize[1]),
