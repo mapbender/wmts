@@ -229,79 +229,50 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
         $wmtsconf->addChild($root);
         foreach ($this->entity->getSource()->getTilematrixsets() as $tilematrixset) {
             $tilematrices = $tilematrixset->getTilematrices();
+            $origin = $tilematrices[0]->getTopleftcorner();
+            $tilewidth = $tilematrices[0]->getTilewidth();
+            $tileheight = $tilematrices[0]->getTileheight();
+            $tilematricesArr = array();
+            $multiTopLeft = false;
+            $multiTileSize = false;
             foreach ($tilematrices as $tilematrix) {
-                $latlon = explode(' ', $tilematrix->getTopleftcorner());
-                $tilematrixArr = array(
+                $latlon = $tilematrix->getTopleftcorner();
+                if ($origin[0] !== $latlon[0] || $origin[1] !== $latlon[1]) {
+                    $multiTopLeft = true;
+                }
+                if ($tilewidth !== $tilematrix->getTilewidth() || $tileheight !== $tilematrix->getTileheight()) {
+                    $multiTileSize = true;
+                }
+                $tilematricesArr[] = array(
                     'identifier' => $tilematrix->getIdentifier(),
                     'scaleDenominator' => $tilematrix->getScaledenominator(),
-//                    'tileWidth' => floatval($tilematrix->getTilewidth()),
-//                    'tileHeight' => floatval($tilematrix->getTileheight()),
-//                    'topLeftCorner' => array('lon' => floatval($latlon[0]), 'lat' => floatval($latlon[1])),
+                    'tileWidth' => $tilematrix->getTilewidth(),
+                    'tileHeight' => $tilematrix->getTileheight(),
+                    'topLeftCorner' => $latlon,
                 );
-//                if (count($tilematrixsetArr['tilematrices'])) {
-//                    $thisSD = $tilematrix->getScaledenominator();
-//                    $field = $tilematrixsetArr['tilematrices'][count($tilematrixsetArr['tilematrices']) - 1];
-//                    $lastSD = $field['scaleDenominator'];
-//                    $k = $lastSD / $thisSD;
-//                    $kr = round($k);
-//                    if ($kr == 2) {
-//                        $ooo .= ',' . $thisSD;
-//                        $tilematrixsetArr['tilematrices'][] = $tilematrixArr;
-//                    }
-//
-//                } else {
-//                    $ooo .= ',' . $tilematrix->getScaledenominator();
-                    $tilematrixsetArr['tilematrices'][] = $tilematrixArr;
-//                }
-
             }
-            $latlon = explode(' ', $tilematrices[0]->getTopleftcorner());
-            $tilematrixsetArr = array(
+            // clean matrix attributes if matrices have a selfsame value
+            if (!$multiTopLeft || !$multiTileSize) {
+                foreach ($tilematricesArr as &$tilematrix) {
+                    if (!$multiTopLeft) {
+                        unset($tilematrix['topLeftCorner']);
+                    }
+                    if (!$multiTileSize) {
+                        unset($tilematrix['tileWidth']);
+                        unset($tilematrix['tileHeight']);
+                    }
+                }
+            }
+            $wmtsconf->addTilematrixset(array(
                 'id' => $tilematrixset->getId(),
-                'tileSize' => array($tilematrices[0]->getTilewidth(), $tilematrices[0]->getTileheight()),
+                'tileSize' => array($tilewidth, $tileheight),
                 'identifier' => $tilematrixset->getIdentifier(),
                 'supportedCrs' => $tilematrixset->getSupportedCrs(),
-                'origin' => array(floatval($latlon[0]), floatval($latlon[1])),
-                'tilematrices' => array()
-            );
-//            foreach ($tilematrices as $tilematrix) {
-////                $num++;
-////                if (($num % 2) !== 0) {
-////                    continue;
-////                }
-////                if (!isset($tilematrixsetArr['tilematrices']['tileSize'])) {
-////                    $tilematrixsetArr['tilematrices']['tileSize'] =
-////                        array($tilematrix->getTilewidth(), $tilematrix->getTileheight());
-////                }
-//                $latlon = explode(' ', $tilematrix->getTopleftcorner());
-//                $tilematrixArr = array(
-//                    'identifier' => $tilematrix->getIdentifier(),
-//                    'scaleDenominator' => $tilematrix->getScaledenominator(),
-////                    'tileWidth' => floatval($tilematrix->getTilewidth()),
-////                    'tileHeight' => floatval($tilematrix->getTileheight()),
-////                    'topLeftCorner' => array('lon' => floatval($latlon[0]), 'lat' => floatval($latlon[1])),
-//                );
-////                if (count($tilematrixsetArr['tilematrices'])) {
-////                    $thisSD = $tilematrix->getScaledenominator();
-////                    $field = $tilematrixsetArr['tilematrices'][count($tilematrixsetArr['tilematrices']) - 1];
-////                    $lastSD = $field['scaleDenominator'];
-////                    $k = $lastSD / $thisSD;
-////                    $kr = round($k);
-////                    if ($kr == 2) {
-////                        $ooo .= ',' . $thisSD;
-////                        $tilematrixsetArr['tilematrices'][] = $tilematrixArr;
-////                    }
-////
-////                } else {
-////                    $ooo .= ',' . $tilematrix->getScaledenominator();
-//                    $tilematrixsetArr['tilematrices'][] = $tilematrixArr;
-////                }
-//
-//            }
-            $wmtsconf->addTilematrixset($tilematrixsetArr);
+                'origin' => $origin,
+                'tilematrices' => $tilematricesArr
+            ));
         }
         $this->entity->setConfiguration($wmtsconf->toArray());
-//        echo "XXX" . $ooo;
     }
 
     /**

@@ -363,12 +363,17 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         foreach ($tileMatrixEls as $tileMatrixEl) {
             $tileMatrix = new TileMatrix();
             $tileMatrix->setIdentifier($this->getValue("./ows:Identifier/text()", $tileMatrixEl));
-            $tileMatrix->setScaledenominator($this->getValue("./wmts:ScaleDenominator/text()", $tileMatrixEl));
-            $tileMatrix->setTopleftcorner($this->getValue("./wmts:TopLeftCorner/text()", $tileMatrixEl));
-            $tileMatrix->setMatrixwidth($this->getValue("./wmts:MatrixWidth/text()", $tileMatrixEl));
-            $tileMatrix->setMatrixheight($this->getValue("./wmts:MatrixHeight/text()", $tileMatrixEl));
-            $tileMatrix->setTilewidth($this->getValue("./wmts:TileWidth/text()", $tileMatrixEl));
-            $tileMatrix->setTileheight($this->getValue("./wmts:TileHeight/text()", $tileMatrixEl));
+            $tileMatrix
+                ->setScaledenominator(floatval($this->getValue("./wmts:ScaleDenominator/text()", $tileMatrixEl)));
+            $topleft = array_map(
+                create_function('$value', 'return (float) $value;'),
+                explode(' ', $this->getValue("./wmts:TopLeftCorner/text()", $tileMatrixEl))
+            );
+            $tileMatrix->setTopleftcorner($topleft);
+            $tileMatrix->setMatrixwidth(intval($this->getValue("./wmts:MatrixWidth/text()", $tileMatrixEl)));
+            $tileMatrix->setMatrixheight(intval($this->getValue("./wmts:MatrixHeight/text()", $tileMatrixEl)));
+            $tileMatrix->setTilewidth(intval($this->getValue("./wmts:TileWidth/text()", $tileMatrixEl)));
+            $tileMatrix->setTileheight(intval($this->getValue("./wmts:TileHeight/text()", $tileMatrixEl)));
             $tilematrixset->addTilematrix($tileMatrix);
         }
     }

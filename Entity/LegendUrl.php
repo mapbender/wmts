@@ -20,7 +20,6 @@ class LegendUrl
      */
     public $format;
 
-
     /**
      * A legend href
      * @var string

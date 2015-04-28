@@ -23,13 +23,13 @@ class TileMatrix
     /**
      * Position in CRS coordinates of the top-left corner of this tile matrix. This are the  precise coordinates
      *  of the top left corner of top left pixel of the 0,0 tile in SupportedCRS coordinates of this TileMatrixSet.
-     * @var string
+     * @var float[]
      */
     public $topleftcorner;
 
     /**
      * Width of each tile of this tile matrix in pixels.
-     * @var string tilewidth
+     * @var integer tilewidth
      */
     public $tilewidth;
 
@@ -71,7 +71,7 @@ class TileMatrix
 
     /**
      * Get scaledenominator
-     * @return string
+     * @return float
      */
     public function getScaledenominator()
     {
@@ -80,7 +80,7 @@ class TileMatrix
 
     /**
      * Set scaledenominator
-     * @param string $value
+     * @param float $value
      */
     public function setScaledenominator($value)
     {
@@ -89,7 +89,7 @@ class TileMatrix
 
     /**
      * Get topleftcorner
-     * @return string
+     * @return float[]
      */
     public function getTopleftcorner()
     {
@@ -98,7 +98,7 @@ class TileMatrix
 
     /**
      * Set topleftcorner
-     * @param string $value
+     * @param float[] $value
      */
     public function setTopleftcorner($value)
     {

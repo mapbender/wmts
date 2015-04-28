@@ -18,7 +18,7 @@ class Style
      * is default style
      * @var boolean
      */
-    public $isdefault;
+    public $isDefault;
 
     /**
      * A style title
@@ -45,21 +45,21 @@ class Style
     public $legendurl;
 
     /**
-     * Get isdefault.
+     * Get isDefault.
      * @return boolean
      */
-    public function getIsdefault()
+    public function getIsDefault()
     {
-        return $this->isdefault;
+        return $this->isDefault;
     }
 
     /**
-     * Set isdefault.
+     * Set isDefault.
      * @return boolean
      */
-    public function setIsdefault($isdefault)
+    public function setIsDefault($isDefault)
     {
-        $this->isdefault = $isdefault ? true : false;
+        $this->isDefault = $isDefault ? true : false;
         return $this;
     }
 

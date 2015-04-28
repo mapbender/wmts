@@ -26,7 +26,7 @@ class Dimension
      * Symbol of the units.
      * @var string
      */
-    public $unitSymbol;
+    public $unitsSymbol;
 
     /**
      * Default value that will be used if a tile request does not specify a value or uses the keyword 'default'.
@@ -65,9 +65,9 @@ class Dimension
         return $this->oum;
     }
 
-    public function getUnitSymbol()
+    public function getUnitsSymbol()
     {
-        return $this->unitSymbol;
+        return $this->unitsSymbol;
     }
 
     /**
@@ -120,13 +120,13 @@ class Dimension
     }
 
     /**
-     * Sets unitSymbol.
-     * @param string $unitSymbol
+     * Sets unitsSymbol.
+     * @param string $unitsSymbol
      * @return \Mapbender\WmtsBundle\Entity\Dimension
      */
-    public function setUnitSymbol($unitSymbol)
+    public function setUnitsSymbol($unitsSymbol)
     {
-        $this->unitSymbol = $unitSymbol;
+        $this->unitsSymbol = $unitsSymbol;
         return $this;
     }
 
