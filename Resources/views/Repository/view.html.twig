@@ -55,6 +55,7 @@
       <div class="clearContainer"></div>
   </div>
   <div id="containerContact" class="container serviceContainer serviceContactContainer">
+    {% if wmts.contact is not null %}
     <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.person" | trans }}:</div>
     <div class="metaText">{{ wmts.contact.person }}</div>
     <div class="clearContainer"></div>
@@ -102,6 +103,7 @@
     <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.country" | trans }}:</div>
     <div class="metaText">{{ wmts.contact.addressCountry }}</div>
     <div class="clearContainer"></div> {# #}
+    {% endif %}
   </div>
   <div id="containerService" class="container serviceContainer serviceServiceContainer">
   <ul class="itemLevel0 list">

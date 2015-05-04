@@ -51,8 +51,14 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         $root       = $this->doc->documentElement;
 
         $wmtssource->setVersion($this->getValue("./@version", $root));
-        $this->parseServiceIdentification($wmtssource, $this->getValue("./ows:ServiceIdentification", $root));
-        $this->parseServiceProvider($wmtssource, $this->getValue("./ows:ServiceProvider", $root));
+        $serviceIdentEl = $this->getValue("./ows:ServiceIdentification", $root);
+        if ($serviceIdentEl) {
+            $this->parseServiceIdentification($wmtssource, $serviceIdentEl);
+        }
+        $serverProviderEl = $this->getValue("./ows:ServiceProvider", $root);
+        if ($serverProviderEl) {
+            $this->parseServiceProvider($wmtssource, $serverProviderEl);
+        }
         $operationsMetadata = $this->getValue("./ows:OperationsMetadata", $root);
         if ($operationsMetadata) {
             $this->parseCapabilityRequest($wmtssource, $this->getValue("./ows:OperationsMetadata", $root));
@@ -134,7 +140,8 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         );
         $contact->setAddressStateOrProvince(
             $this->getValue(
-                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:AdministrativeArea/text()", $contextElm
+                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:AdministrativeArea/text()",
+                $contextElm
             )
         );
         $contact->setAddressPostCode(
@@ -145,7 +152,8 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         );
         $contact->setElectronicMailAddress(
             $this->getValue(
-                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:ElectronicMailAddress/text()", $contextElm
+                "./ows:ServiceContact/ows:ContactInfo/ows:Address/ows:ElectronicMailAddress/text()",
+                $contextElm
             )
         );
         $wmts->setContact($contact);
@@ -210,44 +218,11 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
         return $ri;
     }
 
-//
-//    /**
-//     * Parses the Capability Exception section of the GetCapabilities
-//     * document.
-//     * @param \Mapbender\WmtsBundle\Entity\WmtsSource $wmts the WmtsSource
-//     * @param \DOMElement $contextElm the element to use as context for the
-//     * Capability Exception section
-//     */
-//    private function parseCapabilityException(WmtsSource $wmts, \DOMElement $contextElm)
-//    {
-//        $tempList = $this->xpath->query("./wmts:Format", $contextElm);
-//        if ($tempList !== null) {
-//            foreach ($tempList as $item) {
-//                $wmts->addExceptionFormat($this->getValue("./text()", $item));
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Parses the UserDefinedSymbolization section of the GetCapabilities
-//     * document
-//     *
-//     * @param \Mapbender\WmtsBundle\Entity\WmtsSource $wmts the WmtsSource
-//     * @param \DOMElement $contextElm the element to use as context for the
-//     * UserDefinedSymbolization section
-//     */
-//    private function parseUserDefinedSymbolization(WmtsSource $wmts, \DOMElement $contextElm)
-//    {
-//        if ($contextElm !== null) {
-//            $wmts->setSupportSld($this->getValue("./@SupportSLD", $contextElm));
-//            $wmts->setUserLayer($this->getValue("./@UserLayer", $contextElm));
-//            $wmts->setUserStyle($this->getValue("./@UserStyle", $contextElm));
-//            $wmts->setRemoteWfs($this->getValue("./@RemoteWFS", $contextElm));
-//            $wmts->setInlineFeature($this->getValue("./@InlineFeature", $contextElm));
-//            $wmts->setRemoteWcs($this->getValue("./@RemoteWCS", $contextElm));
-//        }
-//    }
-
+    /**
+     * Parses a WMTS Layer
+     * @param WmtsLayerSource $wmtslayer
+     * @param \DOMElement $contextElm
+     */
     private function parseLayer(WmtsLayerSource $wmtslayer, \DOMElement $contextElm)
     {
         $wmtslayer->setTitle($this->getValue("./ows:Title/text()", $contextElm));

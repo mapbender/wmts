@@ -17,6 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class WmtsSource extends Source
 {
+    //
+    /**
+     * DPI for WMTS: "standardized rendering pixel size": 0.28 mm × 0.28 mm -> DPI: 90.714285714
+     */
+    const DPI = 90.714285714;
     
     /**
      * @var string An origin WMTS URL
@@ -83,6 +88,7 @@ class WmtsSource extends Source
      */
     public $getTile = null;
 
+    //It is recommended that FeatureInfo documents be offered in the MIME type format "application/gml+xml; version=3.1"
     /**
      * @var RequestInformation A request information for the GetFeatureInfo operation
      * @ORM\Column(type="object", nullable=true)

@@ -188,11 +188,11 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
         $configuration["treeOptions"] = array(
             "info" => $this->entity->getInfo(),
             "selected" => $this->entity->getSelected(),
-            "toggle" => null,
+            "toggle" => $this->entity->getToggle(),
             "allow" => array(
                 "info" => $this->entity->getAllowinfo(),
                 "selected" => $this->entity->getAllowselected(),
-                "toggle" => null,
+                "toggle" => $this->entity->getAllowtoggle(),
                 "reorder" => null,
             )
         );

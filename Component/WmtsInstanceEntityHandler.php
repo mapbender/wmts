@@ -50,8 +50,7 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
         $this->entity->setTitle($this->entity->getSource()->getTitle());
         $this->entity->setRoottitle($this->entity->getSource()->getTitle());
         $source = $this->entity->getSource();
-//        $dimensions = $this->getDimensionInst();
-//        $this->entity->setDimensions($dimensions);
+        // TODO create dimansions
 
         $this->entity->setWeight(-1);
         if ($persist) {
@@ -129,19 +128,19 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
      */
     public function createDimensionInst(Dimension $dim)
     {
-        $diminst = new DimensionInst();
-        $diminst->setCurrent($dim->getCurrent());
-        $diminst->setDefault($dim->getDefault());
-        $diminst->setMultipleValues($dim->getMultipleValues());
-        $diminst->setName($dim->getName());
-        $diminst->setNearestValue($dim->getNearestValue());
-        $diminst->setUnitSymbol($dim->getUnitSymbol());
-        $diminst->setUnits($dim->getUnits());
-        $diminst->setActive(false);
-        $diminst->setOrigextent($dim->getExtent());
-        $diminst->setExtent($dim->getExtent());
-        $diminst->setType($diminst->findType($dim->getExtent()));
-        return $diminst;
+//        $diminst = new DimensionInst();
+//        $diminst->setCurrent($dim->getCurrent());
+//        $diminst->setDefault($dim->getDefault());
+//        $diminst->setMultipleValues($dim->getMultipleValues());
+//        $diminst->setName($dim->getName());
+//        $diminst->setNearestValue($dim->getNearestValue());
+//        $diminst->setUnitSymbol($dim->getUnitSymbol());
+//        $diminst->setUnits($dim->getUnits());
+//        $diminst->setActive(false);
+//        $diminst->setOrigextent($dim->getExtent());
+//        $diminst->setExtent($dim->getExtent());
+//        $diminst->setType($diminst->findType($dim->getExtent()));
+//        return $diminst;
     }
 
     /**
@@ -448,7 +447,9 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
         $rootInst->setSourceInstance($this->entity);
         $rootInst->setActive($this->entity->getActive())
             ->setAllowinfo($this->entity->getAllowinfo())
-            ->setInfo($this->entity->getInfo());
+            ->setInfo($this->entity->getInfo())
+            ->setAllowtoggle($this->entity->getAllowtoggle())
+            ->setToggle($this->entity->getToggle());
         $rootlayerHandler = self::createHandler($this->container, $rootInst);
         return $rootlayerHandler->generateConfiguration();
     }

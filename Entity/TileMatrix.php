@@ -21,6 +21,12 @@ class TileMatrix
     public $scaledenominator;
 
     /**
+     * Scale denominator level of this tile matrix
+     * @var float scaledenominator
+     */
+    public $resolution;
+
+    /**
      * Position in CRS coordinates of the top-left corner of this tile matrix. This are the  precise coordinates
      *  of the top left corner of top left pixel of the 0,0 tile in SupportedCRS coordinates of this TileMatrixSet.
      * @var float[]
@@ -86,6 +92,27 @@ class TileMatrix
     {
         $this->scaledenominator = floatval($value);
     }
+
+    /**
+     * Get resolution
+     * @return float
+     */
+    public function getResolution()
+    {
+        return $this->resolution;
+    }
+
+    /**
+     * Set resoulution
+     * @param float $resolution
+     * @return \Mapbender\WmtsBundle\Entity\TileMatrix
+     */
+    public function setResolution($resolution)
+    {
+        $this->resolution = $resolution;
+        return $this;
+    }
+
 
     /**
      * Get topleftcorner
