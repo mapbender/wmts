@@ -181,12 +181,14 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
      */
     public function generateConfiguration()
     {
-        $wmtsconf = new WmtsInstanceConfiguration();
+        $wmtsconf = $this->entity->getType() === Source::TYPE_WMTS ?
+            new WmtsInstanceConfiguration() : new TmsInstanceConfiguration();
         $wmtsconf->setType(strtolower($this->entity->getType()));
         $wmtsconf->setTitle($this->entity->getTitle());
         $wmtsconf->setIsBaseSource($this->entity->isBasesource());
 
-        $options    = new WmtsInstanceConfigurationOptions();
+        $options    = $this->entity->getType() === Source::TYPE_WMTS ?
+            new WmtsInstanceConfigurationOptions() : new TmsInstanceConfigurationOptions();
 //        $dimensions = array();
 //        foreach ($this->entity->getDimensions() as $dimension) {
 //            if ($dimension->getActive()) {
@@ -205,72 +207,15 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
 //                );
 //            }
 //        }
-
         $options
             ->setProxy($this->entity->getProxy())
             ->setVisible($this->entity->getVisible())
             ->setOpacity($this->entity->getOpacity() / 100)
 //            ->setDimensions($dimensions)
             ;
-        
         $wmtsconf->setOptions($options);
-        // make fake root layer for layertree
-        $layersConf = array();
-        foreach ($this->entity->getLayers() as $layer) {
-            if ($layer->getActive()) {
-                $options = self::createHandler($this->container, $layer)->generateConfiguration();
-                // TODO check if layers support info
-                $layersConf[] = $options;
-            }
-        }
-        $wmtsconf->setLayers($layersConf);
-        $root = $this->createRootNode();
-        $wmtsconf->addChild($root);
-        foreach ($this->entity->getSource()->getTilematrixsets() as $tilematrixset) {
-            $tilematrices = $tilematrixset->getTilematrices();
-            $origin = $tilematrices[0]->getTopleftcorner();
-            $tilewidth = $tilematrices[0]->getTilewidth();
-            $tileheight = $tilematrices[0]->getTileheight();
-            $tilematricesArr = array();
-            $multiTopLeft = false;
-            $multiTileSize = false;
-            foreach ($tilematrices as $tilematrix) {
-                $latlon = $tilematrix->getTopleftcorner();
-                if ($origin[0] !== $latlon[0] || $origin[1] !== $latlon[1]) {
-                    $multiTopLeft = true;
-                }
-                if ($tilewidth !== $tilematrix->getTilewidth() || $tileheight !== $tilematrix->getTileheight()) {
-                    $multiTileSize = true;
-                }
-                $tilematricesArr[] = array(
-                    'identifier' => $tilematrix->getIdentifier(),
-                    'scaleDenominator' => $tilematrix->getScaledenominator(),
-                    'tileWidth' => $tilematrix->getTilewidth(),
-                    'tileHeight' => $tilematrix->getTileheight(),
-                    'topLeftCorner' => $latlon,
-                );
-            }
-            // clean matrix attributes if matrices have a selfsame value
-            if (!$multiTopLeft || !$multiTileSize) {
-                foreach ($tilematricesArr as &$tilematrix) {
-                    if (!$multiTopLeft) {
-                        unset($tilematrix['topLeftCorner']);
-                    }
-                    if (!$multiTileSize) {
-                        unset($tilematrix['tileWidth']);
-                        unset($tilematrix['tileHeight']);
-                    }
-                }
-            }
-            $wmtsconf->addTilematrixset(array(
-                'id' => $tilematrixset->getId(),
-                'tileSize' => array($tilewidth, $tileheight),
-                'identifier' => $tilematrixset->getIdentifier(),
-                'supportedCrs' => $tilematrixset->getSupportedCrs(),
-                'origin' => $origin,
-                'tilematrices' => $tilematricesArr
-            ));
-        }
+        $rootnode = $this->createRootNode();
+        $wmtsconf->addLayers($this->container, $this->entity, $rootnode);
         $this->entity->setConfiguration($wmtsconf->toArray());
     }
 

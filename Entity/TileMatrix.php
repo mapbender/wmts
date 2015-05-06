@@ -21,10 +21,10 @@ class TileMatrix
     public $scaledenominator;
 
     /**
-     * Scale denominator level of this tile matrix
-     * @var float scaledenominator
+     * Href for TMS TileSet
+     * @var string href
      */
-    public $resolution;
+    public $href;
 
     /**
      * Position in CRS coordinates of the top-left corner of this tile matrix. This are the  precise coordinates
@@ -94,22 +94,22 @@ class TileMatrix
     }
 
     /**
-     * Get resolution
-     * @return float
+     * Get href
+     * @return string
      */
-    public function getResolution()
+    public function getHref()
     {
-        return $this->resolution;
+        return $this->href;
     }
 
     /**
      * Set resoulution
-     * @param float $resolution
+     * @param string $href
      * @return \Mapbender\WmtsBundle\Entity\TileMatrix
      */
-    public function setResolution($resolution)
+    public function setHref($href)
     {
-        $this->resolution = $resolution;
+        $this->href = $href;
         return $this;
     }
 

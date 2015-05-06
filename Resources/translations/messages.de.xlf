@@ -358,9 +358,9 @@
         <source>mb.wmts.wmtsloader.repo.theme.label.layerrefs</source>
         <target>Layerrefs</target>
       </trans-unit>
-      <trans-unit id="d41ce0cd0c1f6726e11ca0e5085b9a63" resname="mb.wmts.wmtsloader.repo.instance.title.wmtsinstance">
-        <source>mb.wmts.wmtsloader.repo.instance.title.wmtsinstance</source>
-        <target>WMTS Instance</target>
+      <trans-unit id="d41ce0cd0c1f6726e11ca0e5085b9a63" resname="mb.wmts.wmtsloader.repo.instance.title.instance">
+        <source>mb.wmts.wmtsloader.repo.instance.title.instance</source>
+        <target>Instance</target>
       </trans-unit>
       <trans-unit id="66779bfca125af3eea046da2734beba3" resname="mb.wmts.wmtsloader.repo.instance.btn.save">
         <source>mb.wmts.wmtsloader.repo.instance.btn.save</source>

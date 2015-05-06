@@ -49,11 +49,6 @@ class WmtsSource extends Source
     protected $accessConstraints = "";
 
     /**
-     * @ORM\Column(type="text",nullable=true)
-     */
-    protected $serviceType = "";
-
-    /**
      * @ORM\Column(type="string",nullable=true)
      */
     protected $serviceProviderSite = "";
@@ -140,25 +135,23 @@ class WmtsSource extends Source
     /**
      * Create an instance of WMTSService
      */
-    public function __construct()
+    public function __construct($type)
     {
-        parent::__construct();
+        parent::__construct($type);
         $this->keywords = new ArrayCollection();
         $this->layers = new ArrayCollection();
-        
-//        $this->exceptionFormats = array();
         $this->tilematrixsets = new ArrayCollection();
         $this->themes = new ArrayCollection();
     }
 
-    public function getType()
-    {
-        return "WMTS";
-    }
 
+
+    /**
+     * @inheritdoc
+     */
     public function getManagertype()
     {
-        return "wmts";
+        return strtolower(parent::TYPE_WMTS);
     }
 
     /**

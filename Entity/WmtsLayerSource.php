@@ -9,11 +9,11 @@ namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
-use Mapbender\CoreBundle\Component\SourceItem;
 use Mapbender\CoreBundle\Component\BoundingBox;
 use Mapbender\CoreBundle\Entity\Source;
+use Mapbender\CoreBundle\Entity\SourceItem;
 use Mapbender\WmtsBundle\Entity\Style;
+use Mapbender\WmtsBundle\Entity\WmtsSource;
 
 /**
  * Description of WmtsLayerSource
@@ -30,6 +30,11 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     */
+    protected $wmts_tms;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -97,8 +102,9 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     /**
      * TODO: describe initial method
      */
-    public function __construct()
+    public function __construct($wmts_tms = WmtsSource::TYPE_WMTS)
     {
+        $this->wmts_tms = $wmts_tms;
         $this->keywords = new ArrayCollection();
         $this->infoformats = array();
         $this->formats = array();
@@ -126,6 +132,17 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function getWmtsTms()
+    {
+        return $this->wmts_tms;
+    }
+
+    public function setWmtsTms($wmts_tms)
+    {
+        $this->wmts_tms = $wmts_tms;
+        return $this;
     }
 
     /**

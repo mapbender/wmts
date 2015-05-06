@@ -1,6 +1,6 @@
 {% extends "FOMManagerBundle::manager.html.twig" %}
 
-{% block title %}{{ 'mb.wmts.wmtsloader.repo.instance.title.wmtsinstance' | trans }} - {{ form.vars.value.title }}{% endblock %}
+{% block title %}{{ form.vars.value.type }} {{ 'mb.wmts.wmtsloader.repo.instance.title.instance' | trans }} - {{ form.vars.value.title }}{% endblock %}
 
 {% block css %}
   {{parent()}}

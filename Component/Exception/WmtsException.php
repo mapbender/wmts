@@ -1,4 +1,5 @@
 <?php
+
 namespace Mapbender\WmtsBundle\Component\Exception;
 
 /**
@@ -6,7 +7,7 @@ namespace Mapbender\WmtsBundle\Component\Exception;
  * @package Mapbender
  * @author Paul Schmidt
  */
-class WmtsException extends \Exception {
+class WmtsException extends \Exception
+{
 
 }
-

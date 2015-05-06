@@ -4,6 +4,7 @@ namespace Mapbender\WmtsBundle\Component;
 
 use Mapbender\CoreBundle\Component\Exception\XmlParseException;
 use Mapbender\CoreBundle\Component\Exception\NotSupportedVersionException;
+use Mapbender\WmtsBundle\Component\Exception\NoWmtsDocument;
 use Mapbender\WmtsBundle\Component\Exception\WmtsException;
 
 /**
@@ -25,13 +26,6 @@ abstract class WmtsCapabilitiesParser
      */
     protected $xpath;
 
-//    /**
-//     * The resolution
-//     *
-//     * @var integer
-//     */
-//    protected $resolution = 72;
-
     /**
      * Creates an instance
      *
@@ -42,16 +36,6 @@ abstract class WmtsCapabilitiesParser
         $this->doc = $doc;
         $this->xpath = new \DOMXPath($doc);
         $this->xpath->registerNamespace("xlink", "http://www.w3.org/1999/xlink");
-    }
-
-    /**
-     * Sets the resolution ???????????????????????????ß
-     *
-     * @param integer $resolution
-     */
-    protected function setReslolution($resolution)
-    {
-        $this->resolution = $resolution;
     }
 
     /**
@@ -112,6 +96,8 @@ abstract class WmtsCapabilitiesParser
         if (is_integer(strpos($doc->documentElement->tagName, "Exception"))) {
             $message = $doc->documentElement->nodeValue;
             throw new WmtsException($message);
+        } elseif (is_integer(strpos($doc->documentElement->tagName, "TileMapService"))) {
+            throw new NoWmtsDocument("TileMapService");
         }
 
         if ($doc->documentElement->tagName !== "Capabilities") {

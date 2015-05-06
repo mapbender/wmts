@@ -8,8 +8,11 @@ use Mapbender\CoreBundle\Component\SourceMetadata;
 use Mapbender\CoreBundle\Component\XmlValidator;
 use Mapbender\CoreBundle\Component\Utils;
 use Mapbender\CoreBundle\Component\Exception\NotSupportedVersionException;
+use Mapbender\CoreBundle\Entity\Source;
+use Mapbender\WmtsBundle\Component\Exception\NoWmtsDocument;
 use Mapbender\WmtsBundle\Component\Exception\WmtsException;
 use Mapbender\CoreBundle\Component\Exception\XmlParseException;
+use Mapbender\WmtsBundle\Component\TmsCapabilitiesParser100;
 use Mapbender\WmtsBundle\Component\WmtsCapabilitiesParser;
 use Mapbender\WmtsBundle\Entity\WmtsInstance;
 use Mapbender\WmtsBundle\Entity\WmtsInstanceLayer;
@@ -37,7 +40,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class RepositoryController extends Controller
 {
-
     public static $WMTS_DIR = "xml/wmts";
 
     /**
@@ -47,7 +49,7 @@ class RepositoryController extends Controller
      */
     public function newAction()
     {
-        $form = $this->get("form.factory")->create(new WmtsSourceSimpleType(), new WmtsSource());
+        $form = $this->get("form.factory")->create(new WmtsSourceSimpleType(), new WmtsSource(Source::TYPE_WMTS));
         return array(
             "form" => $form->createView()
         );
@@ -60,7 +62,7 @@ class RepositoryController extends Controller
      */
     public function startAction()
     {
-        $form = $this->get("form.factory")->create(new WmtsSourceSimpleType(), new WmtsSource());
+        $form = $this->get("form.factory")->create(new WmtsSourceSimpleType(), new WmtsSource(Source::TYPE_WMTS));
         return array(
             "form" => $form->createView()
         );
@@ -74,7 +76,7 @@ class RepositoryController extends Controller
     public function viewAction(WmtsSource $wmts)
     {
         $securityContext = $this->get('security.context');
-        $oid = new ObjectIdentity('class', 'Mapbender\CoreBundle\Entity\Source');
+        $oid             = new ObjectIdentity('class', 'Mapbender\CoreBundle\Entity\Source');
         if (!$securityContext->isGranted('VIEW', $oid) && !$securityContext->isGranted('VIEW', $wmts)) {
             throw new AccessDeniedException();
         }
@@ -88,16 +90,16 @@ class RepositoryController extends Controller
      */
     public function createAction()
     {
-        $request = $this->get('request');
-        $wmtssource_req = new WmtsSource();
+        $request        = $this->get('request');
+        $wmtssource_req = new WmtsSource(Source::TYPE_WMTS);
 
         $securityContext = $this->get('security.context');
-        $oid = new ObjectIdentity('class', 'Mapbender\CoreBundle\Entity\Source');
+        $oid             = new ObjectIdentity('class', 'Mapbender\CoreBundle\Entity\Source');
         if (false === $securityContext->isGranted('CREATE', $oid)) {
             throw new AccessDeniedException();
         }
 
-        $form = $this->get("form.factory")->create(new WmtsSourceSimpleType(), $wmtssource_req);
+        $form      = $this->get("form.factory")->create(new WmtsSourceSimpleType(), $wmtssource_req);
         $form->bind($request);
         $onlyvalid = $form->get('onlyvalid')->getData();
         if ($form->isValid()) {
@@ -113,39 +115,45 @@ class RepositoryController extends Controller
                 $wmtssource_req->getUsername(),
                 $wmtssource_req->getPassword()
             );
-            if ($proxy_query->getGetPostParamValue("request", true) === null) {
-                $proxy_query->addQueryParameter("request", "GetCapabilities");
-            }
-            if ($proxy_query->getGetPostParamValue("service", true) === null) {
-                $proxy_query->addQueryParameter("service", "WMTS");
-            }
             $wmtssource_req->setOriginUrl($proxy_query->getGetUrl());
             $proxy = new CommonProxy($proxy_config, $proxy_query);
 
             $wmtssource = null;
             try {
                 $browserResponse = $proxy->handle();
-                $content = $browserResponse->getContent();
-                $doc = WmtsCapabilitiesParser::createDocument($content);
-                if ($onlyvalid === true) {
-//                    $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
-//                    $doc = $validator->validate($doc);
-                    $wmtsParser = WmtsCapabilitiesParser::getParser($doc);
-                    $wmtssource = $wmtsParser->parse();
-                    $wmtssource->setValid(true);
-                } else {
-                    try {
-//                        $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
-//                        $doc = $validator->validate($doc);
+                $content         = $browserResponse->getContent();
+                try {
+                    $doc = WmtsCapabilitiesParser::createDocument($content);
+                    if ($onlyvalid === true) {
+                        // $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
+                        // $doc = $validator->validate($doc);
                         $wmtsParser = WmtsCapabilitiesParser::getParser($doc);
                         $wmtssource = $wmtsParser->parse();
                         $wmtssource->setValid(true);
+                    } else {
+                        try {
+                            // $validator = new XmlValidator($this->container, $proxy_config, "xmlschemas/");
+                            // $doc = $validator->validate($doc);
+                            $wmtsParser = WmtsCapabilitiesParser::getParser($doc);
+                            $wmtssource = $wmtsParser->parse();
+                            $wmtssource->setValid(true);
+                        } catch (\Exception $e) {
+                            $this->get("logger")->warn($e->getMessage());
+                            $this->get('session')->getFlashBag()->set('warning', $e->getMessage());
+                            $wmtsParser = WmtsCapabilitiesParser::getParser($doc);
+                            $wmtssource = $wmtsParser->parse();
+                            $wmtssource->setValid(false);
+                        }
+                    }
+                } catch (NoWmtsDocument $e) {
+                    $doc = TmsCapabilitiesParser100::createDocument($content);
+                    try {
+                        $tmsParser = TmsCapabilitiesParser100::getParser($proxy_config, $doc);
+                        $wmtssource = $tmsParser->parse();
+                        $wmtssource->setValid(false);
                     } catch (\Exception $e) {
                         $this->get("logger")->warn($e->getMessage());
                         $this->get('session')->getFlashBag()->set('warning', $e->getMessage());
-                        $wmtsParser = WmtsCapabilitiesParser::getParser($doc);
-                        $wmtssource = $wmtsParser->parse();
-                        $wmtssource->setValid(false);
                     }
                 }
             } catch (\Exception $e) {
@@ -180,25 +188,23 @@ class RepositoryController extends Controller
             $this->getDoctrine()->getManager()->flush();
 
             // ACL
-            $aclProvider = $this->get('security.acl.provider');
+            $aclProvider    = $this->get('security.acl.provider');
             $objectIdentity = ObjectIdentity::fromDomainObject($wmtssource);
-            $acl = $aclProvider->createAcl($objectIdentity);
+            $acl            = $aclProvider->createAcl($objectIdentity);
 
-            $securityContext = $this->get('security.context');
-            $user = $securityContext->getToken()->getUser();
+            $securityContext  = $this->get('security.context');
+            $user             = $securityContext->getToken()->getUser();
             $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
             $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
             $aclProvider->updateAcl($acl);
 
             $this->get('session')->getFlashBag()->set('success', "Your WMTS has been created");
-            return $this->redirect(
-                $this->generateUrl(
-                    "mapbender_manager_repository_view",
-                    array("sourceId" => $wmtssource->getId()),
-                    true
-                )
-            );
+            return $this->redirect($this->generateUrl(
+                "mapbender_manager_repository_view",
+                array("sourceId" => $wmtssource->getId()),
+                true
+            ));
         }
 
         return array(
@@ -222,17 +228,17 @@ class RepositoryController extends Controller
      */
     public function deleteAction($sourceId)
     {
-        $wmtssource = $this->getDoctrine()
+        $wmtssource    = $this->getDoctrine()
             ->getRepository("MapbenderWmtsBundle:WmtsSource")
             ->find($sourceId);
         $wmtsinstances = $this->getDoctrine()
             ->getRepository("MapbenderWmtsBundle:WmtsInstance")
             ->findBySource($sourceId);
-        $em = $this->getDoctrine()->getManager();
+        $em            = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
 
         $aclProvider = $this->get('security.acl.provider');
-        $oid = ObjectIdentity::fromDomainObject($wmtssource);
+        $oid         = ObjectIdentity::fromDomainObject($wmtssource);
         $aclProvider->deleteAcl($oid);
 
         foreach ($wmtsinstances as $wmtsinstance) {
@@ -256,7 +262,7 @@ class RepositoryController extends Controller
         $instance = $this->getDoctrine()
             ->getRepository("MapbenderCoreBundle:SourceInstance")
             ->find($instanceId);
-        $em = $this->getDoctrine()->getManager();
+        $em       = $this->getDoctrine()->getManager();
         $em->getConnection()->beginTransaction();
         EntityHandler::createHandler($this->container, $instance)->remove();
         $em->flush();
@@ -290,7 +296,7 @@ class RepositoryController extends Controller
                 }
                 $em->persist($wmtsinstance);
                 $em->flush();
-                $wmtsinstance = $this->getDoctrine()
+                $wmtsinstance    = $this->getDoctrine()
                     ->getRepository("MapbenderWmtsBundle:WmtsInstance")
                     ->find($wmtsinstance->getId());
                 $wmtsinsthandler = EntityHandler::createHandler($this->container, $wmtsinstance);
@@ -313,7 +319,7 @@ class RepositoryController extends Controller
             }
         } else { // edit
             $form = $this->createForm(new WmtsInstanceInstanceLayersType(), $wmtsinstance);
-            $fv = $form->createView();
+            $fv   = $form->createView();
             return array(
                 "form" => $form->createView(),
                 "slug" => $slug,
@@ -328,7 +334,7 @@ class RepositoryController extends Controller
      */
     public function instanceLayerPriorityAction($slug, $instanceId, $instLayerId)
     {
-        $number = $this->get("request")->get("number");
+        $number  = $this->get("request")->get("number");
         $instLay = $this->getDoctrine()
             ->getRepository('MapbenderWmtsBundle:WmtsInstanceLayer')
             ->findOneById($instLayerId);
@@ -344,11 +350,11 @@ class RepositoryController extends Controller
                     'error' => '',
                     'result' => 'ok')), 200, array('Content-Type' => 'application/json'));
         }
-        $em = $this->getDoctrine()->getManager();
+        $em       = $this->getDoctrine()->getManager();
 //        $instLay->setPriority($number);
         $em->persist($instLay);
         $em->flush();
-        $query = $em->createQuery(
+        $query    = $em->createQuery(
             "SELECT il FROM MapbenderWmtsBundle:WmtsInstanceLayer il"
             . " WHERE il.wmtsinstance=:wmtsi ORDER BY il.priority ASC"
         );
@@ -377,7 +383,7 @@ class RepositoryController extends Controller
             $em->persist($inst);
         }
         $em->flush();
-        $wmtsinstance = $this->getDoctrine()
+        $wmtsinstance    = $this->getDoctrine()
             ->getRepository("MapbenderCoreBundle:SourceInstance")
             ->find($instanceId);
         $wmtsinsthandler = EntityHandler::createHandler($this->container, $wmtsinstance);
@@ -399,7 +405,7 @@ class RepositoryController extends Controller
      */
     public function instanceEnabledAction($slug, $instanceId)
     {
-        $enabled = $this->get("request")->get("enabled");
+        $enabled      = $this->get("request")->get("enabled");
         $wmtsinstance = $this->getDoctrine()
             ->getRepository("MapbenderWmtsBundle:WmtsInstance")
             ->find($instanceId);
@@ -411,9 +417,9 @@ class RepositoryController extends Controller
             );
         } else {
             $enabled_before = $wmtsinstance->getEnabled();
-            $enabled = $enabled === "true" ? true : false;
+            $enabled        = $enabled === "true" ? true : false;
             $wmtsinstance->setEnabled($enabled);
-            $em = $this->getDoctrine()->getManager();
+            $em             = $this->getDoctrine()->getManager();
             $em->persist($wmtsinstance);
             $em->flush();
             return new Response(json_encode(array(
@@ -425,7 +431,7 @@ class RepositoryController extends Controller
                             'after' => $enabled)))), 200, array('Content-Type' => 'application/json'));
         }
     }
-    
+
     /**
      * Get Metadata for a wmts service
      *
@@ -434,21 +440,21 @@ class RepositoryController extends Controller
      */
     public function metadataAction()
     {
-        $sourceId = $this->container->get('request')->get("sourceId", null);
-        $instance = $this->container->get("doctrine")
+        $sourceId        = $this->container->get('request')->get("sourceId", null);
+        $instance        = $this->container->get("doctrine")
                 ->getRepository('Mapbender\CoreBundle\Entity\SourceInstance')->find($sourceId);
         $securityContext = $this->get('security.context');
-        $oid = new ObjectIdentity('class', 'Mapbender\CoreBundle\Entity\Source');
-        if (!$securityContext->isGranted('VIEW', $oid)
-            && !$securityContext->isGranted('VIEW', $instance->getSource())) {
+        $oid             = new ObjectIdentity('class', 'Mapbender\CoreBundle\Entity\Source');
+        if (!$securityContext->isGranted('VIEW', $oid) &&
+            !$securityContext->isGranted('VIEW', $instance->getSource())) {
             throw new AccessDeniedException();
         }
         $layerName = $this->container->get('request')->get("layerName", null);
-        $metadata = $instance->getMetadata();
+        $metadata  = $instance->getMetadata();
         $metadata->setContenttype(SourceMetadata::$CONTENTTYPE_ELEMENT);
         $metadata->setContainer(SourceMetadata::$CONTAINER_ACCORDION);
-        $content = $metadata->render($this->container->get('templating'), $layerName);
-        $response = new Response();
+        $content   = $metadata->render($this->container->get('templating'), $layerName);
+        $response  = new Response();
         $response->setContent($content);
         $response->headers->set('Content-Type', 'text/html');
         return $response;

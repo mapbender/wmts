@@ -1,7 +1,7 @@
 <?php
 namespace Mapbender\WmtsBundle\Component;
 
-Use Mapbender\CoreBundle\Component\EntityHandler;
+use Mapbender\CoreBundle\Component\EntityHandler;
 use Mapbender\CoreBundle\Component\InstanceConfiguration;
 use Mapbender\CoreBundle\Component\InstanceConfigurationOptions;
 use Mapbender\WmtsBundle\Entity\WmtsInstance;
@@ -16,7 +16,7 @@ use Mapbender\WmtsBundle\Entity\WmtsInstance;
  *
  * @author Paul Schmidt
  */
-class WmtsInstanceConfiguration extends InstanceConfiguration
+class TmsInstanceConfiguration extends InstanceConfiguration
 {
 
     /**
@@ -132,6 +132,9 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
         foreach ($entity->getLayers() as $layer) {
             if ($layer->getActive()) {
                 $options = EntityHandler::createHandler($container, $layer)->generateConfiguration();
+                $format = $layer->getFormat();
+                $options['format'] = $format;
+                $options['format_ext'] = strpos($format, '/') ? substr($format, strpos($format, '/') + 1) : null;
                 // TODO check if layers support info
                 $layersConf[] = $options;
             }
@@ -155,32 +158,20 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
                     $multiTileSize = true;
                 }
                 $tilematricesArr[] = array(
-                    'identifier' => $tilematrix->getIdentifier(),
-                    'scaleDenominator' => $tilematrix->getScaledenominator(),
-                    'tileWidth' => $tilematrix->getTilewidth(),
-                    'tileHeight' => $tilematrix->getTileheight(),
-                    'topLeftCorner' => $latlon,
+                    'href' => $tilematrix->getHref(),
+                    'order' => $tilematrix->getIdentifier(),
+                    'units-per-pixel' => $tilematrix->getScaledenominator(),
                 );
             }
-            // clean matrix attributes if matrices have a selfsame value
-            if (!$multiTopLeft || !$multiTileSize) {
-                foreach ($tilematricesArr as &$tilematrix) {
-                    if (!$multiTopLeft) {
-                        unset($tilematrix['topLeftCorner']);
-                    }
-                    if (!$multiTileSize) {
-                        unset($tilematrix['tileWidth']);
-                        unset($tilematrix['tileHeight']);
-                    }
-                }
-            }
+
             $this->addTilematrixset(array(
                 'id' => $tilematrixset->getId(),
                 'tileSize' => array($tilewidth, $tileheight),
                 'identifier' => $tilematrixset->getIdentifier(),
                 'supportedCrs' => $tilematrixset->getSupportedCrs(),
                 'origin' => $origin,
-                'tilematrices' => $tilematricesArr
+                'tilesets' => $tilematricesArr,
+                'url' => $tilematricesArr[0]['href']
             ));
         }
     }

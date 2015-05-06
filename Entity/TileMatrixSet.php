@@ -3,6 +3,7 @@
 namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Mapbender\WmtsBundle\Entity\WmtsSource;
 
 /**
  * A TileMatrixSet entity describes a particular set of tile matrices.
@@ -21,7 +22,7 @@ class TileMatrixSet
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="WmtsSource",inversedBy="tilematrixsets")
      * @ORM\JoinColumn(name="wmtssource", referencedColumnName="id")

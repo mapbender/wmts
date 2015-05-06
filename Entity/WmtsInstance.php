@@ -4,6 +4,7 @@ namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Mapbender\CoreBundle\Entity\Source;
 use Mapbender\CoreBundle\Entity\SourceInstance;
 use Mapbender\WmtsBundle\Component\WmtsMetadata;
 use Mapbender\WmtsBundle\Entity\WmtsInstanceLayer;
@@ -656,28 +657,12 @@ class WmtsInstance extends SourceInstance
     /**
      * @inheritdoc
      */
-    public function getType()
-    {
-        return "wmts";
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getManagerType()
-    {
-        return "wmts";
-    }
-
-    /**
-     * @inheritdoc
-     */
     public static function listAssets()
     {
-        return array(
+        return  array(
             'js' => array(
                 '@MapbenderCoreBundle/Resources/public/mapbender.source.js',
-                '@MapbenderWmtsBundle/Resources/public/mapbender.source.wmts.js'
+                '@MapbenderWmtsBundle/Resources/public/mapbender.source.tms.js'
             ),
             'css' => array(),
             'trans' => array('MapbenderWmtsBundle::wmtsbundle.json.twig')

@@ -4,8 +4,8 @@ namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Mapbender\CoreBundle\Component\SourceInstanceItem;
-use Mapbender\CoreBundle\Component\SourceItem;
+use Mapbender\CoreBundle\Entity\SourceInstanceItem;
+use Mapbender\CoreBundle\Entity\SourceItem;
 use Mapbender\CoreBundle\Entity\SourceInstance;
 use Mapbender\WmtsBundle\Entity\WmtsInstance;
 use Mapbender\WmtsBundle\Entity\WmtsLayerSource;

@@ -28,7 +28,7 @@ class MapbenderWmtsBundle extends MapbenderBundle
         return array(
             'wmts' => array(
                 'id' => 'wmts',
-                'label' => 'OGC WMTS',
+                'label' => 'OGC WMTS / TMS',
                 'manager' => 'mapbender_wmts_repository',
                 'startAction' => "MapbenderWmtsBundle:Repository:start",
                 'updateformAction' => "MapbenderWmtsBundle:Repository:updateform",

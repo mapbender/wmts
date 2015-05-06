@@ -8,9 +8,9 @@
 namespace Mapbender\WmtsBundle\Component;
 
 use Mapbender\CoreBundle\Component\SourceInstanceItemEntityHandler;
-use Mapbender\CoreBundle\Component\SourceItem;
 use Mapbender\CoreBundle\Component\Utils;
 use Mapbender\CoreBundle\Entity\SourceInstance;
+use Mapbender\CoreBundle\Entity\SourceItem;
 use Mapbender\CoreBundle\Utils\ArrayUtil;
 use Mapbender\WmsBundle\Entity\WmsInstanceLayer;
 use Mapbender\WmsBundle\Entity\WmsLayerSource;
@@ -157,7 +157,7 @@ class WmtsInstanceLayerEntityHandler extends SourceInstanceItemEntityHandler
                 floatval($llbbox->getMaxy())
             );
         }
-        if($this->entity->getSourceItem()->getBoundingBoxes()){
+        if ($this->entity->getSourceItem()->getBoundingBoxes()) {
             foreach ($this->entity->getSourceItem()->getBoundingBoxes() as $bbox) {
                 $srses = array_merge(
                     $srses,
