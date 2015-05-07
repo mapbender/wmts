@@ -1,4 +1,4 @@
-Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler },{
+Mapbender.Geo.WmtsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler },{
     'private object defaultOptions': {
         
     },
@@ -10,13 +10,11 @@ Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler }
         return this.defaultOptions();
     },
     'public function create': function(sourceOpts) {
-        var self = this;
-        // TODO
         var rootLayer = sourceOpts.configuration.children[0];
-//                if(sourceDef.configuration.status !== 'ok'){ //deactivate corrupte or unreachable sources
-//                    rootLayer.options.treeOptions.selected = false;
-//                    rootLayer.options.treeOptions.allow.selected = false;
-//                }
+//        if(sourceDef.configuration.status !== 'ok'){ //deactivate corrupte or unreachable sources
+//            rootLayer.options.treeOptions.selected = false;
+//            rootLayer.options.treeOptions.allow.selected = false;
+//        }
         function _setProperties(layer, parent, id, num, proxy){
             /* set unic id for a layer */
             layer.options.origId = layer.options.id;
@@ -51,32 +49,20 @@ Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler }
             // TODO disable layer 
         }
         rootLayer['children'] = [layer];
-
         var layerOptions = this.createLayerOptions(layer, sourceOpts.configuration.tilematrixsets, proj,
             sourceOpts.configuration.options.proxy, null);
-        
-//        layerOptions = {
-//            label: 'leck mich ...',
-//            tileOrigin: OpenLayers.LonLat.fromArray([200000.0,5880000.0]),
-//            tileSize: new OpenLayers.Size(256,256),
-//            url: 'http://geo.sv.rostock.de/geodienste/luftbild/tms/',
-//            layer: 'luftbild/EPSG25833',
-//            format: 'png'
-//            
-//        }
-        layerOptions['url'] = 'http://geo.sv.rostock.de/geodienste/luftbild/tms/';
-        layerOptions['layer'] = 'luftbild/EPSG25833';
         var mqLayerDef = {
-            type: 'tms',
+            type: 'wmts',
             isBaseLayer: false,
             opacity: sourceOpts.configuration.options.opacity,
             visible: sourceOpts.configuration.options.visible,
             attribution: sourceOpts.configuration.options.attribution
         };
         $.extend(layerOptions, mqLayerDef, this.defaultOptions);
-        
-        
         return layerOptions;
+    },
+    'public function postCreate': function(source, mqLayer) {
+        this.changeProjection(source, Mapbender.Model.getCurrentProj());
     },
     'private function createLayerOptions': function(layer, matrixsets, projection, proxy, olLayer){
         var matrixset = this.findMatrixSetIdent(matrixsets, layer.options.tilematrixset, null, true);
@@ -96,15 +82,14 @@ Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler }
         var layerOptions = {
             label: layer.options.title,
             layer: layer.options.identifier,
-            format: layer.format_ext,
-//            type: layer.type,
-//            style: layer.options.style,
-//            matrixSet: matrixset.identifier,
-//            matrixIds: matrixset.tilematrices,
+            format: layer.options.format,
+            style: layer.options.style,
+            matrixSet: matrixset.identifier,
+            matrixIds: matrixset.tilematrices,
             tileOrigin: OpenLayers.LonLat.fromArray(matrixset.origin),
             tileSize: new OpenLayers.Size(matrixset.tileSize[0], matrixset.tileSize[1]),
-//            tileFullExtent: tileFullExtent,
-            url: proxy ? Mapbender.Util.addProxy(matrixset.url) : matrixset.url
+            tileFullExtent: tileFullExtent,
+            url: proxy ? Mapbender.Util.addProxy(layer.options.url) : layer.options.url
         };
         if(olLayer){
             layerOptions['format'] = olLayer.format === layer.options.format ? olLayer.format : layer.options.format;
@@ -152,6 +137,9 @@ Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler }
     },
     'public function onLoadError': function(imgEl, sourceId, projection, callback) {
         this['super']('onLoadError', imgEl, sourceId, projection, callback);
+//        mql.olLayer.applyBackBuffer();
+//        var source = Mapbender.Model.getSource({id: sourceId});
+//        this.disable(source, 'loadError');
     },
     'private function enable': function(source, tagname) {
         var sourceIdx = {
@@ -172,7 +160,17 @@ Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler }
                 }
             };
             delete(source.configuration.children[0][tagname]);
-            var toChangeOptions = this.createOptionsLayerState(source, options, false, true);
+            var toChangeOptions = {
+                change: {
+                    options: {
+                        children: options.layers,
+                        type: "selected"
+                    },
+                    sourceIdx: {
+                        id: source.id
+                    }
+                }
+            };
             Mapbender.Model.changeSource(toChangeOptions);
         }
     },
@@ -196,18 +194,56 @@ Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler }
                 }
             }
         };
-        var toChangeOptions = this.createOptionsLayerState(source, options, false, true);
+        var toChangeOptions = {
+            change: {
+                options: {
+                    children: options.layers,
+                    type: "selected"
+                },
+                sourceIdx: {
+                    id: source.id
+                }
+            }
+        };
         Mapbender.Model.changeSource(toChangeOptions);
     },
     'public function featureInfoUrl': function(mqLayer, x, y) {
-        
+        if(!mqLayer.visible() || mqLayer.olLayer.queryLayers.length === 0) {
+            return false;
+        }
+        var j = 0; // find Row index of a pixel in the tile -> from x
+        var i = 0; // Column index of a pixel in the tile -> y
+        var tilerow = 0; // find Row index of tile matrix
+        var tilecol = 0; // find Column index of tile matrix
+        Mapbender.error('GetFeatureInfo for WMTS is not yet implemented');
+        return;
+        var param_tmp = {
+            SERVICE: 'WMTS',
+            REQUEST: 'GetFeatureInfo',
+            VERSION: '1.0.0',//
+            LAYER: mqLayer.olLayer.layer, //
+            STYLE: mqLayer.olLayer.style, // 
+            FORMAT: mqLayer.olLayer.format,
+            INFO_FORMAT: mqLayer.source.configuration.options.info_format || "application/gml+xml; version=3.1",
+            TILEMATRIXSET: mqLayer.olLayer.matrixSet,
+            TILEMATRIX: mqLayer.olLayer.getMatrix()['identigier'],
+            TILEROW: tilerow,
+            TILECOL: tilecol,
+            J: j,
+            I: i
+        };
+        var params = $.param(param_tmp);
+        // this clever shit was taken from $.ajax
+        var requestUrl = Mapbender.Util.removeProxy(mqLayer.olLayer.url);
+        requestUrl += (/\?/.test(mqLayer.options.url) ? '&' : '?') + params;
+        return requestUrl;
     },
     'public function createSourceDefinitions': function(xml, options) {
-        // TODO ???
+        // TODO 
     },
     'public function getPrintConfig': function(layer, bounds, isProxy) {
         var printConfig = {
-            type: 'tms',
+            type: 'wmts',
             url: isProxy ? Mapbender.Util.removeProxy(layer.getURL(bounds)) : layer.getURL(bounds)
         };
         return printConfig;
@@ -228,4 +264,4 @@ Mapbender.Geo.TmsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler }
         
     }
 });
-Mapbender.source['tms'] = new Mapbender.Geo.TmsSourceHandler();
+Mapbender.source['wmts'] = new Mapbender.Geo.WmtsSourceHandler();

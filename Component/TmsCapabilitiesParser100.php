@@ -135,6 +135,7 @@ class TmsCapabilitiesParser100
      */
     public function parse()
     {
+        $vers = '1.0.0';
         $wmts = new WmtsSource(WmtsSource::TYPE_TMS);
         $root       = $this->doc->documentElement;
         $this->parseService($wmts, $root);
@@ -157,7 +158,11 @@ class TmsCapabilitiesParser100
                 }
                 $tilemap = new TmsCapabilitiesParser100($this->proxy_config, $doc);
                 $root    = $tilemap->getDoc()->documentElement;
-                $tilemap->parseTileMap($wmts, $root);
+                // Url Service endpoint (without the version number)
+                $pos_vers = strpos($url, $vers);
+                $url_raw = $pos_vers ? substr($url, 0, $pos_vers) : $url;
+                $url_layer = substr($url, $pos_vers + strlen($vers) + 1);
+                $tilemap->parseTileMap($wmts, $root, $url_raw, $url_layer);
             } catch (\Exception $e) {
                 $this->removeFiles();
                 throw $e;
@@ -231,18 +236,19 @@ class TmsCapabilitiesParser100
         $wmts->setContact($contact);
     }
     
-    public function parseTileMap(WmtsSource &$wmts, \DOMElement $cntx)
+    public function parseTileMap(WmtsSource &$wmts, \DOMElement $cntx, $url, $layerIdent)
     {
 //        $title   = $this->getValue("./@title", $titleMapElt);
 //        $srs     = $this->getValue("./@srs", $titleMapElt);
 //        $profile = $this->getValue("./@profile", $titleMapElt);
 //        $url     = $this->getValue("./@href", $titleMapElt);
         #http://geo.sv.rostock.de/geodienste/luftbild/tms/1.0.0/luftbild/EPSG25833/5/10/10.png
-        $wmtslayer = new WmtsLayerSource(WmtsSource::TYPE_TMS);
-        $wmts->addLayer($wmtslayer);
-        $wmtslayer->setSource($wmts);
-        $wmtslayer->setTitle($this->getValue("./Title/text()", $cntx));
-        $wmtslayer->setAbstract($this->getValue("./Abstract/text()", $cntx));
+        $layer = new WmtsLayerSource(WmtsSource::TYPE_TMS);
+        $wmts->addLayer($layer);
+        $layer->setSource($wmts);
+        $layer->setTitle($this->getValue("./Title/text()", $cntx));
+        $layer->setAbstract($this->getValue("./Abstract/text()", $cntx));
+        $layer->setIdentifier($layerIdent);
 
         $srs = $this->getValue("./SRS/text()", $cntx);
         $profile = $this->getValue("./TileSets/@profile", $cntx);
@@ -250,13 +256,20 @@ class TmsCapabilitiesParser100
         $tilewidth = $this->getValue("./TileFormat/@width", $cntx);
         $tileheight = $this->getValue("./TileFormat/@height", $cntx);
 
-        $wmtslayer->addFormat($format);
+        $layer->addFormat($format);
 
-        $ident = $profile . "_" . $srs . "_" . $wmts->getLayers()->count();
+
+        $resourceUrl = new \Mapbender\WmtsBundle\Entity\UrlTemplateType();
+        $layer->addResourceUrl(
+            $resourceUrl
+                ->setFormat($format)
+                ->setResourceType(null)
+                ->setTemplate($url)
+        );
 
         $tmsl = new \Mapbender\WmtsBundle\Entity\TileMatrixSetLink();
-        $tmsl->setTileMatrixSet($ident);
-        $wmtslayer->addTilematrixSetlinks($tmsl);
+        $tmsl->setTileMatrixSet($layerIdent);
+        $layer->addTilematrixSetlinks($tmsl);
 
         $bbox = new BoundingBox();
         $bbox->setSrs($srs)
@@ -264,7 +277,7 @@ class TmsCapabilitiesParser100
             ->setMiny($this->getValue("./BoundingBox/@miny", $cntx))
             ->setMaxx($this->getValue("./BoundingBox/@maxx", $cntx))
             ->setMaxy($this->getValue("./BoundingBox/@maxy", $cntx));
-        $wmtslayer->addBoundingBox($bbox);
+        $layer->addBoundingBox($bbox);
 
         $origin = array(
             floatval($this->getValue("./Origin/@x", $cntx)),
@@ -286,7 +299,7 @@ class TmsCapabilitiesParser100
 
 //        $ident = $this->getValue("./TileSets/@profile", $cntx) . $srs
         $tileSetsSet = new TileMatrixSet();
-        $tileSetsSet->setIdentifier($ident);
+        $tileSetsSet->setIdentifier($layerIdent);
         $tileSetsSet->setTitle($this->getValue("./Title/text()", $cntx));
         $tileSetsSet->setAbstract($this->getValue("./Abstract/text()", $cntx));
         $tileSetsSet->setSupportedCrs($this->getValue("./SRS/text()", $cntx));

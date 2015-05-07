@@ -37,11 +37,6 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
         return $sourceInstance;
     }
 
-    public function configure(array $configuration = array())
-    {
-        ;
-    }
-
     /**
      * @inheritdoc
      */
@@ -166,11 +161,12 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
             $configuration['options']['url'] = $url;
-        } elseif ($signer) {
-            foreach ($configuration['layers'] as &$layer) {
-                $layer['options']['url'] = $signer->signUrl($layer['options']['url']);
-            }
-        }
+        } // not yet supported - RESTful
+//        elseif ($signer) {
+//            foreach ($configuration['layers'] as &$layer) {
+//                $layer['options']['url'] = $signer->signUrl($layer['options']['url']);
+//            }
+//        }
         $status = $this->entity->getSource()->getStatus();
         $configuration['status'] = $status ? strtolower($status) : strtolower(Source::STATUS_OK);
         return $configuration;
