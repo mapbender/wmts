@@ -256,7 +256,7 @@
       </trans-unit>
       <trans-unit id="dc6e08953c0cd6b8a57cb62f5bf4571c" resname="mb.wmts.wmtsloader.repo.form.label.serviceurl">
         <source>mb.wmts.wmtsloader.repo.form.label.serviceurl</source>
-        <target>Dienst-Url</target>
+        <target>Dienst-URL</target>
       </trans-unit>
       <trans-unit id="6898ba59452b1b4fb0e44f4a24b242f9" resname="mb.wmts.wmtsloader.repo.form.label.username">
         <source>mb.wmts.wmtsloader.repo.form.label.username</source>
