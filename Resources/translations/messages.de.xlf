@@ -358,7 +358,7 @@
         <source>mb.wmts.wmtsloader.repo.theme.label.layerrefs</source>
         <target>Layerrefs</target>
       </trans-unit>
-      <trans-unit id="d41ce0cd0c1f6726e11ca0e5085b9a63" resname="mb.wmts.wmtsloader.repo.instance.title.instance">
+      <trans-unit id="4f2745faa4cfe0b889df61f5d0ab6d96" resname="mb.wmts.wmtsloader.repo.instance.title.instance">
         <source>mb.wmts.wmtsloader.repo.instance.title.instance</source>
         <target>Instance</target>
       </trans-unit>
@@ -418,10 +418,6 @@
         <source>mb.wmts.wmtsloader.repo.instance.label.cancel</source>
         <target>Abbrechen</target>
       </trans-unit>
-      <trans-unit id="de1d641346d922ce579b1b4917960b1a" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layerstitle">
-        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layerstitle</source>
-        <target>__mb.wmts.wmtsloader.repo.instancelayerform.label.layerstitle</target>
-      </trans-unit>
       <trans-unit id="9ef2fa740c3c793bb7ab64dcf773c9aa" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.minscale">
         <source>mb.wmts.wmtsloader.repo.instancelayerform.label.minscale</source>
         <target>Minimaler Maßstab</target>
@@ -458,21 +454,13 @@
         <source>mb.wmts.wmtsloader.repo.instancelayerform.label.id</source>
         <target>ID</target>
       </trans-unit>
-      <trans-unit id="c22bde5b8c1a021cfe2d43c930c0d504" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layersname">
-        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layersname</source>
+      <trans-unit id="bc3010ab18a639d62df9a7a38bbd5288" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layer_name">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layer_name</source>
         <target>Name</target>
       </trans-unit>
       <trans-unit id="0ce1f5b29bf8fc16386ed466953163ee" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.style">
         <source>mb.wmts.wmtsloader.repo.instancelayerform.label.style</source>
         <target>Style</target>
-      </trans-unit>
-      <trans-unit id="e918f290bb94345eb5814187c6b72a9a" resname="mb.wmts.wmtsloader.repo.instance.label.minscale">
-        <source>mb.wmts.wmtsloader.repo.instance.label.minscale</source>
-        <target>Minimaler Maßstab</target>
-      </trans-unit>
-      <trans-unit id="17a85b915cdbd173f3804f7f21e3bdf5" resname="mb.wmts.wmtsloader.repo.instance.label.maxscale">
-        <source>mb.wmts.wmtsloader.repo.instance.label.maxscale</source>
-        <target>Maximaler Maßstab</target>
       </trans-unit>
       <trans-unit id="d2bed55090814df1ee7e6e62b02ef87c" resname="mb.wmts.wmtsloader.repo.instance.label.toggle">
         <source>mb.wmts.wmtsloader.repo.instance.label.toggle</source>
@@ -485,6 +473,34 @@
       <trans-unit id="130c1be2142ec2af104bc06e95c3f110" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc">
         <source>mb.wmts.wmtsloader.repo.instancelayerform.label.toggletoc</source>
         <target>Umschalten im Layerbaum</target>
+      </trans-unit>
+      <trans-unit id="6288e2f966c01c634abfe5d4e2aa471a" resname="mb.wmts.wmtsloader.repo.instance.label.tilemartixset">
+        <source>mb.wmts.wmtsloader.repo.instance.label.tilemartixset</source>
+        <target>TileMartixSet</target>
+      </trans-unit>
+      <trans-unit id="12a121c1f2788cc301965899e3bf0369" resname="mb.wmts.wmtsloader.repo.instance.label.format">
+        <source>mb.wmts.wmtsloader.repo.instance.label.format</source>
+        <target>Format</target>
+      </trans-unit>
+      <trans-unit id="73c06a6d265ea94b5d8131bd556255eb" resname="mb.wmts.wmtsloader.repo.instance.label.style">
+        <source>mb.wmts.wmtsloader.repo.instance.label.style</source>
+        <target>Style</target>
+      </trans-unit>
+      <trans-unit id="b97bf22aceea0f552f22c901538d8fde" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layer_title">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layer_title</source>
+        <target>Layertitle</target>
+      </trans-unit>
+      <trans-unit id="d9651dd9a6700e8187ffa52cf6acefd7" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layer_matrixsets">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layer_matrixsets</source>
+        <target>Verfügbare MatrixSets</target>
+      </trans-unit>
+      <trans-unit id="445c6a40449e6fe04b4c223168287480" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layer_formats">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layer_formats</source>
+        <target>Verfügbare Formate</target>
+      </trans-unit>
+      <trans-unit id="d28ceae62674309a1b054ef1b433763d" resname="mb.wmts.wmtsloader.repo.instancelayerform.label.layer_styles">
+        <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layer_styles</source>
+        <target>Verfügbare Styles</target>
       </trans-unit>
     </body>
   </file>
