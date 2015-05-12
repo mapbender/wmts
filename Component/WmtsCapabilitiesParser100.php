@@ -47,7 +47,7 @@ class WmtsCapabilitiesParser100 extends WmtsCapabilitiesParser
      */
     public function parse()
     {
-        $wmtssource = new WmtsSource();
+        $wmtssource = new WmtsSource(WmtsSource::TYPE_WMTS);
         $root       = $this->doc->documentElement;
 
         $wmtssource->setVersion($this->getValue("./@version", $root));
