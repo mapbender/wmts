@@ -394,4 +394,12 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
         $rootlayerHandler = self::createHandler($this->container, $rootInst);
         return $rootlayerHandler->generateConfiguration();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSensitiveVendorSpecific()
+    {
+        return array();
+    }
 }
