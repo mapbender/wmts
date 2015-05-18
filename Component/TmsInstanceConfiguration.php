@@ -165,9 +165,9 @@ class TmsInstanceConfiguration extends InstanceConfiguration
             if ($layer->getActive()) {
                 $options = EntityHandler::createHandler($container, $layer)->generateConfiguration();
                 $format = $layer->getFormat();
-                $options['format'] = $format;
-                $options['format_ext'] = strpos($format, '/') ? substr($format, strpos($format, '/') + 1) : null;
-                $a = $tilematrixsets[$options['options']['tilematrixset']];
+                $options['options']['format'] = $format;
+                $options['options']['format_ext'] =
+                    strpos($format, '/') ? substr($format, strpos($format, '/') + 1) : null;
                 $options['options']['tilematrixset'] = $tilematrixsets[$options['options']['tilematrixset']];
                 // TODO check if layers support info
                 $layersConf[] = $options;
