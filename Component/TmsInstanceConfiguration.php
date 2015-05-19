@@ -168,7 +168,7 @@ class TmsInstanceConfiguration extends InstanceConfiguration
                 $options['options']['format'] = $format;
                 $options['options']['format_ext'] =
                     strpos($format, '/') ? substr($format, strpos($format, '/') + 1) : null;
-                $options['options']['tilematrixset'] = $tilematrixsets[$options['options']['tilematrixset']];
+                $options['options']['tilematrixset'] = $tilematrixsets[$options['options']['identifier']];
                 // TODO check if layers support info
                 $layersConf[] = $options;
             }
