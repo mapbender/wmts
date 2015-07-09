@@ -35,8 +35,7 @@ class WmtsInstance extends SourceInstance
     protected $source;
 
     /**
-     * @ORM\OneToMany(targetEntity="WmtsInstanceLayer", mappedBy="sourceInstance",
-     * cascade={"refresh", "persist", "remove"})
+     * @ORM\OneToMany(targetEntity="WmtsInstanceLayer", mappedBy="sourceInstance", cascade={"remove"})
      * @ORM\JoinColumn(name="layers", referencedColumnName="id")
      */
     protected $layers; //{ name: 1,   title: Webatlas,   visible: true }

@@ -60,13 +60,13 @@ class WmtsSource extends Source
 
     /**
      * @var Contact A contact.
-     * @ORM\OneToOne(targetEntity="Mapbender\CoreBundle\Entity\Contact", cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="Mapbender\CoreBundle\Entity\Contact", cascade={"remove"})
      */
     protected $contact;
 
     /**
      * @var ArrayCollections A list of WMS keywords
-     * @ORM\OneToMany(targetEntity="WmtsSourceKeyword",mappedBy="reference", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="WmtsSourceKeyword",mappedBy="reference", cascade={"remove"})
      * @ORM\OrderBy({"value" = "asc"})
      */
     protected $keywords;
@@ -97,14 +97,14 @@ class WmtsSource extends Source
 
     /**
      * @var ArrayCollections A list of WMTS Theme
-     * @ORM\OneToMany(targetEntity="Theme",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Theme",mappedBy="source", cascade={"remove"})
      * @ORM\OrderBy({"id" = "asc"})
      */
     protected $themes;
 
     /**
      * @var ArrayCollections A list of WMTS layers
-     * @ORM\OneToMany(targetEntity="TileMatrixSet",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="TileMatrixSet",mappedBy="source", cascade={"remove"})
      * @ORM\OrderBy({"id" = "asc"})
      */
     protected $tilematrixsets;
@@ -121,14 +121,14 @@ class WmtsSource extends Source
 
     /**
      * @var ArrayCollections A list of WMTS layers
-     * @ORM\OneToMany(targetEntity="WmtsLayerSource",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="WmtsLayerSource",mappedBy="source", cascade={"remove"})
      * @ORM\OrderBy({"id" = "asc"})
      */
     protected $layers;
 
     /**
      * @var ArrayCollections A list of WMTS instances
-     * @ORM\OneToMany(targetEntity="WmtsInstance",mappedBy="source", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="WmtsInstance",mappedBy="source", cascade={"remove"})
      */
     protected $instances;
 
