@@ -502,6 +502,22 @@
         <source>mb.wmts.wmtsloader.repo.instancelayerform.label.layer_styles</source>
         <target>Verfügbare Styles</target>
       </trans-unit>
+      <trans-unit id="4aabb22adc4ddcf2c3e2479dd6f25c88" resname="mb.wmts.wmtsloader.repo.tilematrixset.matrixes">
+        <source>mb.wmts.wmtsloader.repo.tilematrixset.matrixes</source>
+        <target>Matrices</target>
+      </trans-unit>
+      <trans-unit id="5f196cbe2c95eda42b598d4e29eeb57c" resname="mb.wmts.wmtsloader.repo.layer.label.tilematrixsetlinks">
+        <source>mb.wmts.wmtsloader.repo.layer.label.tilematrixsetlinks</source>
+        <target>TileMartixSetLinks</target>
+      </trans-unit>
+      <trans-unit id="d71c55805731f4036251f5d2626edc89" resname="mb.wmts.wmtsloader.repo.view.label.serviceprovidername">
+        <source>mb.wmts.wmtsloader.repo.view.label.serviceprovidername</source>
+        <target>ServiceProviderName</target>
+      </trans-unit>
+      <trans-unit id="42bc6ac6a4e1a73fb3b1ec8b49835a52" resname="mb.wmts.wmtsloader.repo.view.label.serviceprovidersite">
+        <source>mb.wmts.wmtsloader.repo.view.label.serviceprovidersite</source>
+        <target>ServiceProviderSite</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -25,9 +25,6 @@
     <li id="tabTheme" class="tab">{{"mb.wmts.wmtsloader.repo.view.label.theme" | trans }}</li>
   </ul>
   <div id="containerMetaData" class="container active serviceContainer serviceMetaContainer">
-
-
-
     <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.title" | trans }}:</div><div class="metaText">{{ wmts.title }}</div>
     <div class="clearContainer"></div>
     <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.name" | trans }}:</div><div class="metaText">ToDo{#{ wmts.name }#}</div>
@@ -38,21 +35,12 @@
     <div class="clearContainer"></div>
     <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.abstract" | trans }}:</div><div class="metaText">{{ wmts.description }}</div>
     <div class="clearContainer"></div>
-    {#<div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.onlineresource" | trans }}:</div><div class="metaText">{{ wmts.onlineResource }}</div>
+    <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.serviceprovidername" | trans }}:</div><div class="metaText">{{ wmts.serviceProviderName }}</div>
     <div class="clearContainer"></div>
-    <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.exceptionformats" | trans }}:</div>
-    <div class="metaText">
-      {% for exc in wmts.exceptionFormats %}
-        {% if not loop.first %},{% endif %}
-        {{ exc }}
-      {% endfor %}
-    </div>
+    <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.serviceprovidersite" | trans }}:</div><div class="metaText">{{ wmts.serviceProviderSite }}</div>
     <div class="clearContainer"></div>
-    <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.fees" | trans }}:</div><div class="metaText">{{ wmts.fees }}</div>
+    <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.accessconstraints" | trans }}:</div><div class="metaText">{{ wmts.accessConstraints }}</div>
     <div class="clearContainer"></div>
-     #}
-      <div class="labelText">{{ "mb.wmts.wmtsloader.repo.view.label.accessconstraints" | trans }}:</div><div class="metaText">{{ wmts.accessConstraints }}</div>
-      <div class="clearContainer"></div>
   </div>
   <div id="containerContact" class="container serviceContainer serviceContactContainer">
     {% if wmts.contact is not null %}
@@ -124,29 +112,19 @@
   </ul>
   </div>
   <div id="containerLayers" class="container serviceContainer serviceLayersContainer">
-    {#% if wmts.version == '1.1.1' %}
-        <div class="messageBox hint">{{ 'mb.wmts.wmtsloader.repo.view.message.cautionscalehint'|trans }}</div>
-    {% endif %#}
-    <ul class="itemLevel1 list">
     {% for layer in wmts.layers %}
       {% include "MapbenderWmtsBundle:Repository:layer.html.twig"  with {'layer': layer, 'itemLevel': 1 }%}
     {% endfor %}
-    </ul>
-
   </div>
   <div id="containerMatrixsets" class="container serviceContainer serviceLayersContainer">
-    <ul class="itemLevel1 list">
     {% for tilematrixset in wmts.tilematrixsets %}
       {% include "MapbenderWmtsBundle:Repository:tilematrixset.html.twig"  with {'tilematrixset': tilematrixset, 'itemLevel': 1 }%}
     {% endfor %}
-    </ul>
   </div>
   <div id="containerTheme" class="container serviceContainer serviceLayersContainer">
-    <ul class="itemLevel1 list">
     {% for theme in wmts.themes %}
       {% include "MapbenderWmtsBundle:Repository:theme.html.twig"  with {'theme': theme, 'itemLevel': 1 }%}
     {% endfor %}
-    </ul>
   </div>
 </div>
 <div class="clearContainer"></div>

@@ -328,6 +328,26 @@ class WmtsSource extends Source
     }
 
     /**
+     * Set serviceProviderName
+     * @param string $serviceProviderName
+     * @return \Mapbender\WmtsBundle\Entity\WmtsSource
+     */
+    public function setServiceProviderName($serviceProviderName)
+    {
+        $this->serviceProviderName = $serviceProviderName;
+        return $this;
+    }
+
+    /**
+     * Get serviceProviderName
+     * @return string
+     */
+    public function getServiceProviderName()
+    {
+        return $this->serviceProviderName;
+    }
+
+        /**
      * Set Contact
      * @param Contact $contact
      * @return \Mapbender\WmtsBundle\Entity\WmtsSource
