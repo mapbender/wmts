@@ -27,6 +27,16 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
 {
     /**
+}
+     * @param array $configuration
+     * @return WmsInstance
+     */
+    public function setParameters(array $configuration = array())
+    {
+        throw new \Exception('not implemented yet');
+    }
+
+    /**
      * @param array $configuration
      * @return WmtsInstance
      */
