@@ -7,11 +7,8 @@
 
 namespace Mapbender\WmtsBundle\Component;
 
-use Mapbender\CoreBundle\Component\Exception\NotUpdateableException;
 use Mapbender\CoreBundle\Component\SourceItemEntityHandler;
-use Mapbender\CoreBundle\Utils\EntityUtil;
-use Mapbender\WmsBundle\Entity\WmsLayerSource;
-use Mapbender\CoreBundle\Component\SourceItem;
+use Mapbender\CoreBundle\Entity\SourceItem;
 
 /**
  * Description of WmsSourceHandler
@@ -45,7 +42,7 @@ class WmtsLayerSourceEntityHandler extends SourceItemEntityHandler
         $this->container->get('doctrine')->getManager()->remove($this->entity);
     }
 
-    public function update(SourceItem $itemNew, WmtsLayerUpdater $updater = null)
+    public function update(SourceItem $itemNew)
     {
 //        $updater = $updater ? $updater : new WmsLayerUpdater($this->entity);
 //        $mapper  = $updater->getMapper();
