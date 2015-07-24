@@ -35,11 +35,20 @@ class WmtsSourceEntityHandler extends SourceEntityHandler
     public function save()
     {
         $this->container->get('doctrine')->getManager()->persist($this->entity);
+        $cont = $this->entity->getContact();
+        if ($cont == null) {
+            $cont = new Contact();
+            $this->entity->setContact($cont);
+        }
+        $this->container->get('doctrine')->getManager()->persist($cont);
         foreach ($this->entity->getLayers() as $layer) {
             self::createHandler($this->container, $layer)->save();
         }
         foreach ($this->entity->getThemes() as $theme) {
             self::createHandler($this->container, $theme)->save();
+        }
+        foreach ($this->entity->getTilematrixsets() as $tms) {
+            $this->container->get('doctrine')->getManager()->persist($tms);
         }
         $this->container->get('doctrine')->getManager()->persist($this->entity);
     }

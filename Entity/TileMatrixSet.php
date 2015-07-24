@@ -264,4 +264,14 @@ class TileMatrixSet
     {
         $this->boundingbox = $boundingbox;
     }
+
+    /**
+     * Returns a TileMatrixSet as String
+     *
+     * @return String TileMatrixSet as String
+     */
+    public function __toString()
+    {
+        return (string) $this->id;
+    }
 }

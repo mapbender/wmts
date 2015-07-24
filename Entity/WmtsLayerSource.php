@@ -105,7 +105,7 @@ class WmtsLayerSource extends SourceItem # implements ContainingKeyword
     public function __construct($wmts_tms = WmtsSource::TYPE_WMTS)
     {
         $this->wmts_tms = $wmts_tms;
-        $this->keywords = new ArrayCollection();
+//        $this->keywords = new ArrayCollection();
         $this->infoformats = array();
         $this->formats = array();
         $this->styles = array();
