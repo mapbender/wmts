@@ -100,21 +100,22 @@ Mapbender.Geo.WmtsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler 
         return layerOptions;
     },
     'private function findLayerEpsg': function(layers, matrixSets, epsg, clone){
-        var matrixSet = this.findMatrixSetEpsg(matrixSets, epsg, clone);
-        for (var i = 0; matrixSet && i < layers.length; i++) {
-            if(matrixSet.identifier === layers[i].options.tilematrixset){
+        var matrixSets = this.findMatrixSetEpsg(matrixSets, epsg, clone);
+        for (var i = 0; i < layers.length; i++) {
+            if(matrixSets[layers[i].options.tilematrixset]){
                 return clone ? $.extend(true, {}, layers[i]) : layers[i];
             }
         }
         return null;
     },
     'private function findMatrixSetEpsg': function(matrixSets, epsg, clone){
+        var matrixsets = {};
         for(var i = 0; i < matrixSets.length; i++){
             if(epsg === matrixSets[i].supportedCrs){
-                return clone ? $.extend(true, {}, matrixSets[i]) : matrixSets[i];
+                matrixsets[matrixSets[i].identifier] = clone ? $.extend(true, {}, matrixSets[i]) : matrixSets[i];
             }
         }
-        return null;
+        return matrixsets;
     },
     'private function findMatrixSetIdent': function(matrixSets, identifier, clone){
         for(var i = 0; i < matrixSets.length; i++){
