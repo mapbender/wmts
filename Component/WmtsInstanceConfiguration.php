@@ -54,7 +54,7 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
 
 
 
-    public function addTilematrixset($tilematrixset)
+    public function addTilematrixset(array $tilematrixset)
     {
         $this->tilematrixsets[] = $tilematrixset;
         return $this;
@@ -164,13 +164,13 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
             }
             // clean matrix attributes if matrices have a selfsame value
             if (!$multiTopLeft || !$multiTileSize) {
-                foreach ($tilematricesArr as &$tilematrix) {
+                foreach ($tilematricesArr as &$tmatrix) {
                     if (!$multiTopLeft) {
-                        unset($tilematrix['topLeftCorner']);
+                        unset($tmatrix['topLeftCorner']);
                     }
                     if (!$multiTileSize) {
-                        unset($tilematrix['tileWidth']);
-                        unset($tilematrix['tileHeight']);
+                        unset($tmatrix['tileWidth']);
+                        unset($tmatrix['tileHeight']);
                     }
                 }
             }
@@ -183,6 +183,7 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
                 'tilematrices' => $tilematricesArr
             ));
         }
+        $a = 0;
     }
 
     /**
