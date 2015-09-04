@@ -163,10 +163,19 @@ Mapbender.Geo.TmsSourceHandler = Class({
     'public function createSourceDefinitions': function(xml, options) {
         // TODO ???
     },
-    'public function getPrintConfig': function(layer, bounds, isProxy) {
+    'public function getPrintConfig': function(layer, bounds, scale, isProxy) {
+//        var printConfig = {
+//            type: 'tms',
+//            url: isProxy ? Mapbender.Util.removeProxy(layer.getURL(bounds)) : layer.getURL(bounds)
+//        };
+        var source = Mapbender.Model.findSource({ollid: layer.id});
+        var tmslayer = this.findLayer(source[0], {identifier:layer.layername});
+        var url = layer.url + '1.0.0/' + layer.layername;
         var printConfig = {
             type: 'tms',
-            url: isProxy ? Mapbender.Util.removeProxy(layer.getURL(bounds)) : layer.getURL(bounds)
+            url: isProxy ? Mapbender.Util.removeProxy(url) : url,
+            options: tmslayer.layer.options,
+            zoom: Mapbender.Model.getZoomFromScale(scale)
         };
         return printConfig;
     },

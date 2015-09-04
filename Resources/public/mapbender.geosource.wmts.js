@@ -242,7 +242,7 @@ Mapbender.Geo.WmtsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler 
     'public function createSourceDefinitions': function(xml, options) {
         // TODO 
     },
-    'public function getPrintConfig': function(layer, bounds, isProxy) {
+    'public function getPrintConfig': function(layer, bounds, scale, isProxy) {
         var printConfig = {
             type: 'wmts',
             url: isProxy ? Mapbender.Util.removeProxy(layer.getURL(bounds)) : layer.getURL(bounds)
