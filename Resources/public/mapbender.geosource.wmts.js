@@ -243,9 +243,15 @@ Mapbender.Geo.WmtsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler 
         // TODO 
     },
     'public function getPrintConfig': function(layer, bounds, scale, isProxy) {
+        var source = Mapbender.Model.findSource({ollid: layer.id});
+        var wmtslayer = this.findLayer(source[0], {identifier:layer.layer});
+        var url = wmtslayer.layer.options.url;
         var printConfig = {
             type: 'wmts',
-            url: isProxy ? Mapbender.Util.removeProxy(layer.getURL(bounds)) : layer.getURL(bounds)
+            url: isProxy ? Mapbender.Util.removeProxy(url) : url,
+            options: wmtslayer.layer.options,
+            matrixset: this.findMatrixSetIdent(source[0].configuration.tilematrixsets, wmtslayer.layer.options.tilematrixset, true),
+            zoom: Mapbender.Model.getZoomFromScale(scale)
         };
         return printConfig;
     },

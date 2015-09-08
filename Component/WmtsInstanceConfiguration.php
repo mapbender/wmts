@@ -160,6 +160,7 @@ class WmtsInstanceConfiguration extends InstanceConfiguration
                     'tileWidth' => $tilematrix->getTilewidth(),
                     'tileHeight' => $tilematrix->getTileheight(),
                     'topLeftCorner' => $latlon,
+                    'matrixSize' =>  array($tilematrix->getMatrixwidth(), $tilematrix->getMatrixheight())
                 );
             }
             // clean matrix attributes if matrices have a selfsame value
