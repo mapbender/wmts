@@ -58,4 +58,10 @@ cd application
 app/console doctrine:schema:update --force
 ```
 
+## Configuration
 
+### Add source
+
+A WMTS or TMS service can be added to mapbender like any other web map service. Choose the **OGC WMTS / TMS** tab from the *Add Source* menu and enter a valid *GetCapabilities*-URL.
+
+![Add wmts/tms source](Documentation/01.png)
