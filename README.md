@@ -1,8 +1,16 @@
 # Description
 
-This is the WmtsBundle that was originally created for the HRO project. It was adapted to work with Mapbender v3.0.6 (v3.0.7 respectively).
+## Disclaimer
 
-## Installation
+**This is an early release of the WmtsBundle for Mapbender. Full functionality cannot be guaranteed.**
+
+It was adapted to work with Mapbender v3.0.6 (v3.0.7 respectively).
+
+## Installation with composer.json
+
+TODO
+
+## Installation with existing Mapbender project
 
 **Clean mapbender-starter**
 
@@ -10,7 +18,7 @@ This is the WmtsBundle that was originally created for the HRO project. It was a
 
 ```bash
 cd application/mapbender/src
-git clone git@repo.wheregroup.com:ckuntzsch/WmtsBundle.git
+git clone git@github.com:mapbender/wmts.git
 ```
 
 **Project specific installation**
@@ -19,7 +27,7 @@ git clone git@repo.wheregroup.com:ckuntzsch/WmtsBundle.git
 
 ```bash
 cd application/src/Mapbender
-git clone git@repo.wheregroup.com:ckuntzsch/WmtsBundle.git
+git clone git@github.com:mapbender/wmts.git
 ```
 
 * add WmtsBundle to `routing.yml` and `AppKernel.php`
