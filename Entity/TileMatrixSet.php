@@ -3,6 +3,7 @@
 namespace Mapbender\WmtsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Mapbender\WmtsBundle\Component\TileMatrix;
 use Mapbender\WmtsBundle\Entity\WmtsSource;
 
 /**
