@@ -295,7 +295,7 @@ Mapbender.Geo.WmtsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler 
            escapedURL += encodeURIComponent(results[1]) + results[2];
        }
        escapedURL += encodeURIComponent(url.match(/[^}]*$/)[0]);
-       return OpenLayers.ProxyHost + escapedURL;
+       return OpenLayers.ProxyHost + escapedURL + '&service=wmts';
     }
 });
 Mapbender.source['wmts'] = new Mapbender.Geo.WmtsSourceHandler();
