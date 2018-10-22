@@ -93,7 +93,7 @@ Mapbender.Geo.WmtsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler 
             tileOrigin: OpenLayers.LonLat.fromArray(matrixset.origin),
             tileSize: new OpenLayers.Size(matrixset.tileSize[0], matrixset.tileSize[1]),
             tileFullExtent: tileFullExtent,
-            url: proxy ? Mapbender.Util.addProxy(layer.options.url) : layer.options.url
+            url: proxy ? this.addProxy(layer.options.url) : layer.options.url
         };
         if(olLayer){
             layerOptions['format'] = olLayer.format === layer.options.format ? olLayer.format : layer.options.format;
@@ -286,6 +286,16 @@ Mapbender.Geo.WmtsSourceHandler = Class({'extends': Mapbender.Geo.SourceHandler 
             this.disable(source, 'nosrs');
         }
         
+    },
+    'private function addProxy': function(url) {
+       var escapedURL = '';
+       var matcher = /([^{]*)(\{[^}]*\})/g;
+       var results;
+       while ((results = matcher.exec(url)) !== null) {
+           escapedURL += encodeURIComponent(results[1]) + results[2];
+       }
+       escapedURL += encodeURIComponent(url.match(/[^}]*$/)[0]);
+       return OpenLayers.ProxyHost + escapedURL + '&service=wmts';
     }
 });
 Mapbender.source['wmts'] = new Mapbender.Geo.WmtsSourceHandler();

@@ -171,12 +171,11 @@ class WmtsInstanceEntityHandler extends SourceInstanceEntityHandler
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
             $configuration['options']['url'] = $url;
-        } // not yet supported - RESTful
-//        elseif ($signer) {
-//            foreach ($configuration['layers'] as &$layer) {
-//                $layer['options']['url'] = $signer->signUrl($layer['options']['url']);
-//            }
-//        }
+        } elseif ($signer) {
+            foreach ($configuration['layers'] as &$layer) {
+                $layer['options']['url'] = $signer->signWmtsUrl($layer['options']['url']);
+            }
+        }
         $status = $this->entity->getSource()->getStatus();
         $configuration['status'] = $status ? strtolower($status) : strtolower(Source::STATUS_OK);
         return $configuration;
