@@ -18,7 +18,7 @@ TODO
 
 ```bash
 cd application/mapbender/src
-git clone git@github.com:mapbender/wmts.git
+git clone git@github.com:mapbender/wmts.git WmtsBundle
 ```
 
 **Project specific installation**
@@ -27,7 +27,7 @@ git clone git@github.com:mapbender/wmts.git
 
 ```bash
 cd application/src/Mapbender
-git clone git@github.com:mapbender/wmts.git
+git clone git@github.com:mapbender/wmts.git WmtsBundle
 ```
 
 * add WmtsBundle to `routing.yml` and `AppKernel.php`
