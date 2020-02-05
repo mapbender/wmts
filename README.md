@@ -1,4 +1,43 @@
-# Description
+# Obsolete, unmaintained and archived
+WMTS / TMS source support has been integrated with [Mapbender](https://github.com/mapbender/mapbender/pull/1116) as of v3.0.8. Many of the former quirks have been resolved [in the initial reintegration work](https://github.com/mapbender/mapbender/pull/1116) and in following releases. It's no longer possible to install this package together with any maintained Mapbender release.
+
+To activate Wmts / Tms source support in Mapbender:
+1) The bundle must be added to the [application kernel's bundle registration](https://github.com/mapbender/mapbender-starter/blob/v3.0.8-beta1/application/app/AppKernel.php#L11), like so:
+```diff
+--- a/application/app/AppKernel.php
++++ b/application/app/AppKernel.php
+@@ -30,6 +30,7 @@ class AppKernel extends Mapbender\BaseKernel
+             // Optional Mapbender bundles
+             new Mapbender\WmcBundle\MapbenderWmcBundle(),
+             new Mapbender\WmsBundle\MapbenderWmsBundle(),
++            new Mapbender\WmtsBundle\MapbenderWmtsBundle(),
+             new Mapbender\ManagerBundle\MapbenderManagerBundle(),
+             new Mapbender\PrintBundle\MapbenderPrintBundle(),
+             new Mapbender\MobileBundle\MapbenderMobileBundle(),
+```
+2) The bundle's controller namespace must be added to [the routing configuration](https://github.com/mapbender/mapbender-starter/blob/v3.0.8-beta1/application/app/config/routing.yml), like so:
+```diff
+--- a/application/app/config/routing.yml
++++ b/application/app/config/routing.yml
+@@ -15,6 +15,10 @@ mapbender_wmsbundle:
+     resource: "@MapbenderWmsBundle/Controller/"
+     type: annotation
+ 
++mapbender_wmtsbundle:
++    resource: "@MapbenderWmtsBundle/Controller/"
++    type: annotation
++
+ mapbender_coordinatesutilitybundle:
+     resource: "@MapbenderCoordinatesUtilityBundle/Controller/"
+     type: annotation
+```
+3) Initialize new database tables
+```sh
+app/console doctrine:schema:update --force
+```
+
+
+# Old readme contents (unmaintained)
 
 ## Disclaimer
 
